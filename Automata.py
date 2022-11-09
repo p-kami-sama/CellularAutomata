@@ -18,9 +18,9 @@ class Automata:
         self.width = width      # ancho
         self.height = height    # altura
 
-        self.neighborhood = None
-        self.neighborhood_list = None
-        self.border = None
+        self.neighborhood = Neighborhoods.VON_NEUMANN
+        self.neighborhood_list = [(-1, 0), (0, -1), (0, 1), (1, 0)]
+        self.border = Borders.PERIODIC
         self.fixed_cell = None    # solo si border == 'periodic' será usada
 
         self.actual_iteration = 0
@@ -251,6 +251,7 @@ class Automata:
             # Se añaden estadísticos a self.data
             if self.store_trace_back:
                 dict_iteration = {}
+                #AQUI SE PUEDEN AÑADIR ESTADISTICOS GLOBALES
                 for fila in self.iterations[self.actual_iteration]:
                     x = 0
                     for elem in fila:
