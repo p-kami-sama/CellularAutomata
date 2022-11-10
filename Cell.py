@@ -18,6 +18,11 @@ class Cell:
         s = 'xpos: '+str(self.xpos)+', ypos: '+str(self.ypos)+ \
             ', state: '+str(self.state) +', variables: '+str(self.variables)
         return s
+    
+    def __repr__(self):
+        s = 'xpos: '+str(self.xpos)+', ypos: '+str(self.ypos)+ \
+            ', state: '+str(self.state) +', variables: '+str(self.variables)
+        return s
 
 
     def get_pos(self) -> Tuple[int, int]:
@@ -28,9 +33,13 @@ class Cell:
     def get_state(self) -> States:
         return self.state
 
-#ARREGLAR, poner deteccion de estados erroneos
+
     def set_state(self, new_state:States) -> Any:
-        self.state = new_state
+        if not isinstance(state, States):
+            message = 'ERROR: The given state is not included in the enumeration of states.'
+            raise ValueError(message)
+        else:
+            self.state = new_state
 
 
     # Apartir del nombre, obtiene el valor de la variable, en caso de no existir devuelve None

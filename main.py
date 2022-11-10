@@ -6,6 +6,7 @@ from Borders import Borders
 
 from celula.transition_rule import transition_rule
 from celula.States import States as s
+from celula.statistics_functions import *
 
 from automata.initial_state import initial_state
 
@@ -13,11 +14,7 @@ from automata.initial_state import initial_state
 
 
 
-def statistic_1_function(c):
-    if c.state == s.Ardiendo:
-        return True
-    else:
-        return False
+
 
 
 # cuadrado  Moore
@@ -36,6 +33,8 @@ if __name__ == '__main__':
     a.set_transition_rule(transition_rule)
 
     id = a.add_statistic( statistic_1_function, 'Esta ardiendo', [])
+    id = a.add_statistic( statistic_2_function, 'Esta celda es ignífuga', [])
+
 
 # Imprime las iteraciones
     print(a.actual_iteration)
@@ -51,3 +50,12 @@ if __name__ == '__main__':
 
 
     a.store_data_in_json()
+
+    print(a.get_cell(0, 0, 0))
+    print(a.get_cell(0, 0, 1))
+    print(a.get_cell(0, 0, 2))
+    print(a.get_cell(0, 0, 3))
+
+
+
+    print(a.statistics)
