@@ -1,5 +1,17 @@
 {
     "1": {
+        "(5, 0)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
+        "(5, 1)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
         "(7, 1)": {
             "1": {
                 "state": "3",
@@ -16,6 +28,12 @@
             "1": {
                 "state": "3",
                 "message": "Esta ardiendo"
+            }
+        },
+        "(5, 2)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
             }
         },
         "(7, 2)": {
@@ -50,6 +68,12 @@
         }
     },
     "2": {
+        "(5, 0)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
         "(6, 0)": {
             "1": {
                 "state": "3",
@@ -74,10 +98,22 @@
                 "message": "Esta ardiendo"
             }
         },
+        "(5, 1)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
         "(6, 1)": {
             "1": {
                 "state": "3",
                 "message": "Esta ardiendo"
+            }
+        },
+        "(5, 2)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
             }
         },
         "(6, 2)": {
@@ -118,6 +154,24 @@
         }
     },
     "3": {
+        "(5, 0)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
+        "(5, 1)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
+        "(5, 2)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
         "(5, 3)": {
             "1": {
                 "state": "3",
@@ -132,10 +186,28 @@
         }
     },
     "4": {
+        "(5, 0)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
+        "(5, 1)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
         "(4, 2)": {
             "1": {
                 "state": "3",
                 "message": "Esta ardiendo"
+            }
+        },
+        "(5, 2)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
             }
         }
     }

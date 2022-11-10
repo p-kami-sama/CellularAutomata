@@ -44,13 +44,14 @@ class Automata:
             mallaAux = []
             x = 0
             for elem in fila:
-                vars = []
-                if isinstance(elem, list):
+
+                if isinstance(elem, dict):
+                    vars = []
                     if 'variables' in elem:
                         vars = elem['variables']
                     c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
                 elif elem in States:
-                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables=vars)
+                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables=[])
                     pass
                 mallaAux.append(c)
                 x = x+1
@@ -302,7 +303,12 @@ class Automata:
 #ACABAR 
     def add_statistic(self, check_function, message:str, variables_to_print:typing.List[str]) -> int:
         # Buscar otra forma de asignar id
-        id = len(self.statistics)+1
+        id = 0
+        for index in range(1, len(self.statistics)+2):
+            if not index in self.statistics.keys():
+                id = index
+                break
+
         self.statistics[id]=statistic.Statistic(self, check_function, message, variables_to_print)
         return id
 
