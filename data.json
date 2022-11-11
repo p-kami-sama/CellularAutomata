@@ -68,6 +68,12 @@
         }
     },
     "2": {
+        "(0, 0)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
         "(5, 0)": {
             "2": {
                 "state": "4",
@@ -154,6 +160,12 @@
         }
     },
     "3": {
+        "(0, 0)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
         "(5, 0)": {
             "2": {
                 "state": "4",
@@ -186,6 +198,12 @@
         }
     },
     "4": {
+        "(0, 0)": {
+            "2": {
+                "state": "4",
+                "message": "Esta celda es ign\u00edfuga"
+            }
+        },
         "(5, 0)": {
             "2": {
                 "state": "4",

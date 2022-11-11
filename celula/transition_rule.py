@@ -3,6 +3,9 @@ from .States import States
 
 def transition_rule(c:cell):
 
+    if c.get_variable('Sol') != None:
+        return {'state': States.Ignifugo, 'Sol': c.automata.actual_iteration}
+
     if c.state == States.Quemado or c.state == States.Ignifugo:
         return c.state
     elif c.state == States.Ardiendo:

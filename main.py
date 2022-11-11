@@ -56,6 +56,15 @@ if __name__ == '__main__':
     print(a.get_cell(0, 0, 2))
     print(a.get_cell(0, 0, 3))
 
+    print(a.get_cell(1, 0, 0))
+    print(a.get_cell(1, 0, 1))
+    print(a.get_cell(1, 0, 2))
+    print(a.get_cell(1, 0, 3))
+    print('------------------------------------------')
+    print(a.get_cell(5, 4, 0))
+    print(a.get_cell(5, 4, 1))
+    print(a.get_cell(5, 4, 2))
+    print(a.get_cell(5, 4, 3))
 
 
     print(a.statistics)
