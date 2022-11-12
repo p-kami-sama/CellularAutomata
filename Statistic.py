@@ -17,7 +17,7 @@ class Statistic:
 
         if self.variables_to_print == []:
             data = {
-                    'state': c.state,
+                    'state': c.get_state(),
                     'message': self.message,
                 }
         else:
@@ -28,7 +28,7 @@ class Statistic:
 
             data = {
                 'message': self.message,
-                'state': c.state,
+                'state': c.get_state(),
                 'variables': vars_info
             }
 
