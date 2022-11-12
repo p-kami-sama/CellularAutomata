@@ -34,23 +34,24 @@ if __name__ == '__main__':
     a.set_transition_rule(transition_rule)
 
     id = a.add_statistic( statistic_1_function, 'Esta ardiendo', [])
-    id = a.add_statistic( statistic_2_function, 'Esta celda es ignífuga', [])
+    id = a.add_statistic( statistic_2_function, 'Esta celda es ignifuga', [])
+
 
 
 # Imprime las iteraciones
-    print(a.actual_iteration)
-    for row in a.get_matrix_state():
-        print( row )
-    print()
-    for i in range(0, 4):
-        a.next()
-        print(a.actual_iteration)
-        for row in a.get_matrix_state():
-            print( row )
-        print()
+    # print(a.actual_iteration)
+    # for row in a.get_matrix_state():
+    #     print( row )
+    # print()
+    # for i in range(0, 4):
+    #     a.next()
+    #     print(a.actual_iteration)
+    #     for row in a.get_matrix_state():
+    #         print( row )
+    #     print()
 
 
+
+
+    a.run_iterations(2, True)
     a.store_data_in_json()
-
-
-    print(a.statistics)

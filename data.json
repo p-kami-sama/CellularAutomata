@@ -1,231 +1,167 @@
 {
     "1": {
+        "Cell state counter": {
+            "Quemado": 2,
+            "Combustible": 37,
+            "Ardiendo": 8,
+            "Ignifugo": 3
+        },
         "(5, 0)": {
             "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
+                "state": "Ignifugo",
+                "message": "Esta celda es ignifuga"
             }
         },
         "(5, 1)": {
             "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
+                "state": "Ignifugo",
+                "message": "Esta celda es ignifuga"
             }
         },
         "(7, 1)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(8, 1)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(9, 1)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(5, 2)": {
             "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
+                "state": "Ignifugo",
+                "message": "Esta celda es ignifuga"
             }
         },
         "(7, 2)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(9, 2)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(7, 3)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(8, 3)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(9, 3)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         }
     },
     "2": {
-        "(0, 0)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
-            }
+        "Cell state counter": {
+            "Quemado": 11,
+            "Combustible": 25,
+            "Ardiendo": 11,
+            "Ignifugo": 3
         },
         "(5, 0)": {
             "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
+                "state": "Ignifugo",
+                "message": "Esta celda es ignifuga"
             }
         },
         "(6, 0)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(7, 0)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(8, 0)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(9, 0)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(5, 1)": {
             "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
+                "state": "Ignifugo",
+                "message": "Esta celda es ignifuga"
             }
         },
         "(6, 1)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(5, 2)": {
             "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
+                "state": "Ignifugo",
+                "message": "Esta celda es ignifuga"
             }
         },
         "(6, 2)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(6, 3)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(6, 4)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(7, 4)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(8, 4)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
             }
         },
         "(9, 4)": {
             "1": {
-                "state": "3",
+                "state": "Ardiendo",
                 "message": "Esta ardiendo"
-            }
-        }
-    },
-    "3": {
-        "(0, 0)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
-            }
-        },
-        "(5, 0)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
-            }
-        },
-        "(5, 1)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
-            }
-        },
-        "(5, 2)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
-            }
-        },
-        "(5, 3)": {
-            "1": {
-                "state": "3",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(5, 4)": {
-            "1": {
-                "state": "3",
-                "message": "Esta ardiendo"
-            }
-        }
-    },
-    "4": {
-        "(0, 0)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
-            }
-        },
-        "(5, 0)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
-            }
-        },
-        "(5, 1)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
-            }
-        },
-        "(4, 2)": {
-            "1": {
-                "state": "3",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(5, 2)": {
-            "2": {
-                "state": "4",
-                "message": "Esta celda es ign\u00edfuga"
             }
         }
     }
