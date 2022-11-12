@@ -263,10 +263,15 @@ class Automata:
             # Se añaden estadísticos a self.data
             if self.store_trace_back:
                 dict_iteration = {}
+                states_counter_dict = {}
+                for s in States:
+                    states_counter_dict[s.name] = 0
+
                 #AQUI SE PUEDEN AÑADIR ESTADISTICOS GLOBALES
                 for fila in self.iterations[self.actual_iteration]:
                     x = 0
                     for elem in fila:
+                        states_counter_dict[elem.state.name] +=1
                         dict_elem = {}
                         for statistic_id, statistic in self.statistics.items():
                             if statistic.valid(elem):
@@ -274,7 +279,10 @@ class Automata:
                         if (dict_elem != {}):
                             elem_key = '('+str(elem.xpos)+', '+str(elem.ypos)+')'
                             dict_iteration[elem_key] = dict_elem
-                self.data[self.actual_iteration+1] = dict_iteration
+
+                dict_aux = {'Cell state counter': states_counter_dict}
+                dict_aux.update(dict_iteration)
+                self.data[self.actual_iteration+1] = dict_aux
                             
         self.actual_iteration += 1
         return self.actual_iteration
