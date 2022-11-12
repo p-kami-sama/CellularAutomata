@@ -20,7 +20,8 @@ from automata.initial_state import initial_state
 # cuadrado  Moore
 # rombo     von_Neumann
 if __name__ == '__main__':   
-    
+
+
     
 
     a = automata.Automata(width=10, height=5, store_trace_back=True)
@@ -50,12 +51,6 @@ if __name__ == '__main__':
 
 
     a.store_data_in_json()
-
-    print(a.get_cell(0, 0, 0))
-    print(a.get_cell(0, 0, 1))
-    print(a.get_cell(0, 0, 2))
-    print(a.get_cell(0, 0, 3))
-
 
 
     print(a.statistics)

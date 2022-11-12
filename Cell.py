@@ -7,6 +7,10 @@ from celula.States import States
 
 class Cell:
     def __init__(self, automata:automata, xpos:int, ypos:int, state:States, variables:dict={}):
+        if not isinstance(state, States):
+            message = 'ERROR: A cell with state ' + str(state)+\
+                ' cannot be created because it is not included in the States enumeration.'
+            raise ValueError(message)
         self.automata = automata
         self.xpos = xpos
         self.ypos = ypos
@@ -35,7 +39,7 @@ class Cell:
 
 
     def set_state(self, new_state:States) -> Any:
-        if not isinstance(state, States):
+        if not isinstance(new_state, States):
             message = 'ERROR: The given state is not included in the enumeration of states.'
             raise ValueError(message)
         else:
@@ -44,7 +48,7 @@ class Cell:
 
     # Apartir del nombre, obtiene el valor de la variable, en caso de no existir devuelve None
     def get_variable(self, variable_name:str) -> Any:
-        if variable_name in self.variables.keys():
+        if variable_name in self.variables:
             return self.variables[variable_name]
         else: # en caso de que var no exista
             return None

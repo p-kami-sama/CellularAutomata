@@ -1,7 +1,7 @@
 from celula.States import States
 
 initial_state = [
-    [{'state': States.Combustible, 'variables': {'Sol': 'rojo', 'Luna': 'azul'}}, States.Combustible, States.Combustible, States.Combustible, States.Combustible, States.Ignifugo, States.Combustible, States.Combustible, States.Combustible, States.Combustible],
+    [States.Combustible, States.Combustible, States.Combustible, States.Combustible, States.Combustible, States.Ignifugo, States.Combustible, States.Combustible, States.Combustible, States.Combustible],
     [States.Combustible, States.Combustible, States.Combustible, States.Combustible, States.Combustible, States.Ignifugo, States.Combustible, States.Ardiendo, States.Ardiendo, States.Ardiendo],
     [States.Combustible, States.Combustible, States.Combustible, States.Combustible, States.Combustible, States.Ignifugo, States.Combustible, States.Ardiendo, States.Combustible, States.Ardiendo],
     [States.Combustible, States.Combustible, States.Combustible, States.Combustible, States.Quemado, States.Combustible, States.Combustible, States.Ardiendo, States.Ardiendo, States.Ardiendo],

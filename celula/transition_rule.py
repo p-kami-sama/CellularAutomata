@@ -2,7 +2,6 @@ import Cell as cell
 from .States import States
 
 def transition_rule(c:cell):
-
     if c.state == States.Quemado or c.state == States.Ignifugo:
         return c.state
     elif c.state == States.Ardiendo:

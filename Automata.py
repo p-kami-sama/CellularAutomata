@@ -13,7 +13,7 @@ from Borders import Borders
 
 class Automata:
 
-    def __init__(self, width:int, height:int, store_trace_back:bool=False, ):
+    def __init__(self, width:int, height:int, store_trace_back:bool=False ):
 
         self.width = width      # ancho
         self.height = height    # altura
@@ -46,13 +46,24 @@ class Automata:
             for elem in fila:
 
                 if isinstance(elem, dict):
-                    vars = []
-                    if 'variables' in elem:
-                        vars = elem['variables']
-                    c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
-                elif elem in States:
-                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables=[])
-                    pass
+#                    if 'variables' in elem:
+                    if not 'state' in elem:
+                        message = 'ERROR: if the initial information of a cell is a dictionary, it must have a key called '\
+                                '"state", with the state that the cell will have before applying the transition rule.'
+                        raise ValueError(message)
+                    else:
+                        vars = elem.copy()
+                        del vars['state'] 
+                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
+
+                elif isinstance(elem, States):
+                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
+                else:
+                    message = '(ERROR the input to create the cell with coordinates (' +\
+                        str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
+                        '"States" enumeration or a dictionary.'
+                    raise ValueError(message)
+                    
                 mallaAux.append(c)
                 x = x+1
                 
@@ -230,7 +241,7 @@ class Automata:
 
                     if isinstance(result_transition_rule, States):
                         new_state = result_transition_rule
-                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=elem.variables)
+                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=elem.variables.copy())
 
                     elif type(result_transition_rule) is dict: # se reescriben las variables adecuadamente
                         if  'state' in result_transition_rule.keys():
@@ -300,7 +311,6 @@ class Automata:
 
 
 
-#ACABAR 
     def add_statistic(self, check_function, message:str, variables_to_print:typing.List[str]) -> int:
         # Buscar otra forma de asignar id
         id = 0
