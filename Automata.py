@@ -47,28 +47,18 @@ class Automata:
 
                 if isinstance(elem, dict):
 #                    if 'variables' in elem:
-                    print( str(x)+', '+str(y))
                     if not 'state' in elem:
                         message = 'ERROR: if the initial information of a cell is a dictionary, it must have a key called '\
-                                '"state", with the state that the cell will have after applying the transition rule.'
+                                '"state", with the state that the cell will have before applying the transition rule.'
                         raise ValueError(message)
-
                     else:
-                        vars = elem
-                        #  MALDITA copia por REREFENCIA y no por valor
-                        print(elem)
-                        print(vars)
+                        vars = elem.copy()
                         del vars['state'] 
-                        print(elem)
-                        print(vars)
-                        
                         c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
 
                 elif isinstance(elem, States):
                     c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
                 else:
-#ACABAR
-
                     message = '(ERROR the input to create the cell with coordinates (' +\
                         str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
                         '"States" enumeration or a dictionary.'
@@ -251,7 +241,7 @@ class Automata:
 
                     if isinstance(result_transition_rule, States):
                         new_state = result_transition_rule
-                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=elem.variables)
+                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=elem.variables.copy())
 
                     elif type(result_transition_rule) is dict: # se reescriben las variables adecuadamente
                         if  'state' in result_transition_rule.keys():
