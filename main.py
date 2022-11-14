@@ -1,59 +1,32 @@
 #from prueba_raster import gato
 # from qgis.core import *
 
-print(1)
 import sys
-print(2)
-tools = "./celula/transition_rule.py" #variable#
-print(3)
-if not tools in sys.path:
-    sys.path.append(tools)
-print(4)
 
-print(sys.path)
+# NECESARIO PARA PODER SER EJECUTADO EN QGIS
+# Configuracion -> opciones -> general -> Default paths -> absoluto
+path = '/Users/paul/Desktop/CellularAutomata'
+if not path in sys.path:
+    sys.path.append(path)
 
-
-
-
-print(5)
-
-tools = '/Users/paul/Desktop/CellularAutomata'
-print(6)
-if not tools in sys.path:
-    sys.path.append(tools)
-print(7)
-
-
-
-
-from celula.transition_rule import transition_rule
-print(8)
-from celula.States import States
-from celula.statistics_functions import *
-
-print(9)
-import Cell as cell
-
+# IMPORTS
 import Automata as automata
-
 from Neighborhoods import Neighborhoods
 from Borders import Borders
+from QgsAutomata import QgsAutomata
 
+from celula.transition_rule import transition_rule
+from celula.States import States
+from celula.statistics_functions import *
 
 from automata.initial_state import initial_state
 
 
-
-from QgsAutomata import QgsAutomata
-
-print(10)
 #exec(open('/Users/paul/Documents/qgis/CellularAutomata/main.py'.encode('utf-8')).read())
 
 # cuadrado  Moore
 # rombo     von_Neumann
-print(11)
-#if __name__ == '__main__':
-print(12)
+
 
 
 
