@@ -25,19 +25,28 @@ from automata.initial_state import initial_state
 # from QgsData.States_to_color import states_color_dict
 # from QgsData.states_color_dict import states_color_dict
 
+import importlib
+importlib.reload(qgsAutomata)
+importlib.reload(automata)
 
 # ruta
 file_route = '/Users/paul/Desktop/CellularAutomata/QgsData/raster_v2.tif'
 
 print('COSA A')
 
-qga = qgsAutomata.QgsAutomata(10, 10, True, file_route)
+
+fi = QFileInfo(file_route)
+file_name = fi.baseName()   #nombre del archivo(sin extensión)
+print(file_name)
+
+qga = qgsAutomata.QgsAutomata(10, 10, iface, True, file_route)
 print('COSA Z')
 
 print(qga)
 qga.gato()
 
-qga.perro('3')
+
+
 print(qga.route, qga.height, qga.width, qga.actual_iteration)
 print(qga.prueba)
 
