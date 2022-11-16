@@ -36,7 +36,10 @@ print('COSA Z')
 
 print(qga)
 qga.gato()
-print(qga.route)
+
+qga.perro('3')
+print(qga.route, qga.height, qga.width, qga.actual_iteration)
+print(qga.prueba)
 
 qga.set_border(Borders.FIXED, States.Ignifugo)
 qga.set_neighborhood(Neighborhoods.MOORE)

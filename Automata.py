@@ -34,6 +34,8 @@ class Automata:
         self.statistics = {} # id:int, statistics
 
 
+    def perro(self, x):
+        print('Guauuuuuuuuu')
 
 
     def set_initial_state(self, mat:list):

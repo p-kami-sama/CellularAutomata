@@ -2,9 +2,12 @@ from Automata import Automata
 
 
 class QgsAutomata(Automata):
-    def __init__(self, width:int, height:int, store_trace_back:bool=False, route:str=None):
+    def __init__(self, w:int, h:int, store_trace_back:bool=False, route:str=None):
         print('bien')
-        super().__init__(width, height, store_trace_back)
+        self.prueba = 'ESTO VA BIEN'
+
+        super().__init__( width=w, height=h, store_trace_back=store_trace_back)
+#        super().__init__(width=width, height=height, store_trace_back=store_trace_back)
         self.route = route
 
         if route != None:
@@ -12,6 +15,8 @@ class QgsAutomata(Automata):
             self.load_raster_layer_as_initial_state(file_route=route)
             print('okey')
         #    'QgsData/raster_initial_state.tif'
+
+       
             
         
         
