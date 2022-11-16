@@ -14,3 +14,11 @@ class States(str, Enum):
 
     def __repr__(self):
         return str(self.name)
+
+
+states_color_dict = {
+    States.Quemado: (255, 255, 255),
+    States.Combustible: (0, 255, 0),
+    States.Ardiendo: (255, 0, 0),
+    States.Ignifugo: (0, 0, 255)
+}

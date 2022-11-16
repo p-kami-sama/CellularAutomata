@@ -14,6 +14,7 @@ from Borders import Borders
 class Automata:
 
     def __init__(self, width:int, height:int, store_trace_back:bool=False ):
+        print('MALLLLLLLLLL')
 
         self.width = width      # ancho
         self.height = height    # altura
