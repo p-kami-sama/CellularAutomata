@@ -24,3 +24,11 @@ print('5 gato')
 # exec(open('/Users/paul/Desktop/CellularAutomata/aux.py'.encode('utf-8')).read())
 
 print(sys.path)
+
+
+# diccionario -> buscar Key por value
+value = 16
+diccionario = {'george': 16, 'amber': 19}
+print( list(diccionario.keys())[list(diccionario.values()).index(16)] )  
+
+

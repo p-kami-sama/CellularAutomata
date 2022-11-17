@@ -32,23 +32,18 @@ importlib.reload(automata)
 # ruta
 file_route = '/Users/paul/Desktop/CellularAutomata/QgsData/raster_v2.tif'
 
-print('COSA A')
 
 
 fi = QFileInfo(file_route)
 file_name = fi.baseName()   #nombre del archivo(sin extensión)
 print(file_name)
 
+#Se inicializa QgsAutomata
 qga = qgsAutomata.QgsAutomata(10, 10, iface, True, file_route)
-print('COSA Z')
-
-print(qga)
-qga.gato()
 
 
 
 print(qga.route, qga.height, qga.width, qga.actual_iteration)
-print(qga.prueba)
 
 qga.set_border(Borders.FIXED, States.Ignifugo)
 qga.set_neighborhood(Neighborhoods.MOORE)
@@ -110,10 +105,10 @@ id = qga.add_statistic( statistic_2_function, 'Esta celda es ignifuga', [])
 #
 
 # Imprime las iteraciones
-# print(a.actual_iteration)
-# for row in a.get_matrix_state():
-#     print( row )
-# print()
+print(qga.actual_iteration)
+for row in qga.get_matrix_state():
+    print( row )
+print()
 # for i in range(0, 4):
 #     a.next()
 #     print(a.actual_iteration)
