@@ -2,6 +2,7 @@
 # from qgis.core import *
 
 import sys
+import csv
 
 # NECESARIO PARA PODER SER EJECUTADO EN QGIS
 # Configuracion -> opciones -> general -> Default paths -> absoluto
@@ -10,17 +11,7 @@ path = '/Users/paul/Desktop/CellularAutomata'
 if not path in sys.path:
     sys.path.append(path)
 
-print(sys.path)
-
-
-from pathlib import Path
-print(Path.cwd())
-import os
-print('Get current working directory : ', os.getcwd())
-import pathlib
-
-# current working directory
-print(pathlib.Path().absolute())
+# print(sys.path)
 
 
 
@@ -32,8 +23,7 @@ print(pathlib.Path().absolute())
 
 # IMPORTS
 import Automata as automata
-from Neighborhoods import Neighborhoods
-from Borders import Borders
+
 #from QgsAutomata import QgsAutomata
 import QgsAutomata as qgsAutomata
 
@@ -41,7 +31,10 @@ from celula.transition_rule import transition_rule
 from celula.States import States, states_color_dict
 from celula.statistics_functions import *
 
+from automata.Neighborhoods import Neighborhoods
+from automata.Borders import Borders
 from automata.initial_state import initial_state
+
 # from QgsData.States_to_color import states_color_dict
 # from QgsData.states_color_dict import states_color_dict
 
@@ -50,6 +43,7 @@ importlib.reload(qgsAutomata)
 importlib.reload(automata)
 
 # ruta
+
 file_route = '/Users/paul/Desktop/CellularAutomata/QgsData/raster_v2.tif'
 
 
@@ -58,14 +52,31 @@ fi = QFileInfo(file_route)
 file_name = fi.baseName()   #nombre del archivo(sin extensión)
 print(file_name)
 
+
+
+
+
+
+with open( (path+'/QgsData/info.csv') , newline='') as f:
+    reader = csv.reader(f)
+    data = list(reader)
+
+print(data, 'MAIN')
+
+
+
+
+
+
+
 #Se inicializa QgsAutomata
 print('se inicia el automata')
-qga = qgsAutomata.QgsAutomata(10, 10, iface, True, file_route, 0, 0, 1)
+qga = qgsAutomata.QgsAutomata( w=10, h=10, iface=iface, project_path=path, store_trace_back=True, initial_state_route=file_route)
 
 
 
 print(qga.route, qga.height, qga.width, qga.actual_iteration)
-
+print( qga.height, qga.width)
 qga.set_border(Borders.FIXED, States.Ignifugo)
 qga.set_neighborhood(Neighborhoods.MOORE)
 qga.set_transition_rule(transition_rule)
@@ -160,3 +171,5 @@ print()
 #print(qa.neighborhood, qa.neighborhood_list, qa.border)
 #
 print('\nFINAL\n')
+
+

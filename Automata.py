@@ -7,8 +7,8 @@ import Statistic as statistic
 
 from celula.States import States
 
-from Neighborhoods import Neighborhoods
-from Borders import Borders
+from automata.Neighborhoods import Neighborhoods
+from automata.Borders import Borders
 
 
 class Automata:

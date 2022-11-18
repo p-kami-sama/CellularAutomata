@@ -27,14 +27,22 @@ print('5 gato')
 
 
 # diccionario -> buscar Key por value
-value = 16
-diccionario = {'george': 16, 'amber': 19}
-
-print( list(diccionario.keys())[list(diccionario.values()).index(16)] )  
-print('sodfkmvomdfdm')
-
-print( list(diccionario.values()) )
-print (16 in list(diccionario.values()) )
-print( list(diccionario.keys()) [list(diccionario.values()).has(1)] )  
 
 
+
+
+
+
+
+
+
+
+
+
+import csv
+
+with open('/Users/paul/Desktop/CellularAutomata/QgsData/info.csv', newline='') as f:
+    reader = csv.reader(f)
+    data = list(reader)
+
+print(data)
