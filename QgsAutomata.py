@@ -38,8 +38,9 @@ class QgsAutomata(Automata):
     def load_raster_layer_as_initial_state(self, file_route: str):
         print('ini load', self.width, self.height)
         
-        fi = QFileInfo(file_route)
-        file_name = fi.baseName()   #nombre del archivo(sin extensión)
+        file_info = QFileInfo(file_route)
+        file_name = file_info.baseName()   #nombre del archivo(sin extensión)
+        print(file_name, '------')
 
         # Carga archivo y lo coloca como capa Raster
         rlayer = self.iface.addRasterLayer( file_route, file_name)
@@ -58,7 +59,7 @@ class QgsAutomata(Automata):
 
 
                 if (red is None) or (green is None) or (green is None):
-                    message = 'Attempt to access positions (' + str(x) + ', ' + str(y) + \
+                    message = 'Attempt to access positions (' + str(i) + ', ' + str(j) + \
                         ') where no valid data entry was found.'
                     raise ValueError(message)
 
@@ -66,7 +67,7 @@ class QgsAutomata(Automata):
                     value = (int(red), int(green), int(blue))
 
                     if not (value in list(states_color_dict.values()) ):
-                        message = 'At the ('  + str(x) + ', ' + str(y) + ' position, the (' + \
+                        message = 'At the ('  + str(i) + ', ' + str(j) + ' position, the (' + \
                             str(red) + ', ' + str(green) + ', ' + str(blue) + ') ' + \
                             'color, is not related to any state in states_color_dict.'
                         raise ValueError(message)

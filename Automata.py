@@ -3,7 +3,7 @@ import json
 import typing
 
 import Cell as cell
-import Statistic as statistic
+import celula.Statistic as statistic
 
 from celula.States import States
 
