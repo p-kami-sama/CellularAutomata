@@ -48,8 +48,8 @@ class QgsAutomata(Automata):
 
         # x+0.5
         # -y-0.5
-        upper_left_corner_x = 0
-        upper_left_corner_y = 0
+        # upper_left_corner_x = 0
+        # upper_left_corner_y = 0
         medio = cell_size/2
         malla = []
         for j in range(0, self.height): # y
@@ -60,17 +60,36 @@ class QgsAutomata(Automata):
                 ident = rlayer.dataProvider().identify(QgsPointXY( x , y), QgsRaster.IdentifyFormatValue )
                 if ident.isValid():
                     # ACABAR -> AQUÍ RECOGER DATOS 
-                    red = int(ident.results()[1])
-                    green = int(ident.results()[2])
-                    blue = int(ident.results()[3])
-                    value = (red, green, blue)
-                    data = list(states_color_dict.keys())[list(states_color_dict.values()).index(value)] 
+                    print('----\n', ident.results()[1], '\n-------')
+                    red   = ident.results()[1]
+                    green = ident.results()[2]
+                    blue  = ident.results()[3]
 
-                    fila.append(data)
+                    if (red is None) or (green is None) or (green is None):
+                        message = 'Attempt to access positions (' + str(x) + ', ' + str(y) + \
+                            ') where no valid data entry was found.'
+                        raise ValueError(message)
+
+                    else:
+                        value = (int(red), int(green), int(blue))
+
+                        if not (value in list(states_color_dict.values()) ):
+
+                            message = 'At the ('  + str(x) + ', ' + str(y) + ' position, the (' + \
+                                str(red) + ', ' + str(green) + ', ' + str(blue) + ') ' + \
+                                'color, is not related to any state in states_color_dict.'
+                            raise ValueError(message)
+
+
+
+                        data = list(states_color_dict.keys())[list(states_color_dict.values()).index(value)] 
+                        print(data, x, y)
+                        fila.append(data)
                 else:
                     # ACABAR -> añadir mensaje de ERROR en caso de obtener una ident no valida
-                
-                    print(x, y, 'noo')
+                    message = 'ttempt to access positions (' + str(x) + ', ' + str(y) + \
+                        ') where no valid data entry was found.'
+                    raise ValueError(message)
             
             malla.append(fila)
 

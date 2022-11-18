@@ -5,10 +5,30 @@ import sys
 
 # NECESARIO PARA PODER SER EJECUTADO EN QGIS
 # Configuracion -> opciones -> general -> Default paths -> absoluto
+# Configuracion -> opciones -> Red -> cache settings (la de la carpeta dónde se trabaja)
 path = '/Users/paul/Desktop/CellularAutomata'
 if not path in sys.path:
     sys.path.append(path)
-# print(sys.path)
+
+print(sys.path)
+
+
+from pathlib import Path
+print(Path.cwd())
+import os
+print('Get current working directory : ', os.getcwd())
+import pathlib
+
+# current working directory
+print(pathlib.Path().absolute())
+
+
+
+
+
+
+
+
 
 # IMPORTS
 import Automata as automata
@@ -39,7 +59,8 @@ file_name = fi.baseName()   #nombre del archivo(sin extensión)
 print(file_name)
 
 #Se inicializa QgsAutomata
-qga = qgsAutomata.QgsAutomata(10, 10, iface, True, file_route)
+print('se inicia el automata')
+qga = qgsAutomata.QgsAutomata(10, 10, iface, True, file_route, -10, 20, 1)
 
 
 
