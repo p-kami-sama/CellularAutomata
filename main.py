@@ -60,7 +60,7 @@ print(file_name)
 
 #Se inicializa QgsAutomata
 print('se inicia el automata')
-qga = qgsAutomata.QgsAutomata(10, 10, iface, True, file_route, -10, 20, 1)
+qga = qgsAutomata.QgsAutomata(10, 10, iface, True, file_route, 0, 0, 1)
 
 
 
