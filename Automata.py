@@ -3,17 +3,18 @@ import json
 import typing
 
 import Cell as cell
-import Statistic as statistic
+import automata.Statistic as statistic
 
 from celula.States import States
 
-from Neighborhoods import Neighborhoods
-from Borders import Borders
+from automata.Neighborhoods import Neighborhoods
+from automata.Borders import Borders
 
 
 class Automata:
 
     def __init__(self, width:int, height:int, store_trace_back:bool=False ):
+        print('MALLLLLLLLLL')
 
         self.width = width      # ancho
         self.height = height    # altura
@@ -31,6 +32,7 @@ class Automata:
         self.store_trace_back = store_trace_back
         self.data = {}
         self.statistics = {} # id:int, statistics
+
 
 
 
@@ -340,7 +342,7 @@ class Automata:
             return False
 
 
-    def store_data_in_json(self, route:str='data.json'):
+    def store_data_in_json(self, route:str='results/data.json'):
         with open(route, 'w') as file:
             json.dump(self.data, file, indent=4)
 
