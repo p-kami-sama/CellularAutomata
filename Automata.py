@@ -3,7 +3,7 @@ import json
 import typing
 
 import Cell as cell
-import celula.Statistic as statistic
+import automata.Statistic as statistic
 
 from celula.States import States
 
@@ -342,7 +342,7 @@ class Automata:
             return False
 
 
-    def store_data_in_json(self, route:str='data.json'):
+    def store_data_in_json(self, route:str='results/data.json'):
         with open(route, 'w') as file:
             json.dump(self.data, file, indent=4)
 
