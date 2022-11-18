@@ -1,4 +1,5 @@
 import csv
+import platform
 
 from Automata import Automata
 from qgis.core  import *
@@ -9,6 +10,8 @@ from osgeo import gdal
 
 from celula.States import States
 from QgsData.states_color_dict import states_color_dict
+from QgsData.variables_dict import variables_dict
+
 
 class QgsAutomata(Automata):
 
@@ -47,7 +50,7 @@ class QgsAutomata(Automata):
         ds = gdal.Open(rlayer.dataProvider().dataSourceUri())
         
 
-
+        var_dict = self.load_variables_from_csv()
         malla = []
         for j in range(0, self.height): # y -> recorre filas
             fila = []
@@ -72,9 +75,20 @@ class QgsAutomata(Automata):
                             'color, is not related to any state in states_color_dict.'
                         raise ValueError(message)
 
-                    data = list(states_color_dict.keys())[list(states_color_dict.values()).index(value)] 
-                    print(data, i, j)
+
+                    state = list(states_color_dict.keys())[list(states_color_dict.values()).index(value)] 
+                    
+                    if var_dict == {} or var_dict == None:
+                        data = state
+                    else:
+                        data = {}
+                        data['state'] = state
+                        for var_name in variables_dict:
+
+                            data[var_name] = var_dict[var_name][j][i]
+
                     fila.append(data)
+                    print(i, j, data)
 
             malla.append(fila)
 
@@ -95,9 +109,50 @@ class QgsAutomata(Automata):
 
 
 
+
+
+
     def save_raster_layer(self, route: str):
         pass
 
     
     def show_iteracion(self, iteration:int):
         pass
+
+
+
+
+    def load_variables_from_csv(self):
+
+        if platform.system() == 'Windows':
+            route_separator ='\\'
+        elif platform.system() == 'Darwin' or platform.system() == 'Linux':
+            route_separator ='/'
+
+        var_dict = {}
+        for name_file_var, var_type in variables_dict.items():
+            var_list = []
+            file = self.project_path+route_separator+'QgsData'+route_separator+name_file_var+'.csv'
+
+            with open(file, newline='') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    var_row = []
+                    for elem in row:
+                        if var_type == 'int':
+                            elem = int(elem)
+                        elif var_type == 'float':
+                            elem = float(elem)
+                        elif var_type == 'str':
+                            elem = str(elem)
+                        elif var_type == 'bool':
+                            elem = bool(elem)
+                
+                        var_row.append(elem)
+
+                    var_list.append(var_row)
+            
+            var_dict[name_file_var] = var_list
+        
+        print('------------\n', var_dict, '\n---------')
+        return var_dict

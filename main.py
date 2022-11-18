@@ -57,11 +57,6 @@ print(file_name)
 
 
 
-with open( (path+'/QgsData/info.csv') , newline='') as f:
-    reader = csv.reader(f)
-    data = list(reader)
-
-print(data, 'MAIN')
 
 
 
@@ -141,12 +136,12 @@ print(qga.actual_iteration)
 for row in qga.get_matrix_state():
     print( row )
 print()
-# for i in range(0, 4):
-#     a.next()
-#     print(a.actual_iteration)
-#     for row in a.get_matrix_state():
-#         print( row )
-#     print()
+for i in range(0, 4):
+    qga.next()
+    print(qga.actual_iteration)
+    for row in qga.get_matrix_state():
+        print( row )
+    print()
 
 
 
