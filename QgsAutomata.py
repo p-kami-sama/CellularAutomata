@@ -18,16 +18,13 @@ class QgsAutomata(Automata):
     
     def __init__(self, w:int, h:int, iface, project_path:str, store_trace_back:bool=False, initial_state_route:str=None ):
         self.project_path = project_path
-
         self.iface = iface
-        self.route = initial_state_route
+        self.route = initial_state_route # a de ser una ruta obsoluta
     
-        
         super().__init__( width=w, height=h, store_trace_back=store_trace_back)
 
         if initial_state_route != None:
             self.load_raster_layer_as_initial_state(initial_state_route)
-        #    'QgsData/raster_initial_state.tif'
 
 
        
@@ -39,27 +36,24 @@ class QgsAutomata(Automata):
 
 
     def load_raster_layer_as_initial_state(self, file_route: str):
-        print('ini load', self.width, self.height)
+
         
         file_info = QFileInfo(file_route)
         file_name = file_info.baseName()   #nombre del archivo(sin extensión)
-        print(file_name, '------')
+
 
         # Carga archivo y lo coloca como capa Raster
         rlayer = self.iface.addRasterLayer( file_route, file_name)
         ds = gdal.Open(rlayer.dataProvider().dataSourceUri())
         
-
-        var_dict = self.load_variables_from_csv()
+        var_dict = self._load_variables_from_csv()
         malla = []
         for j in range(0, self.height): # y -> recorre filas
             fila = []
             for i in range(0, self.width): # x -> recorre columnas
-
                 red   = ds.GetRasterBand(1).ReadAsArray()[j][i]
                 green = ds.GetRasterBand(2).ReadAsArray()[j][i]
                 blue  = ds.GetRasterBand(3).ReadAsArray()[j][i]
-
 
                 if (red is None) or (green is None) or (green is None):
                     message = 'Attempt to access positions (' + str(i) + ', ' + str(j) + \
@@ -75,7 +69,6 @@ class QgsAutomata(Automata):
                             'color, is not related to any state in states_color_dict.'
                         raise ValueError(message)
 
-
                     state = list(states_color_dict.keys())[list(states_color_dict.values()).index(value)] 
                     
                     if var_dict == {} or var_dict == None:
@@ -84,7 +77,6 @@ class QgsAutomata(Automata):
                         data = {}
                         data['state'] = state
                         for var_name in variables_dict:
-
                             data[var_name] = var_dict[var_name][j][i]
 
                     fila.append(data)
@@ -93,15 +85,10 @@ class QgsAutomata(Automata):
             malla.append(fila)
 
         self.set_initial_state(malla)
-        print('end load', self.width, self.height)
 
 
-        # with open('QgsData/info.csv', newline='') as f:
-        #     reader = csv.reader(f)
-        #     data = list(reader)
 
-        # print(data)
-        # print('ENDO')
+
 
 
 
@@ -117,12 +104,12 @@ class QgsAutomata(Automata):
 
     
     def show_iteracion(self, iteration:int):
-        pass
+        self.
 
 
 
 
-    def load_variables_from_csv(self):
+    def _load_variables_from_csv(self):
 
         if platform.system() == 'Windows':
             route_separator ='\\'

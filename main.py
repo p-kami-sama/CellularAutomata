@@ -28,7 +28,7 @@ import Automata as automata
 import QgsAutomata as qgsAutomata
 
 from celula.transition_rule import transition_rule
-from celula.States import States, states_color_dict
+from celula.States import States
 from celula.statistics_functions import *
 
 from automata.Neighborhoods import Neighborhoods
