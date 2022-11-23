@@ -1,245 +1,205 @@
 {
-    "1": {
-        "Cell state counter": {
-            "Quemado": 2,
-            "Combustible": 37,
-            "Ardiendo": 8,
-            "Ignifugo": 3,
-            "Vivo": 0,
-            "Muerto": 0
-        },
-        "(5, 0)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
-            }
-        },
-        "(5, 1)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
-            }
-        },
-        "(7, 1)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(8, 1)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(9, 1)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(5, 2)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
-            }
-        },
-        "(7, 2)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(9, 2)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(7, 3)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(8, 3)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(9, 3)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        }
-    },
     "2": {
         "Cell state counter": {
-            "Quemado": 11,
-            "Combustible": 25,
-            "Ardiendo": 11,
-            "Ignifugo": 3,
-            "Vivo": 0,
-            "Muerto": 0
+            "Vivo": 15,
+            "Muerto": 85
         },
-        "(5, 0)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
-            }
-        },
-        "(6, 0)": {
+        "(3, 1)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
-        "(7, 0)": {
+        "(1, 2)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
-        "(8, 0)": {
+        "(2, 2)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(9, 0)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(5, 1)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
-            }
-        },
-        "(6, 1)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
         "(5, 2)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
-        "(6, 2)": {
+        "(2, 4)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
-        "(6, 3)": {
+        "(3, 4)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
-        "(6, 4)": {
+        "(8, 7)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
-        "(7, 4)": {
+        "(8, 9)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(8, 4)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
-            }
-        },
-        "(9, 4)": {
-            "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         }
     },
     "3": {
         "Cell state counter": {
-            "Quemado": 22,
-            "Combustible": 23,
-            "Ardiendo": 2,
-            "Ignifugo": 3,
-            "Vivo": 0,
-            "Muerto": 0
+            "Vivo": 12,
+            "Muerto": 88
         },
-        "(5, 0)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
+        "(2, 1)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
         "(5, 1)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
-            }
-        },
-        "(5, 2)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
         "(5, 3)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
-        "(5, 4)": {
+        "(1, 4)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(4, 4)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(7, 8)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(9, 8)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         }
     },
     "4": {
         "Cell state counter": {
-            "Quemado": 24,
-            "Combustible": 22,
-            "Ardiendo": 1,
-            "Ignifugo": 3,
-            "Vivo": 0,
-            "Muerto": 0
+            "Vivo": 15,
+            "Muerto": 85
+        },
+        "(3, 0)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(4, 0)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(2, 2)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(3, 2)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(6, 2)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(4, 3)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(8, 7)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(8, 9)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        }
+    },
+    "5": {
+        "Cell state counter": {
+            "Vivo": 12,
+            "Muerto": 88
+        },
+        "(2, 0)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
         },
         "(5, 0)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
-            }
-        },
-        "(5, 1)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
-            }
-        },
-        "(4, 2)": {
             "1": {
-                "state": "Ardiendo",
-                "message": "Esta ardiendo"
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         },
-        "(5, 2)": {
-            "2": {
-                "state": "Ignifugo",
-                "message": "Esta celda es ignifuga"
+        "(6, 1)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(3, 3)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(6, 3)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(7, 8)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
+            }
+        },
+        "(9, 8)": {
+            "1": {
+                "state": "Vivo",
+                "message": "Ha vuelto a la vida."
             }
         }
     }

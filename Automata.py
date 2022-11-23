@@ -5,7 +5,7 @@ import typing
 import Cell as cell
 import automata.Statistic as statistic
 
-# from celula.States import States
+from celula.States import States
 
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
@@ -231,8 +231,9 @@ class Automata:
 # Avanza el autómata una iteración
     def next(self):
         if self.actual_iteration < self.last_iteration_calculated:
+            self.actual_iteration += 1
             # significa que ya se ha calculado previamente esa iteración y se tiene guardada
-            pass
+
         else: # self.actual_iteration == self.last_iteration_calculated
             malla = []
             for fila in self.iterations[self.actual_iteration]:
@@ -261,6 +262,11 @@ class Automata:
             self.iterations[self.actual_iteration+1] = malla
             self.last_iteration_calculated += 1
 
+
+            # Se adelanta el contador de iteraciones
+            self.actual_iteration += 1
+
+
             # Se añaden estadísticos a self.data
             if self.store_trace_back:
                 dict_iteration = {}
@@ -285,7 +291,6 @@ class Automata:
                 dict_aux.update(dict_iteration)
                 self.data[self.actual_iteration+1] = dict_aux
                             
-        self.actual_iteration += 1
         return self.actual_iteration
 
 

@@ -1,12 +1,10 @@
 from enum import Enum
 
 class States(str, Enum):
-
-    Quemado = 'Quemado'
-    Combustible = 'Combustible'
-    Ardiendo = 'Ardiendo'
-    Ignifugo = 'Ignifugo'
-
+    # Quemado = 'Quemado'
+    # Combustible = 'Combustible'
+    # Ardiendo = 'Ardiendo'
+    # Ignifugo = 'Ignifugo'
 
     Vivo = 'Vivo'
     Muerto = 'Muerto'
@@ -18,15 +16,3 @@ class States(str, Enum):
         return str(self.name)
 
 
-
-
-class States_GameOfLife(str, Enum):
-    Vivo = 'Vivo'
-    Muerto = 'Muerto'
-
-
-    def __str__(self) -> str:
-        return str(self.name)
-
-    def __repr__(self):
-        return str(self.name)
