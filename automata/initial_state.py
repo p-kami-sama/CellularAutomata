@@ -15,3 +15,19 @@ initial_state2 = [
     [{'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Quemado}, {'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Ardiendo}, {'state': States.Ardiendo}, {'state': States.Ardiendo}],
     [{'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Quemado}, {'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Combustible}, {'state': States.Combustible}],
 ]
+
+from celula.States import States as s
+initial_state_GameOfLife = [
+    [s.Vivo, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+    [s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+    [s.Muerto, s.Vivo  , s.Vivo  , s.Vivo  , s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+    [s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+    [s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+
+    [s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+    [s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+    [s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+    [s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+    [s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto,  s.Muerto, s.Muerto, s.Muerto, s.Muerto, s.Muerto],
+
+]
