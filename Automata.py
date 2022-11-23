@@ -228,6 +228,15 @@ class Automata:
             return self.get_cell(obj_x, obj_y)
 
 
+# Intenta retroceder una iteración
+# Devuelve True si se ha retrocedido, sino False
+    def back(self):
+        if self.actual_iteration <= 0:
+            return False
+        else:
+            self.actual_iteration = self.actual_iteration -1
+            return True
+
 # Avanza el autómata una iteración
     def next(self):
         if self.actual_iteration < self.last_iteration_calculated:
