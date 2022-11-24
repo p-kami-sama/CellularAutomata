@@ -2,10 +2,6 @@
 import sys
 import csv
 
-# from tkinter import *
-
-# main = Tk()
-# main.mainloop()
 
 # IMPORTS
 import Automata as automata
@@ -42,17 +38,7 @@ print('se inicia el automata')
 # id = a.add_statistic( statistic_function_revived_cell, 'Ha vuelto a la vida.', [])
 
 
-# # Imprime las iteraciones
-# print(a.actual_iteration)
-# for row in a.get_matrix_state():
-#     print( row )
-# print()
-# for i in range(0, 4):
-#     a.next()
-#     print(a.actual_iteration)
-#     for row in a.get_matrix_state():
-#         print( row )
-#     print()
+
 
 
 
@@ -65,6 +51,7 @@ print('\nFINAL\n')
 
 
 
+
 # funciona con el States.Ardiendo.name
 # print(str(States.Ardiendo) == 'Ardiendo')
 
@@ -72,8 +59,21 @@ print('\nFINAL\n')
 
 ia = interactiveAutomata.InteractiveAutomata(initial_state='InteractiveAutomataData/raster_v2.tif', store_trace_back=True)
 
+
 ia.set_border(Borders.FIXED, States.Muerto)
 ia.set_neighborhood(Neighborhoods.MOORE, 1)
-ia.set_initial_state(initial_state_GameOfLife)
+# ia.set_initial_state(initial_state_GameOfLife)
 ia.set_transition_rule(transition_rule_GameOfLife)
 
+
+# Imprime las iteraciones
+print(ia.actual_iteration)
+for row in ia.get_matrix_state():
+    print( row )
+print()
+for i in range(0, 2):
+    ia.next()
+    print(ia.actual_iteration)
+    for row in ia.get_matrix_state():
+        print( row )
+    print()
