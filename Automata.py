@@ -37,6 +37,7 @@ class Automata:
 
 
     def set_initial_state(self, mat:list):
+        print('set_initial_state AUTOMATA')
         self.height = len(mat)
         self.width = len( mat[0])
         malla = []

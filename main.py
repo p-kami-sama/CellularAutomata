@@ -67,7 +67,8 @@ ia.set_transition_rule(transition_rule_GameOfLife)
 
 
 # Imprime las iteraciones
-print(ia.actual_iteration)
+print('actual_iteration', ia.actual_iteration)
+print(ia.actual_iteration, ia.last_iteration_calculated)
 for row in ia.get_matrix_state():
     print( row )
 print()

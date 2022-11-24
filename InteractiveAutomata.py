@@ -159,10 +159,21 @@ class InteractiveAutomata(Automata):
 
         im = Image.open( tif_initial_image ) # Can be many different formats.
         pix = im.load()
-        print (im.size)  # Get the width and hight of the image for iterating over
-        print (pix[0,0])
-        print (pix[1,0])
-        pix[1,1] = (255, 0, 0)  # Set the RGBA Value of the image (tuple)
+        x, y = im.size  # Get the width and hight of the image for iterating over
+        self.width = x
+        self.height = y
+        matrix = []
+        for y in range(0, self.height):
+            row_list = []
+            for x in range(0, self.width):
+                r, g, b = pix[x, y]
+                state = self._get_state_from_color(r, g, b)
+                row_list.append({'state': state})
+            matrix.append(row_list)
+
+
+
+
         im.save('results/alive_parrot.tif')  # Save the modified pixels as .png
 
         # AQUI FALTA LEER .tif
@@ -174,7 +185,7 @@ class InteractiveAutomata(Automata):
         # leer archivos csv
         if len(csv_files) != 0:
             for route_to_file in csv_files:
-                var_list = []
+#                var_list = []
                 file_name = os.path.basename(route_to_file).split('.')[0]
                 if not (file_name in variables_dict):   # ERROR
                     message = 'In "variables_dict.py" there is no type of ' + \
@@ -184,21 +195,26 @@ class InteractiveAutomata(Automata):
                 var_type = variables_dict[file_name]
                 with open(route_to_file, newline='') as f:
                     reader = csv.reader(f)
+                    y = 0
                     for row in reader:
-                        var_row = []
+#                        var_row = []
+                        x = 0
                         for elem in row:
                             if var_type == 'int':
-                                elem = int(elem)
+                                value = int(elem)
                             elif var_type == 'float':
-                                elem = float(elem)
+                                value = float(elem)
                             elif var_type == 'str':
-                                elem = str(elem)
+                                value = str(elem)
                             elif var_type == 'bool':
-                                elem = bool(elem)
-                            var_row.append(elem)
+                                value = bool(elem)
+#                            var_row.append(elem)
+                            matrix[y][x][file_name] = value
+                            x += 1
+                        y += 1
 
-                        var_list.append(var_row)
-                print('++++++++++\n', var_list)
+#                        var_list.append(var_row)
+#                print('++++++++++\n', var_list)
                 # var_list contiene las variables de X.csv file
                 # en 2 listas ordenadas
 
@@ -207,6 +223,28 @@ class InteractiveAutomata(Automata):
 
 
         print('------\n', 'END', '\n------')
+        print(matrix)
+        print('çççççççççç\n\n')
+
+        super().set_initial_state(mat=matrix)
+
+        self.neighborhood = Neighborhoods.VON_NEUMANN
+        self.neighborhood_list = [(-1, 0), (0, -1), (0, 1), (1, 0)]
+        self.border = Borders.PERIODIC
+        self.fixed_cell = None    # solo si border == 'periodic' será usada
+
+        self.actual_iteration = 0
+        self.last_iteration_calculated = 0
+        self.transition_rule = None
+        self.iterations = {}
+
+        # self.store_trace_back = store_trace_back
+        self.data = {}
+        self.statistics = {} # id:int, statistics
+
+
+        #self.iterations[0] = malla
+        #self.initial_state = malla
 
 
 
