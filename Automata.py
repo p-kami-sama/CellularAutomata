@@ -60,7 +60,7 @@ class Automata:
                 elif isinstance(elem, States):
                     c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
                 else:
-                    message = '(ERROR the input to create the cell with coordinates (' +\
+                    message = 'ERROR the input to create the cell with coordinates (' +\
                         str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
                         '"States" enumeration or a dictionary.'
                     raise ValueError(message)

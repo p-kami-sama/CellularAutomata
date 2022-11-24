@@ -3,6 +3,7 @@ import platform
 import math as math
 import json
 import typing
+from platform import system
 from PIL import Image, ImageTk
 
 import Cell as cell
@@ -23,18 +24,41 @@ from automata.Borders import Borders
 
 
 
+
 class InteractiveAutomata(Automata):
 
-    def __init__(self, w:int, h:int, store_trace_back:bool=False, initial_state_route:str=None):
+# Definir que hace exactamente
+    
+    def __init__(self, initial_state:typing.Union[str, list], store_trace_back:bool=False):
+        # valores propios: initial_state_route:str
+        # el resto son heredados de Automata
 
-        print()
+        if isinstance(initial_state, str):
+            # Hacerlo en la funcion adecuada 
+            self.initial_state_route = initial_state
+            self.load_initial_state_from_image(ruta=initial_state)
 
-        self.initial_state_route = initial_state_route # a de ser una ruta obsoluta
+        elif isinstance(initial_state, list):
+            self.set_initial_state(mat=initial_state)
+        else: # ERROR
+            message = 'The first parameter "initial_state" must be the path of a .tif file or a list ' + \
+                    'composed of valid states or dictionaries with the values of the cells to create.'
+            raise ValueError(message)
+            
 
-        super().__init__( width=w, height=h, store_trace_back=store_trace_back)
+        self.neighborhood = Neighborhoods.VON_NEUMANN
+        self.neighborhood_list = [(-1, 0), (0, -1), (0, 1), (1, 0)]
+        self.border = Borders.PERIODIC
+        self.fixed_cell = None    # solo si border == 'periodic' será usada
 
-        # if initial_state_route != None:
-        #     self.load_raster_layer_as_initial_state(initial_state_route)
+        self.actual_iteration = 0
+        self.last_iteration_calculated = 0
+        self.transition_rule = None
+        self.iterations = {}
+
+        self.store_trace_back = store_trace_back
+        self.data = {}
+        self.statistics = {} # id:int, statistics
 
 
 
@@ -90,21 +114,20 @@ class InteractiveAutomata(Automata):
         self.data = {}
 
         # Aquí se hace la imagen
-
         self.height = len(mat)      # y
         self.width = len(mat[0])    # x
         im = Image.new('RGB', (self.width, self.height))
 
-        # adaptar al SO
-        route = './results/initial_state.tif'
-
-
-
+        if platform.system() == 'Windows':
+            self.initial_state_route = '.\\results\\initial_state.tif'
+        elif platform.system() == 'Darwin' or platform.system() == 'Linux':
+            self.initial_state_route = './results/initial_state.tif'
         # por filas de arriba a abajo.
 
         im.putdata(lista_de_color_de_pixeles)
-        im.save(route)
+        im.save(self.initial_state_route)
 
+        return self.height, self.width
 
 
 

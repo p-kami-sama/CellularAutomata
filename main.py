@@ -70,13 +70,10 @@ print('\nFINAL\n')
 
 
 
-ia = interactiveAutomata.InteractiveAutomata(10, 10, True, initial_state_route='InteractiveAutomataData/raster_v2.tif')
+ia = interactiveAutomata.InteractiveAutomata(initial_state='InteractiveAutomataData/raster_v2.tif', store_trace_back=True)
 
 ia.set_border(Borders.FIXED, States.Muerto)
 ia.set_neighborhood(Neighborhoods.MOORE, 1)
 ia.set_initial_state(initial_state_GameOfLife)
 ia.set_transition_rule(transition_rule_GameOfLife)
-
-
-
 
