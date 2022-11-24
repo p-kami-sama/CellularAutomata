@@ -14,7 +14,6 @@ from automata.Borders import Borders
 class Automata:
 
     def __init__(self, width:int, height:int, store_trace_back:bool=False ):
-        print('MALLLLLLLLLL')
 
         self.width = width      # ancho
         self.height = height    # altura
@@ -61,7 +60,7 @@ class Automata:
                 elif isinstance(elem, States):
                     c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
                 else:
-                    message = '(ERROR the input to create the cell with coordinates (' +\
+                    message = 'ERROR the input to create the cell with coordinates (' +\
                         str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
                         '"States" enumeration or a dictionary.'
                     raise ValueError(message)
@@ -229,11 +228,21 @@ class Automata:
             return self.get_cell(obj_x, obj_y)
 
 
+# Intenta retroceder una iteración
+# Devuelve True si se ha retrocedido, sino False
+    def back(self):
+        if self.actual_iteration <= 0:
+            return False
+        else:
+            self.actual_iteration = self.actual_iteration -1
+            return True
+
 # Avanza el autómata una iteración
     def next(self):
         if self.actual_iteration < self.last_iteration_calculated:
+            self.actual_iteration += 1
             # significa que ya se ha calculado previamente esa iteración y se tiene guardada
-            pass
+
         else: # self.actual_iteration == self.last_iteration_calculated
             malla = []
             for fila in self.iterations[self.actual_iteration]:
@@ -262,6 +271,11 @@ class Automata:
             self.iterations[self.actual_iteration+1] = malla
             self.last_iteration_calculated += 1
 
+
+            # Se adelanta el contador de iteraciones
+            self.actual_iteration += 1
+
+
             # Se añaden estadísticos a self.data
             if self.store_trace_back:
                 dict_iteration = {}
@@ -286,7 +300,6 @@ class Automata:
                 dict_aux.update(dict_iteration)
                 self.data[self.actual_iteration+1] = dict_aux
                             
-        self.actual_iteration += 1
         return self.actual_iteration
 
 
