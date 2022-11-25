@@ -47,7 +47,6 @@ print('se inicia el automata')
 # a.store_data_in_json()
 
 
-print('\nFINAL\n')
 
 
 
@@ -82,6 +81,19 @@ ia.set_transition_rule(transition_rule_GameOfLife)
 #         print( row )
 #     print()
 
+for x in range(1,6):
+    ia.next_image_iteration()
 
-print('it 0:\n', ia.iterations[0])
-print('\nit 1:\n', ia.iterations[1])
+for x in range(1,4):
+    ia.back()
+
+for x in range(1,3):
+    ia.next_image_iteration()
+
+
+print(ia.last_iteration_calculated)
+
+# print('it 0:\n', ia.iterations[0])
+# print('\nit 1:\n', ia.iterations[1])
+
+print('\nFINAL\n')
