@@ -28,28 +28,17 @@ from automata.Borders import Borders
 
 
 
-from pandas import read_csv, concat
+#from pandas import read_csv, concat
 
 class InteractiveAutomata(Automata):
 
-# Definir que hace exactamente
     
-    def __init__(self, initial_state:typing.Union[str, list], store_trace_back:bool=False):
+    def __init__(self, initial_state:typing.Union[str, list]=None, store_trace_back:bool=False):
         # valores propios: initial_state_route:str
         # el resto son heredados de Automata
 
-        if isinstance(initial_state, str):
-            # Hacerlo en la funcion adecuada 
-            self.initial_state_route = initial_state
-            self.set_initial_state_from_image_and_csv()
-
-        elif isinstance(initial_state, list):
-            self.set_initial_state(mat=initial_state)
-        else: # ERROR
-            message = 'The first parameter "initial_state" must be the path of a .tif file or a list ' + \
-                    'composed of valid states or dictionaries with the values of the cells to create.'
-            raise ValueError(message)
-            
+        self.height = 0
+        self.width = 0
 
         self.neighborhood = Neighborhoods.VON_NEUMANN
         self.neighborhood_list = [(-1, 0), (0, -1), (0, 1), (1, 0)]
@@ -64,27 +53,40 @@ class InteractiveAutomata(Automata):
         self.store_trace_back = store_trace_back
         self.data = {}
         self.statistics = {} # id:int, statistics
+        self.initial_state_route = None
+
+        if isinstance(initial_state, str):
+            # Hacerlo en la funcion adecuada 
+            self.set_initial_state_from_image_and_csv()
+
+        elif isinstance(initial_state, list):
+            self.set_initial_state(mat=initial_state)
+        elif initial_state is None:
+            pass
+        else:
+            message = 'The first parameter "initial_state" must be the path of a .tif file, "None", or a list ' + \
+                    'composed of valid states or dictionaries with the values of the cells to create.'
+            raise ValueError(message)
+            
+
+
 
 
 
     # LISTA de (celulas o de estado)
     # CREA LA FOTO DEL ESTADO INICIAL Y LA GUARDA EN -> /RESULTS
     def set_initial_state(self, mat:list):
-#        load_initial_state(self, route:str):
-        print('REESCRITURA')
         lista_de_color_de_pixeles = []
-
         malla = []
         y = 0
         for fila in mat:
             mallaAux = []
             x = 0
             for elem in fila:
-                # elem es diccionario
+                # elem es un diccionario
                 if isinstance(elem, dict):
-#                    if 'variables' in elem:
                     if not 'state' in elem:
-                        message = 'ERROR: if the initial information of a cell is a dictionary, it must have a key called '\
+                        message = 'if the initial information of a cell is a dictionary, it must have a key called '\
                                 '"state", with the state that the cell will have before applying the transition rule.'
                         raise ValueError(message)
                     else:
@@ -100,7 +102,7 @@ class InteractiveAutomata(Automata):
                     color = states_color_dict[elem]
                     lista_de_color_de_pixeles.append(color)
                 else:
-                    message = '(ERROR the input to create the cell with coordinates (' +\
+                    message = 'The input to create the cell with coordinates (' +\
                         str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
                         '"States" enumeration or a dictionary.'
                     raise ValueError(message)
@@ -121,7 +123,7 @@ class InteractiveAutomata(Automata):
         # Aquí se hace la imagen
         self.height = len(mat)      # y
         self.width = len(mat[0])    # x
-        im = Image.new('RGB', (self.width, self.height))
+        img = Image.new('RGB', (self.width, self.height))
 
         if system() == 'Windows':
             self.initial_state_route = '.\\results\\initial_state.tif'
@@ -129,8 +131,8 @@ class InteractiveAutomata(Automata):
             self.initial_state_route = './results/initial_state.tif'
         # por filas de arriba a abajo.
 
-        im.putdata(lista_de_color_de_pixeles)
-        im.save(self.initial_state_route)
+        img.putdata(lista_de_color_de_pixeles)
+        img.save(self.initial_state_route)
 
         return self.height, self.width
 
@@ -150,16 +152,15 @@ class InteractiveAutomata(Automata):
             path_separator ='/'
 
         folder_path = abs_path + path_separator + 'initialData'
-
         csv_files = glob.glob(folder_path + "/*.csv")
         tif_initial_image = glob.glob(folder_path + "/*.tif")[0]
-        print('csv_files:', csv_files)
-        print('tif_initial_image:', tif_initial_image)
+        self.initial_state_route = tif_initial_image
 
 
-        im = Image.open( tif_initial_image ) # Can be many different formats.
-        pix = im.load()
-        x, y = im.size  # Get the width and hight of the image for iterating over
+
+        img = Image.open( tif_initial_image ) # Can be many different formats.
+        pix = img.load()
+        x, y = img.size  # Get the width and hight of the image for iterating over
         self.width = x
         self.height = y
         matrix = []
@@ -172,22 +173,11 @@ class InteractiveAutomata(Automata):
             matrix.append(row_list)
 
 
-
-
-        im.save('results/alive_parrot.tif')  # Save the modified pixels as .png
-
-        # AQUI FALTA LEER .tif
-        # meterlo en un diccionario con 'state'
-        # luego enlacarlo con tif usando file_name, 
-        #   evitandovar_list y var_row
-
-
         # leer archivos csv
         if len(csv_files) != 0:
             for route_to_file in csv_files:
-#                var_list = []
                 file_name = os.path.basename(route_to_file).split('.')[0]
-                if not (file_name in variables_dict):   # ERROR
+                if not (file_name in variables_dict):
                     message = 'In "variables_dict.py" there is no type of ' + \
                         'variable assigned to file "' +route_to_file +'".'
                     raise ValueError(message)
@@ -197,7 +187,6 @@ class InteractiveAutomata(Automata):
                     reader = csv.reader(f)
                     y = 0
                     for row in reader:
-#                        var_row = []
                         x = 0
                         for elem in row:
                             if var_type == 'int':
@@ -208,61 +197,39 @@ class InteractiveAutomata(Automata):
                                 value = str(elem)
                             elif var_type == 'bool':
                                 value = bool(elem)
-#                            var_row.append(elem)
                             matrix[y][x][file_name] = value
                             x += 1
                         y += 1
 
-#                        var_list.append(var_row)
-#                print('++++++++++\n', var_list)
-                # var_list contiene las variables de X.csv file
-                # en 2 listas ordenadas
-
-            
-            # converting content to data frame
 
 
-        print('------\n', 'END', '\n------')
-        print(matrix)
-        print('çççççççççç\n\n')
 
-        super().set_initial_state(mat=matrix)
 
-        self.neighborhood = Neighborhoods.VON_NEUMANN
-        self.neighborhood_list = [(-1, 0), (0, -1), (0, 1), (1, 0)]
-        self.border = Borders.PERIODIC
-        self.fixed_cell = None    # solo si border == 'periodic' será usada
+        # Pasar de matrix la iteracion inicial de celulas
 
+        malla = []
+        y = 0
+        for fila in matrix:
+            mallaAux = []
+            x = 0
+            for elem in fila:
+                vars = elem.copy()
+                del vars['state'] 
+                c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
+                mallaAux.append(c)
+                x = x+1
+                
+            malla.append(mallaAux)
+            y = y+1
+
+        self.iterations = {}
+        self.iterations[0] = malla
         self.actual_iteration = 0
         self.last_iteration_calculated = 0
-        self.transition_rule = None
-        self.iterations = {}
-
-        # self.store_trace_back = store_trace_back
-        self.data = {}
-        self.statistics = {} # id:int, statistics
-
-
-        #self.iterations[0] = malla
-        #self.initial_state = malla
 
 
 
 
-        # system.path()
-        # initial_state_image = Image.open(route)
-    
-        # # directory = os.path.join("c:\\","path")
-        # directory = route
-
-        # files = glob.glob(route + "/*.csv")
-        # for root,dirs,files in os.walk(directory):
-        #     for file in files:
-
-        #         if file.endswith(".csv"):
-        #             f=open(file, 'r')
-        #             #  perform calculation
-        #             f.close()
 
 
 

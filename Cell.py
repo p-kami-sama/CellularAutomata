@@ -8,7 +8,7 @@ from celula.States import States
 class Cell:
     def __init__(self, automata:automata, xpos:int, ypos:int, state:States, variables:dict={}):
         if not isinstance(state, States):
-            message = 'ERROR: A cell with state ' + str(state)+\
+            message = 'A cell with state ' + str(state)+\
                 ' cannot be created because it is not included in the States enumeration.'
             raise ValueError(message)
         self.automata = automata
@@ -40,7 +40,7 @@ class Cell:
 
     def set_state(self, new_state:States) -> Any:
         if not isinstance(new_state, States):
-            message = 'ERROR: The given state is not included in the enumeration of states.'
+            message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
         else:
             self.state = new_state
@@ -85,7 +85,7 @@ class Cell:
 # state
     def any_neighbor_has_state(self, state:States) -> bool:
         if not isinstance(state, States):
-            message = 'ERROR: The given state is not included in the enumeration of states'
+            message = 'The given state is not included in the enumeration of states'
             raise ValueError(message)
 
         for x, y in self.automata.neighborhood_list:
@@ -96,7 +96,7 @@ class Cell:
 
     def all_neighbours_has_state(self, state:States)-> bool:
         if not isinstance(state, States):
-            message = 'ERROR: The given state is not included in the enumeration of states.'
+            message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
             
         for x, y in self.automata.neighborhood_list:
@@ -107,7 +107,7 @@ class Cell:
 
     def count_neighbors_with_state(self, state:States) -> int:
         if not isinstance(state, States):
-            message = 'ERROR: The given state is not included in the enumeration of states.'
+            message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
 
         contador = 0

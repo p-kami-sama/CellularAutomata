@@ -57,24 +57,29 @@ print('\nFINAL\n')
 
 
 
-ia = interactiveAutomata.InteractiveAutomata(initial_state='InteractiveAutomataData/raster_v2.tif', store_trace_back=True)
+ia = interactiveAutomata.InteractiveAutomata(None, store_trace_back=True)
 
 
 ia.set_border(Borders.FIXED, States.Muerto)
 ia.set_neighborhood(Neighborhoods.MOORE, 1)
-# ia.set_initial_state(initial_state_GameOfLife)
+ia.set_initial_state(initial_state_GameOfLife)
 ia.set_transition_rule(transition_rule_GameOfLife)
 
 
 # Imprime las iteraciones
-print('actual_iteration', ia.actual_iteration)
-print(ia.actual_iteration, ia.last_iteration_calculated)
-for row in ia.get_matrix_state():
-    print( row )
-print()
-for i in range(0, 2):
-    ia.next()
-    print(ia.actual_iteration)
-    for row in ia.get_matrix_state():
-        print( row )
-    print()
+# print('actual_iteration', ia.actual_iteration)
+# print(ia.actual_iteration, ia.last_iteration_calculated)
+# for row in ia.get_matrix_state():
+#     print( row )
+# print()
+# ia.run_iterations(1, True)
+# for i in range(0, 2):
+#     ia.next()
+#     print(ia.actual_iteration)
+#     for row in ia.get_matrix_state():
+#         print( row )
+#     print()
+
+
+print('it 0:\n', ia.iterations[0])
+print('\nit 1:\n', ia.iterations[1])
