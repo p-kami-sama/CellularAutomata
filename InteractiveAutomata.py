@@ -223,8 +223,6 @@ class InteractiveAutomata(Automata):
         self.last_iteration_calculated = 0
 
 
-
-
     
     def open_interface(self):
         pass
@@ -232,7 +230,36 @@ class InteractiveAutomata(Automata):
 
 
     def next_image_iteration(self):
-        pass
+        
+        act = self.last_iteration_calculated
+        self.next()
+        next = self.last_iteration_calculated
+
+        if act != next:     # Se hace la nueva imagen
+        
+            lista_de_color_de_pixeles = []
+            for fila in self.iterations[self.actual_iteration]:
+                for elem in fila: # elem es un objeto de tipo Cell
+                    state = elem.get_state()
+                    color = states_color_dict[state]
+                    lista_de_color_de_pixeles.append(color)
+
+            # Aquí se hace la imagen
+            img = Image.new('RGB', (self.width, self.height))
+            if system() == 'Windows':
+                self.initial_state_route = '.\\results\\iteration_' + str(self.actual_iteration) + '.tif'
+            elif system() == 'Darwin' or system() == 'Linux':
+                self.initial_state_route = './results/iteration_' + str(self.actual_iteration) + '.tif'
+            # por filas de arriba a abajo.
+            img.putdata(lista_de_color_de_pixeles)
+            img.save(self.initial_state_route)
+
+        else:
+            print(self.actual_iteration, self.last_iteration_calculated)
+
+
+     
+
 
     def back_image_iteration(self):
         pass
