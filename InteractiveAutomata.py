@@ -33,7 +33,7 @@ from automata.Borders import Borders
 class InteractiveAutomata(Automata):
 
     
-    def __init__(self, initial_state:typing.Union[str, list]=None, store_trace_back:bool=False):
+    def __init__(self, store_trace_back:bool=False, initial_state:typing.Union[str, list]=None):
         # valores propios: initial_state_route:str
         # el resto son heredados de Automata
 
@@ -68,9 +68,6 @@ class InteractiveAutomata(Automata):
                     'composed of valid states or dictionaries with the values of the cells to create.'
             raise ValueError(message)
             
-
-
-
 
 
     # LISTA de (celulas o de estado)
@@ -204,9 +201,7 @@ class InteractiveAutomata(Automata):
 
 
 
-
-        # Pasar de matrix la iteracion inicial de celulas
-
+        # Pasa de diccionario a celulas
         malla = []
         y = 0
         for fila in matrix:
@@ -226,13 +221,6 @@ class InteractiveAutomata(Automata):
         self.iterations[0] = malla
         self.actual_iteration = 0
         self.last_iteration_calculated = 0
-
-
-
-
-
-
-
 
 
 

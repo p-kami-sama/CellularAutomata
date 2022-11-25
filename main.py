@@ -57,12 +57,14 @@ print('\nFINAL\n')
 
 
 
-ia = interactiveAutomata.InteractiveAutomata(None, store_trace_back=True)
+
+ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_state=None)
 
 
 ia.set_border(Borders.FIXED, States.Muerto)
 ia.set_neighborhood(Neighborhoods.MOORE, 1)
-ia.set_initial_state(initial_state_GameOfLife)
+# ia.set_initial_state(initial_state_GameOfLife)
+ia.set_initial_state_from_image_and_csv()
 ia.set_transition_rule(transition_rule_GameOfLife)
 
 
