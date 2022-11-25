@@ -230,7 +230,6 @@ class InteractiveAutomata(Automata):
 
 
     def next_image_iteration(self):
-        
         act = self.last_iteration_calculated
         self.next()
         next = self.last_iteration_calculated
@@ -253,9 +252,6 @@ class InteractiveAutomata(Automata):
             # por filas de arriba a abajo.
             img.putdata(lista_de_color_de_pixeles)
             img.save(self.initial_state_route)
-
-        else:
-            print(self.actual_iteration, self.last_iteration_calculated)
 
 
      
