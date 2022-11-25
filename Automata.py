@@ -49,7 +49,7 @@ class Automata:
                 if isinstance(elem, dict):
 #                    if 'variables' in elem:
                     if not 'state' in elem:
-                        message = 'ERROR: if the initial information of a cell is a dictionary, it must have a key called '\
+                        message = 'If the initial information of a cell is a dictionary, it must have a key called '\
                                 '"state", with the state that the cell will have before applying the transition rule.'
                         raise ValueError(message)
                     else:
@@ -60,7 +60,7 @@ class Automata:
                 elif isinstance(elem, States):
                     c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
                 else:
-                    message = 'ERROR the input to create the cell with coordinates (' +\
+                    message = 'The input to create the cell with coordinates (' +\
                         str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
                         '"States" enumeration or a dictionary.'
                     raise ValueError(message)
@@ -85,7 +85,7 @@ class Automata:
         old_neighborhood_type = self.neighborhood
 
         if not isinstance(new_neighborhood_type, Neighborhoods):
-            message = 'ERROR: ' +str(new_neighborhood_type) + ' is not an accepted type of neighborhood. ' + \
+            message = str(new_neighborhood_type) + ' is not an accepted type of neighborhood. ' + \
                 'The types of neighborhood accepted are: '
             first = True
             for n in Neighborhoods:
@@ -100,14 +100,14 @@ class Automata:
         if new_neighborhood_type == Neighborhoods.CUSTOM:
             # Comprueba que se ha pasado una lista
             if not isinstance(radius_or_list_of_desp, list):
-                msg = 'ERROR: If the neighborhood type is "custom" the second parameter must be a list of integer pairs.'
-                raise ValueError(msg)
+                message = 'If the neighborhood type is "custom" the second parameter must be a list of integer pairs.'
+                raise ValueError(message)
             self.neighborhood_list = radius_or_list_of_desp
         else:
             # Comprueba que se ha pasado un entero mayor que 0
             if (not isinstance(radius_or_list_of_desp, int)) or (radius_or_list_of_desp <= 0):
-                msg = 'ERROR: If the neighborhood type is "von_Neumann" or "Moore" the second parameter must be an integer greater than 0.'
-                raise ValueError(msg)
+                message = 'If the neighborhood type is "von_Neumann" or "Moore" the second parameter must be an integer greater than 0.'
+                raise ValueError(message)
 
             if new_neighborhood_type == Neighborhoods.VON_NEUMANN: # como un rombo
                 self.neighborhood_list = self.von_Neumann_neighborhood(radius_or_list_of_desp)
@@ -124,7 +124,7 @@ class Automata:
 #    def set_border(self, new_border_type:Borders, fixed_cell:typing.Union[str, typing.Type[cell.Cell] ]=None) -> typing.Union[Borders, None]:
 
         if not isinstance(new_border_type, Borders):
-            message = 'ERROR: ' +str(new_border_type) + ' is not an accepted type of border. ' + \
+            message = '"' +str(new_border_type) + '" is not an accepted type of border. ' + \
                 'The types of border accepted are: '
             first = True
             for b in Borders:
@@ -146,7 +146,7 @@ class Automata:
                 self.fixed_cell = fixed_cell
            
             else:
-                message = 'ERROR: the second parameter "fixed_cell" must be an object of type Cell '+\
+                message = 'The second parameter "fixed_cell" must be an object of type Cell '+\
                     'or part of the States enumeration.'
                 raise ValueError(message)
 
@@ -171,14 +171,14 @@ class Automata:
 
     def get_cell(self, x:int, y:int, iteration:int=None)-> cell:
         if (not isinstance(x, int)) or (x < 0) or (not isinstance(y, int)) or (y < 0):
-            msg = 'ERROR: The first and second parameters "x" and "y" must be an integers greater than or equal to 0.'
-            raise ValueError(msg)
+            message = 'The first and second parameters "x" and "y" must be an integers greater than or equal to 0.'
+            raise ValueError(message)
         elif iteration == None:
             return self.iterations[self.actual_iteration][y][x]
         elif (not isinstance(iteration, int)) or (iteration < 0) or (self.last_iteration_calculated < iteration):
-            msg = 'ERROR: The third parameter "iteration" must be an integer greater than or equal to 0 and '+\
+            message = 'The third parameter "iteration" must be an integer greater than or equal to 0 and '+\
                 'less than or equal to "last_iteration_calculated".'
-            raise ValueError(msg)
+            raise ValueError(message)
         else:
             return self.iterations[iteration][y][x]
 
@@ -260,7 +260,7 @@ class Automata:
                             del result_transition_rule['state']
                             c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=result_transition_rule)
                         else:
-                            message = 'ERROR: If the result of transition_rule is a dictionary, it must have a key called '\
+                            message = 'If the result of transition_rule is a dictionary, it must have a key called '\
                                     '"state", with the state that the cell will have after applying the transition rule.'
                             raise ValueError(message)
                     
@@ -319,11 +319,16 @@ class Automata:
         if iteration == None:
             it = self.actual_iteration
         elif (not isinstance(iteration, int)) or (iteration < 0) or (self.last_iteration_calculated < iteration):
-            msg = 'ERROR: The parameter "iteration" must be None, or an integer greater than or equal to 0 and '+\
+            message = 'The parameter "iteration" must be None, or an integer greater than or equal to 0 and '+\
                 'less than or equal to "last_iteration_calculated".'
-            raise ValueError(msg)
+            raise ValueError(message)
         else:
             it = iteration
+
+        if self.iterations == {}:
+            message = 'The initial state of the cellular automata has not been loaded.'
+            raise ValueError(message)
+
         mat = []
         for fila in self.iterations[it]:
             row = []
