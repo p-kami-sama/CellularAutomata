@@ -173,7 +173,7 @@ class Automata:
         if (not isinstance(x, int)) or (x < 0) or (not isinstance(y, int)) or (y < 0):
             message = 'The first and second parameters "x" and "y" must be an integers greater than or equal to 0.'
             raise ValueError(message)
-        elif iteration == None:
+        elif iteration is None:
             return self.iterations[self.actual_iteration][y][x]
         elif (not isinstance(iteration, int)) or (iteration < 0) or (self.last_iteration_calculated < iteration):
             message = 'The third parameter "iteration" must be an integer greater than or equal to 0 and '+\
@@ -298,7 +298,7 @@ class Automata:
 
                 dict_aux = {'Cell state counter': states_counter_dict}
                 dict_aux.update(dict_iteration)
-                self.data[self.actual_iteration+1] = dict_aux
+                self.data[self.actual_iteration] = dict_aux
                             
         return self.actual_iteration
 
@@ -316,7 +316,7 @@ class Automata:
 # Si 'iteration es None, devuelve los estados de la matrix actual
     def get_matrix_state(self, iteration:int=None) -> list:
 
-        if iteration == None:
+        if iteration is None:
             it = self.actual_iteration
         elif (not isinstance(iteration, int)) or (iteration < 0) or (self.last_iteration_calculated < iteration):
             message = 'The parameter "iteration" must be None, or an integer greater than or equal to 0 and '+\

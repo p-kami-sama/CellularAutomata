@@ -21,3 +21,7 @@ def statistic_function_revived_cell(c:cell):
         return True
     else:
         return False
+
+def statistic_function_count_10_iterations(c:cell):
+    return (c.automata.actual_iteration != 0) and \
+        ( (c.automata.actual_iteration % 10) == 0)
