@@ -21,14 +21,17 @@ from InteractiveAutomataData.variables_dict import variables_dict
 
 
 
-import automata.Statistic as statistic
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
 
 
 
+from Interface import Interface
+
 
 #from pandas import read_csv, concat
+
+
 
 class InteractiveAutomata(Automata):
 
@@ -225,17 +228,36 @@ class InteractiveAutomata(Automata):
 
     
     def open_interface(self):
-        pass
+
+        # if system() == 'Windows':
+        #         route_to_image = '.\\results\\iteration_' + str(self.actual_iteration) + '.tif'
+        # elif system() == 'Darwin' or system() == 'Linux':
+        #         route_to_image = './results/iteration_' + str(self.actual_iteration) + '.tif'
+
+        # self.transition_rule
+        app = Interface(img=self.initial_state_route, automata=self)
+        app.mainloop()
 
 
-
+    # hace la nueva iteración y crea la nueva foto
+    # devuelve el path de la nueva imagen
     def next_image_iteration(self):
-        act = self.last_iteration_calculated
         self.next()
-        next = self.last_iteration_calculated
 
-        if act != next:     # Se hace la nueva imagen
-        
+        abs_path = os.path.dirname( os.path.abspath(__file__) )
+        if system() == 'Windows':
+            path_separator ='\\'
+        elif system() == 'Darwin' or system() == 'Linux':
+            path_separator ='/'
+
+        route_to_image = abs_path + path_separator + 'results'+ path_separator + \
+            'iteration_' + str(self.actual_iteration) + '.tif'
+
+        # Se comprueba si existe
+        if os.path.exists(route_to_image):
+            return route_to_image
+        else:   # Se crea la imagen
+
             lista_de_color_de_pixeles = []
             for fila in self.iterations[self.actual_iteration]:
                 for elem in fila: # elem es un objeto de tipo Cell
@@ -243,22 +265,97 @@ class InteractiveAutomata(Automata):
                     color = states_color_dict[state]
                     lista_de_color_de_pixeles.append(color)
 
-            # Aquí se hace la imagen
-            img = Image.new('RGB', (self.width, self.height))
-            if system() == 'Windows':
-                self.initial_state_route = '.\\results\\iteration_' + str(self.actual_iteration) + '.tif'
-            elif system() == 'Darwin' or system() == 'Linux':
-                self.initial_state_route = './results/iteration_' + str(self.actual_iteration) + '.tif'
-            # por filas de arriba a abajo.
+            img = Image.new('RGB', (self.width, self.height))            
             img.putdata(lista_de_color_de_pixeles)
-            img.save(self.initial_state_route)
+            img.save(route_to_image)
+
+
+            # Se crean los archivos csv
+
+            folder_path = abs_path + path_separator + 'initialData'
+            csv_files = glob.glob(folder_path + "/*.csv")
+            tif_initial_image = glob.glob(folder_path + "/*.tif")[0]
+            self.initial_state_route = tif_initial_image
+
+            for var_name, var_type in variables_dict.items():
+
+                # se hace un csv por cada variable
+                route_to_csv = abs_path + path_separator + 'results'+ path_separator + \
+                    'iteration_' + str(self.actual_iteration)+'_'+var_name + '.csv'
+
+
+                
+                with open(route_to_csv, 'w', encoding='UTF8', newline='') as f:
+                
+                    writer = csv.writer(f)
+                    data_list = []
+                    for fila in self.iterations[self.actual_iteration]:
+                        data_row = []
+                        for elem in fila:
+                            var = elem.get_variable(var_name)
+
+                            if var_type == 'int':
+                                var = int(var)
+                            elif var_type == 'float':
+                                var = float(var)
+                            elif var_type == 'str':
+                                var = str(var)
+                            elif var_type == 'bool':
+                                var = bool(var)
+                    
+                            data_row.append(var)
+
+                        data_list.append(data_row)
+                           
+                           
+
+                        # write a row to the csv file
+                    writer.writerows(data_list)
+
+
+
+            return route_to_image
 
 
      
 
 
     def back_image_iteration(self):
-        pass
+        if self.actual_iteration <= 0:
+            return None
+        else:
+            self.actual_iteration -= 1
+
+        # Se obtiene la ruta de la imagen
+        abs_path = os.path.dirname( os.path.abspath(__file__) )
+        if system() == 'Windows':
+            path_separator ='\\'
+        elif system() == 'Darwin' or system() == 'Linux':
+            path_separator ='/'
+
+        route_to_image = abs_path + path_separator+'iteration_' + str(self.actual_iteration) + '.tif'
+
+        route_to_image = abs_path + path_separator + 'results'+ path_separator + \
+            'iteration_' + str(self.actual_iteration) + '.tif'
+
+        # Se comprueba si existe
+        if os.path.exists(route_to_image):
+            return route_to_image
+        else:   # Se crea la imagen
+
+            lista_de_color_de_pixeles = []
+            for fila in self.iterations[self.actual_iteration]:
+                for elem in fila: # elem es un objeto de tipo Cell
+                    state = elem.get_state()
+                    color = states_color_dict[state]
+                    lista_de_color_de_pixeles.append(color)
+
+            img = Image.new('RGB', (self.width, self.height))            
+            img.putdata(lista_de_color_de_pixeles)
+            img.save(route_to_image)
+
+            return route_to_image
+
 
     def run_image_iterations(self, num_iterations:int, print_data:bool=False):
         pass

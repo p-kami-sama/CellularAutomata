@@ -4,7 +4,6 @@ import csv
 
 
 # IMPORTS
-import Automata as automata
 import InteractiveAutomata as interactiveAutomata
 
 from celula.transition_rule import transition_rule_GameOfLife
@@ -35,6 +34,7 @@ print('se inicia el automata')
 # a.set_neighborhood(Neighborhoods.MOORE)
 # a.set_initial_state(initial_state_GameOfLife)
 # a.set_transition_rule(transition_rule_GameOfLife)
+
 # id = a.add_statistic( statistic_function_revived_cell, 'Ha vuelto a la vida.', [])
 
 
@@ -62,38 +62,20 @@ ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_stat
 
 ia.set_border(Borders.FIXED, States.Muerto)
 ia.set_neighborhood(Neighborhoods.MOORE, 1)
+
 # ia.set_initial_state(initial_state_GameOfLife)
 ia.set_initial_state_from_image_and_csv()
+
 ia.set_transition_rule(transition_rule_GameOfLife)
+ia.add_statistic(statistic_function_count_10_iterations, '', ['tiempo_vivo', 'tiempo_muerto'])
 
 
-# Imprime las iteraciones
-# print('actual_iteration', ia.actual_iteration)
-# print(ia.actual_iteration, ia.last_iteration_calculated)
-# for row in ia.get_matrix_state():
-#     print( row )
-# print()
-# ia.run_iterations(1, True)
-# for i in range(0, 2):
-#     ia.next()
-#     print(ia.actual_iteration)
-#     for row in ia.get_matrix_state():
-#         print( row )
-#     print()
-
-for x in range(1,6):
-    ia.next_image_iteration()
-
-for x in range(1,4):
-    ia.back()
-
-for x in range(1,3):
-    ia.next_image_iteration()
-
-
-print(ia.last_iteration_calculated)
-
-# print('it 0:\n', ia.iterations[0])
-# print('\nit 1:\n', ia.iterations[1])
 
 print('\nFINAL\n')
+
+
+ia.open_interface()
+ia.store_data_in_json()
+
+
+
