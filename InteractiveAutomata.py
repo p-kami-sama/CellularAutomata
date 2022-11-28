@@ -21,7 +21,6 @@ from InteractiveAutomataData.variables_dict import variables_dict
 
 
 
-import automata.Statistic as statistic
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
 
@@ -269,6 +268,50 @@ class InteractiveAutomata(Automata):
             img = Image.new('RGB', (self.width, self.height))            
             img.putdata(lista_de_color_de_pixeles)
             img.save(route_to_image)
+
+
+            # Se crean los archivos csv
+
+            folder_path = abs_path + path_separator + 'initialData'
+            csv_files = glob.glob(folder_path + "/*.csv")
+            tif_initial_image = glob.glob(folder_path + "/*.tif")[0]
+            self.initial_state_route = tif_initial_image
+
+            for var_name, var_type in variables_dict.items():
+
+                # se hace un csv por cada variable
+                route_to_csv = abs_path + path_separator + 'results'+ path_separator + \
+                    'iteration_' + str(self.actual_iteration)+'_'+var_name + '.csv'
+
+
+                
+                with open(route_to_csv, 'w', encoding='UTF8', newline='') as f:
+                
+                    writer = csv.writer(f)
+                    data_list = []
+                    for fila in self.iterations[self.actual_iteration]:
+                        data_row = []
+                        for elem in fila:
+                            var = elem.get_variable(var_name)
+
+                            if var_type == 'int':
+                                var = int(var)
+                            elif var_type == 'float':
+                                var = float(var)
+                            elif var_type == 'str':
+                                var = str(var)
+                            elif var_type == 'bool':
+                                var = bool(var)
+                    
+                            data_row.append(var)
+
+                        data_list.append(data_row)
+                           
+                           
+
+                        # write a row to the csv file
+                    writer.writerows(data_list)
+
 
 
             return route_to_image
