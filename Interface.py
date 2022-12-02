@@ -5,14 +5,8 @@ import numpy as numpy
 
 import InteractiveAutomata as interactiveAutomata
 
-# eliminar
-from celula.transition_rule import transition_rule_GameOfLife
-from celula.States import States
-from celula.statistics_functions import *
 
-from automata.Neighborhoods import Neighborhoods
-from automata.Borders import Borders
-from automata.initial_state import initial_state_GameOfLife
+from InteractiveAutomataData.variables_dict import variables_dict
 
 
 class Interface(tk.Frame):
@@ -24,8 +18,9 @@ class Interface(tk.Frame):
         self.automata = automata
        
         self.matriz_affin = numpy.eye(3)       # matriz de transformación afín inicial
-        self.start_pressed = False
+        self.automata_initialized = False
 
+        self.auto_play = False
 
 
         # definicion de la ventana
@@ -53,6 +48,11 @@ class Interface(tk.Frame):
         self.button_back.pack( side = tk.LEFT , fill=tk.X)
         self.button_next = tk.Button(bar_buttons, text='Next', fg='blue', command=self.next_pressed ) 
         self.button_next.pack( side = tk.LEFT , fill=tk.X)
+        self.button_reset_zoom = tk.Button(bar_buttons, text='Reset zoom', fg='purple', command=self.reset_zoom ) 
+        self.button_reset_zoom.pack( side = tk.LEFT , fill=tk.X)
+        self.button_automatic_play = tk.Button(bar_buttons, text='Start automatic play', fg='green', command=self.automatic_play ) 
+        self.button_automatic_play.pack( side = tk.LEFT , fill=tk.X)       
+
         self.button_start = tk.Button(bar_buttons, text='Start', fg='red', command=self.button_start_pressed ) 
         self.button_start.pack( side = tk.TOP )
 
@@ -62,7 +62,7 @@ class Interface(tk.Frame):
         self.window.bind('<Motion>', self.mouse_move)
         self.window.bind('<Button-1>', self.mouse_click_left)
         self.window.bind('<B1-Motion>', self.mouse_click_left_and_drag)
-        self.window.bind('<Double-Button-1>', self.reset_zoom)  # doble click de boton izquierdo
+        self.window.bind('<Double-Button-1>', self.show_cell_data)  # doble click de boton izquierdo
         self.window.bind('<MouseWheel>', self.mouse_wheel_zoom)
 
         # Eventos de teclado
@@ -78,24 +78,55 @@ class Interface(tk.Frame):
 
 # Botones y teclado
     def back_pressed(self, event=None):
-        new_image_path = self.automata.back_image_iteration()
-        if not (new_image_path is None):
-            self.set_image(new_image_path)
+        if not self.auto_play:
+
+            new_image_path = self.automata.back_image_iteration()
+            if not (new_image_path is None):
+                self.set_image(new_image_path)
 
     def next_pressed(self, event=None):
-        new_image_path = self.automata.next_image_iteration()
-        self.set_image(new_image_path)
-        if not self.start_pressed:
-            self.button_start.pack_forget() 
-            self.start_pressed = True
+        if not self.auto_play or (event == True):
+            new_image_path = self.automata.next_image_iteration()
+            self.set_image(new_image_path)
+            if not self.automata_initialized:
+                self.button_start.pack_forget() 
+                self.automata_initialized = True
 
     def button_start_pressed(self, event=None):
-        self.start_pressed = True
+        self.automata_initialized = True
         self.reset_zoom()
         self.button_start.pack_forget() 
 
+
+    def automatic_play(self, event=None):
+
+
+        if not self.automata_initialized:
+            self.button_start_pressed()
+        if self.auto_play:
+            self.auto_play = False
+            self.button_automatic_play['text'] = 'Start automatic play'
+            self.button_automatic_play['fg'] = 'green'
+            self.button_back['state'] = 'normal'
+            self.button_next['state'] = 'normal'
+
+        else:
+            self.auto_play = True
+            self.button_automatic_play['text'] = 'Stop automatic play'
+            self.button_automatic_play['fg'] = 'red'
+            self.button_back['state'] = 'disabled'
+            self.button_next['state'] = 'disabled'
+            self.window.after(1000, self.automatic_next)
+
+
+    def automatic_next(self):
+        if self.auto_play:
+            self.next_pressed(True)
+            self.window.after(1000, self.automatic_next)
+
+
     def space_or_return_key_pressed(self, event=None):
-        if  self.start_pressed:
+        if  self.automata_initialized:
             self.next_pressed()
         else:
             self.button_start_pressed()
@@ -148,6 +179,42 @@ class Interface(tk.Frame):
         self.set_zoom()
         self.draw_image()
         self.button_start.pack_forget() 
+
+
+    def show_cell_data(self, event=None):
+        mat_inv = numpy.linalg.inv(self.matriz_affin)  # calcula la matriz inversa de la matriz affin
+        x_image, y_image, _ = numpy.dot(mat_inv, (event.x, event.y, 1.0)) # producto escalar
+        x_image = int(x_image)
+        y_image = int(y_image)
+        
+        # Si el raton esta fuera de la imagen
+        if  (x_image < 0) or (y_image < 0) or (self.iteration_image.width <= x_image ) \
+                    or (self.iteration_image.height <= y_image ):
+            return
+
+        var_window = tk.Toplevel()
+        var_window.geometry('300x200')
+        title = 'Cell: (' + str(x_image) + ', ' + str(y_image) + ') iteration: ' + str(self.automata.actual_iteration)
+        var_window.title(title)
+
+        var_list = tk.Listbox(var_window, width=300, height=200)
+        var_list.place(x=0, y=0)
+        var_list.pack(expand=True, fill=tk.BOTH)
+
+        c = self.automata.get_cell( x_image, y_image )
+
+        contador = 0
+        for var_name in variables_dict:
+            value = c.get_variable(var_name)
+            entrada = var_name + ': ' + str(value)
+            var_list.insert(contador, entrada)
+            contador += 1
+
+        var_list.place(x=0, y=0)
+
+    
+
+
 
 
 
