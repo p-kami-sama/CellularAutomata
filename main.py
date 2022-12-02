@@ -14,45 +14,9 @@ from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
 from automata.initial_state import initial_state_GameOfLife
 
-# para colores
-# from QgsData.states_color_dict import states_color_dict
 
 
-# ruta
-
-
-
-#Se inicializa QgsAutomata
-print('se inicia el automata')
-
-
-# cuadrado  Moore
-# rombo     von_Neumann
-
-# a = automata.Automata(width=10, height=5, store_trace_back=True)
-# a.set_border(Borders.FIXED, States.Muerto)
-# a.set_neighborhood(Neighborhoods.MOORE)
-# a.set_initial_state(initial_state_GameOfLife)
-# a.set_transition_rule(transition_rule_GameOfLife)
-
-# id = a.add_statistic( statistic_function_revived_cell, 'Ha vuelto a la vida.', [])
-
-
-
-
-
-
-
-# a.run_iterations(2, True)
-# a.store_data_in_json()
-
-
-
-
-
-
-# funciona con el States.Ardiendo.name
-# print(str(States.Ardiendo) == 'Ardiendo')
+print('Se inicia el automata')
 
 
 
@@ -68,10 +32,6 @@ ia.set_initial_state_from_image_and_csv()
 
 ia.set_transition_rule(transition_rule_GameOfLife)
 ia.add_statistic(statistic_function_count_10_iterations, '', ['tiempo_vivo', 'tiempo_muerto'])
-
-
-
-print('\nFINAL\n')
 
 
 ia.open_interface()
