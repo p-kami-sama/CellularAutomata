@@ -103,25 +103,26 @@ class Interface(tk.Frame):
 
         if not self.automata_initialized:
             self.button_start_pressed()
-        print('perrito', self.auto_play)
         if self.auto_play:
             self.auto_play = False
             self.button_automatic_play['text'] = 'Start automatic play'
             self.button_automatic_play['fg'] = 'green'
-        
+            self.button_back['state'] = 'normal'
+            self.button_next['state'] = 'normal'
 
         else:
             self.auto_play = True
             self.button_automatic_play['text'] = 'Stop automatic play'
             self.button_automatic_play['fg'] = 'red'
-            self.window.after(1000, self.print_gato)
+            self.button_back['state'] = 'disabled'
+            self.button_next['state'] = 'disabled'
+            self.window.after(1000, self.automatic_next)
 
 
-    def print_gato(self):
-        print('gatito')
+    def automatic_next(self):
         if self.auto_play:
             self.next_pressed(True)
-            self.window.after(1000, self.print_gato)
+            self.window.after(1000, self.automatic_next)
 
 
     def space_or_return_key_pressed(self, event=None):
