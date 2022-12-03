@@ -9,71 +9,126 @@ import InteractiveAutomata as interactiveAutomata
 from initialData.variables_dict import variables_dict
 
 
+#########
+from automata.Neighborhoods import Neighborhoods
+from automata.Borders import Borders
+#########
+
 class InitialDataInterface(tk.Frame):
     def __init__(self, img=None, automata:interactiveAutomata=None):
 
-        self.window = tk.Tk()
-        super().__init__(self.window)
-
-        self.automata = automata
-       
-        self.matriz_affin = numpy.eye(3)       # matriz de transformación afín inicial
-        self.automata_initialized = False
-
-        self.auto_play = False
+        self.root = tk.Tk()
+        super().__init__(self.root)
 
 
         # definicion de la ventana
-        self.window.title('CellularAutomataInterface')
-        self.window.geometry('600x400')
+        self.root.title('CellularAutomataInterface')
+        self.root.geometry('400x400')
 
-        # Canvas
-        self.canvas = tk.Canvas(self.window, background='black', relief = tk.RAISED)
-        self.canvas.pack(expand=True,  fill=tk.BOTH)
-
-        # Barra de informacion
-        bar_labels_info = tk.Frame(self.window, bd=1, relief = tk.RAISED)
-
-        self.label_image_info = tk.Label(bar_labels_info, text='image info', anchor=tk.E, padx = 10)
-        self.label_image_info.pack(side=tk.LEFT)
-        self.label_mouse_cell_ubication = tk.Label(bar_labels_info, text=('——— (—, —)'), anchor=tk.W, padx = 10)
-        self.label_mouse_cell_ubication.pack(side=tk.RIGHT)
-
-        bar_labels_info.pack(side=tk.BOTTOM, fill=tk.X)
-
-        # Barra con botones de control
-        bar_buttons = tk.Frame(self.window, bd=1, relief = tk.RAISED)
-
-        self.button_back = tk.Button(bar_buttons, text='Back', fg='blue', command=self.back_pressed ) 
-        self.button_back.pack( side = tk.LEFT , fill=tk.X)
-        self.button_next = tk.Button(bar_buttons, text='Next', fg='blue', command=self.next_pressed ) 
-        self.button_next.pack( side = tk.LEFT , fill=tk.X)
-        self.button_reset_zoom = tk.Button(bar_buttons, text='Reset zoom', fg='purple', command=self.reset_zoom ) 
-        self.button_reset_zoom.pack( side = tk.LEFT , fill=tk.X)
-        self.button_automatic_play = tk.Button(bar_buttons, text='Start automatic play', fg='green', command=self.automatic_play ) 
-        self.button_automatic_play.pack( side = tk.LEFT , fill=tk.X)       
-
-        self.button_start = tk.Button(bar_buttons, text='Start', fg='red', command=self.button_start_pressed ) 
-        self.button_start.pack( side = tk.TOP )
-
-        bar_buttons.pack(side=tk.BOTTOM, fill=tk.X)
-
-        # eventos de raton
-        self.window.bind('<Motion>', self.mouse_move)
-        self.window.bind('<Button-1>', self.mouse_click_left)
-        self.window.bind('<B1-Motion>', self.mouse_click_left_and_drag)
-        self.window.bind('<Double-Button-1>', self.show_cell_data)  # doble click de boton izquierdo
-        self.window.bind('<MouseWheel>', self.mouse_wheel_zoom)
-
-        # Eventos de teclado
-        self.window.bind('<Left>', self.back_pressed)
-        self.window.bind('<BackSpace>', self.back_pressed) # Borrar
-        self.window.bind('<Right>', self.next_pressed)
-        self.window.bind('<space>', self.space_or_return_key_pressed)
-        self.window.bind('<Return>', self.space_or_return_key_pressed) # Enter
+ 
+        # BORDERS
+        border_options = []
+        for elem in Borders:
+            border_options.append( elem.name)
+    
+        self.border_clicked = tk.StringVar()
+        self.border_clicked.set( border_options[0] )
+        
+        label_border = tk.Label( self.root , text = 'Border:')
+        label_border.place(relx=0.1, rely=0.2)
+        dropdown_border = tk.OptionMenu( self.root , self.border_clicked , *border_options )
+        dropdown_border.place(relx=0.1, rely=0.3)
 
 
-        self.set_image(img)
+        # NEIGHBORHODS
+        neighborhood_options = []
+        for elem in Neighborhoods:
+            neighborhood_options.append( elem.name)
+    
+        self.neighborhood_clicked = tk.StringVar()
+        self.neighborhood_clicked.set( neighborhood_options[0] )
+        
+        label_neighborhood = tk.Label( self.root , text = 'Neighborhood:')
+        label_neighborhood.place(relx=0.4, rely=0.2)
+        dropdown_neighborhood = tk.OptionMenu( self.root , self.neighborhood_clicked , *neighborhood_options )
+        dropdown_neighborhood.place(relx=0.4, rely=0.3)
+
+
+        # NEIGHBORHOD RADIUS (De 1 a infinito)
+
+# ACABAR
+
+        # # Create button, it will change label text
+        # button = tk.Button( self.root , text = "click Me" , command = self.show ).pack()
+        
+
+
+
+
+
+        
+
+
+
+
+
+    def show(self):
+        print(self.border_clicked.get())
+        print(self.neighborhood_clicked.get())
+
+       
+
+
+
+        # # Canvas
+        # self.canvas = tk.Canvas(self.window, background='black', relief = tk.RAISED)
+        # self.canvas.pack(expand=True,  fill=tk.BOTH)
+
+        # # Barra de informacion
+        # bar_labels_info = tk.Frame(self.window, bd=1, relief = tk.RAISED)
+
+        # self.label_image_info = tk.Label(bar_labels_info, text='image info', anchor=tk.E, padx = 10)
+        # self.label_image_info.pack(side=tk.LEFT)
+        # self.label_mouse_cell_ubication = tk.Label(bar_labels_info, text=('——— (—, —)'), anchor=tk.W, padx = 10)
+        # self.label_mouse_cell_ubication.pack(side=tk.RIGHT)
+
+        # bar_labels_info.pack(side=tk.BOTTOM, fill=tk.X)
+
+        # # Barra con botones de control
+        # bar_buttons = tk.Frame(self.window, bd=1, relief = tk.RAISED)
+
+        # self.button_back = tk.Button(bar_buttons, text='Back', fg='blue', command=self.back_pressed ) 
+        # self.button_back.pack( side = tk.LEFT , fill=tk.X)
+        # self.button_next = tk.Button(bar_buttons, text='Next', fg='blue', command=self.next_pressed ) 
+        # self.button_next.pack( side = tk.LEFT , fill=tk.X)
+        # self.button_reset_zoom = tk.Button(bar_buttons, text='Reset zoom', fg='purple', command=self.reset_zoom ) 
+        # self.button_reset_zoom.pack( side = tk.LEFT , fill=tk.X)
+        # self.button_automatic_play = tk.Button(bar_buttons, text='Start automatic play', fg='green', command=self.automatic_play ) 
+        # self.button_automatic_play.pack( side = tk.LEFT , fill=tk.X)       
+
+        # self.button_start = tk.Button(bar_buttons, text='Start', fg='red', command=self.button_start_pressed ) 
+        # self.button_start.pack( side = tk.TOP )
+
+        # bar_buttons.pack(side=tk.BOTTOM, fill=tk.X)
+
+        # # eventos de raton
+        # self.window.bind('<Motion>', self.mouse_move)
+        # self.window.bind('<Button-1>', self.mouse_click_left)
+        # self.window.bind('<B1-Motion>', self.mouse_click_left_and_drag)
+        # self.window.bind('<Double-Button-1>', self.show_cell_data)  # doble click de boton izquierdo
+        # self.window.bind('<MouseWheel>', self.mouse_wheel_zoom)
+
+        # # Eventos de teclado
+        # self.window.bind('<Left>', self.back_pressed)
+        # self.window.bind('<BackSpace>', self.back_pressed) # Borrar
+        # self.window.bind('<Right>', self.next_pressed)
+        # self.window.bind('<space>', self.space_or_return_key_pressed)
+        # self.window.bind('<Return>', self.space_or_return_key_pressed) # Enter
+
+
+        # self.set_image(img)
+
+
 
 
 # Botones y teclado

@@ -27,6 +27,7 @@ from automata.Borders import Borders
 
 
 from Interface import Interface
+from InitialDataInterface import InitialDataInterface
 
 
 #from pandas import read_csv, concat
@@ -239,8 +240,10 @@ class InteractiveAutomata(Automata):
         app.mainloop()
 
 
-    def open_initial_interface():
-        pass
+    def open_initial_interface(self):
+
+        result = InitialDataInterface()
+        result.mainloop()
 
 
     # hace la nueva iteración y crea la nueva foto

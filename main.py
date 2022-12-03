@@ -35,8 +35,10 @@ ia.set_transition_rule(transition_rule_GameOfLife)
 ia.add_statistic(statistic_function_count_10_iterations, '', ['tiempo_vivo', 'tiempo_muerto'])
 
 
-ia.open_interface()
-ia.store_data_in_json()
+
+ia.open_initial_interface()
+# ia.open_interface()
+# ia.store_data_in_json()
 
 
 
