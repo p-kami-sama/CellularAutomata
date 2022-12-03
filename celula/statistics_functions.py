@@ -1,5 +1,5 @@
 import Cell as cell
-from .States import States
+from initialData.States import States
 
 
 def statistic_1_function(c:cell):

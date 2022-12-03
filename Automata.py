@@ -5,7 +5,7 @@ import typing
 import Cell as cell
 import automata.Statistic as statistic
 
-from celula.States import States
+from initialData.States import States
 
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders

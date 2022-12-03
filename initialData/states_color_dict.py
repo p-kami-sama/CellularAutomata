@@ -1,5 +1,5 @@
 
-from celula.States import States
+from initialData.States import States
 from enum import Enum
 
 states_color_dict = {

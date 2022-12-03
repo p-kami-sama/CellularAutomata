@@ -13,11 +13,11 @@ import Cell as cell
 from Automata import Automata
 
 
-from celula.States import States
+from initialData.States import States
 
 
-from InteractiveAutomataData.states_color_dict import states_color_dict
-from InteractiveAutomataData.variables_dict import variables_dict
+from initialData.states_color_dict import states_color_dict
+from initialData.variables_dict import variables_dict
 
 
 
@@ -237,6 +237,10 @@ class InteractiveAutomata(Automata):
         # self.transition_rule
         app = Interface(img=self.initial_state_route, automata=self)
         app.mainloop()
+
+
+    def open_initial_interface():
+        pass
 
 
     # hace la nueva iteración y crea la nueva foto

@@ -6,13 +6,14 @@ import csv
 # IMPORTS
 import InteractiveAutomata as interactiveAutomata
 
-from celula.transition_rule import transition_rule_GameOfLife
-from celula.States import States
+from initialData.transition_rule import transition_rule_GameOfLife
+from initialData.States import States
 from celula.statistics_functions import *
 
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
-from automata.initial_state import initial_state_GameOfLife
+from initialData.initial_state import initial_state_GameOfLife
+
 
 
 

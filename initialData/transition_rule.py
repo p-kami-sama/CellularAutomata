@@ -13,7 +13,7 @@ def transition_rule(c:cell):
     else:
         return c.state
 
-from .States import States as s
+from initialData.States import States as s
 
 def transition_rule_GameOfLife(c:cell):
     if c.get_state() == s.Vivo:

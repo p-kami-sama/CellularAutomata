@@ -9,7 +9,7 @@ import InteractiveAutomata as interactiveAutomata
 from initialData.variables_dict import variables_dict
 
 
-class Interface(tk.Frame):
+class InitialDataInterface(tk.Frame):
     def __init__(self, img=None, automata:interactiveAutomata=None):
 
         self.window = tk.Tk()
