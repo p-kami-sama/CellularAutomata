@@ -241,9 +241,16 @@ class InteractiveAutomata(Automata):
 
 
     def open_initial_interface(self):
-
-        result = InitialDataInterface()
+        zzz = 0
+        result = InitialDataInterface(zzz)
+        print('after zzz:', zzz)
         result.mainloop()
+        print('after mainloop zzz:', zzz)
+
+        border, neighborhood, radius = result.get_data()
+
+        print(border, neighborhood, radius)
+
 
 
     # hace la nueva iteración y crea la nueva foto

@@ -14,9 +14,22 @@ from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
 #########
 
-class InitialDataInterface(tk.Frame):
-    def __init__(self, img=None, automata:interactiveAutomata=None):
+from tkinter import messagebox
 
+
+
+
+
+# sc = Scale(my_w, from_=0, to=100, font=font1,
+#     orient=HORIZONTAL,variable=sv,length=180)
+# sc.grid(row=2,column=1,padx=30)
+
+
+class InitialDataInterface(tk.Frame):
+    def __init__(self, border):
+
+
+        border +=3
         self.root = tk.Tk()
         super().__init__(self.root)
 
@@ -24,12 +37,13 @@ class InitialDataInterface(tk.Frame):
         # definicion de la ventana
         self.root.title('CellularAutomataInterface')
         self.root.geometry('400x400')
+        self.root.resizable(width=False, height=False)
 
  
         # BORDERS
         border_options = []
         for elem in Borders:
-            border_options.append( elem.name)
+            border_options.append( elem.value)
     
         self.border_clicked = tk.StringVar()
         self.border_clicked.set( border_options[0] )
@@ -37,13 +51,13 @@ class InitialDataInterface(tk.Frame):
         label_border = tk.Label( self.root , text = 'Border:')
         label_border.place(relx=0.1, rely=0.2)
         dropdown_border = tk.OptionMenu( self.root , self.border_clicked , *border_options )
-        dropdown_border.place(relx=0.1, rely=0.3)
+        dropdown_border.place(relx=0.1, rely=0.3, width=120)
 
 
         # NEIGHBORHODS
         neighborhood_options = []
         for elem in Neighborhoods:
-            neighborhood_options.append( elem.name)
+            neighborhood_options.append( elem.value)
     
         self.neighborhood_clicked = tk.StringVar()
         self.neighborhood_clicked.set( neighborhood_options[0] )
@@ -51,18 +65,24 @@ class InitialDataInterface(tk.Frame):
         label_neighborhood = tk.Label( self.root , text = 'Neighborhood:')
         label_neighborhood.place(relx=0.4, rely=0.2)
         dropdown_neighborhood = tk.OptionMenu( self.root , self.neighborhood_clicked , *neighborhood_options )
-        dropdown_neighborhood.place(relx=0.4, rely=0.3)
+        dropdown_neighborhood.place(relx=0.4, rely=0.3, width=140)
 
 
         # NEIGHBORHOD RADIUS (De 1 a infinito)
 
-# ACABAR
+        self.neighborhood_radius = tk.StringVar()
+
+        label_neighborhood_radius = tk.Label( self.root , text = 'Radius:')
+        label_neighborhood_radius.place(relx=0.77, rely=0.2)
+        spin_temp = tk.Spinbox(self.root, from_=1, to=100000, textvariable=self.neighborhood_radius)
+        spin_temp.place(relx=0.77, rely=0.3, width=70)
+
 
         # # Create button, it will change label text
-        # button = tk.Button( self.root , text = "click Me" , command = self.show ).pack()
-        
+        button = tk.Button( self.root , text = "click Me" , command = self.show )
+        button.place(relx=0.4, rely=0.9, width=140)
 
-
+# ACABAR
 
 
 
@@ -73,9 +93,33 @@ class InitialDataInterface(tk.Frame):
 
 
     def show(self):
-        print(self.border_clicked.get())
-        print(self.neighborhood_clicked.get())
+        # print(self.border_clicked.get())
 
+        # print(self.neighborhood_clicked.get())
+
+        # print(self.neighborhood_radius.get())
+
+        if self.neighborhood_radius.get().isdigit() and (int(self.neighborhood_radius.get()) >= 1) :
+
+            self.root.destroy()
+        else:
+            messagebox.showerror('Error', 'Radius ha de ser un número entero mayor a 0.')
+        # print( self.neighborhood_radius.get().isdigit() )
+
+
+
+    def get_data(self):
+
+#        ACABAR  CONSEGUIR EL ENUM APROPIADO a partir del nombre
+
+        # USAR ESTO
+        neighborhood_options = []
+        for elem in Neighborhoods:
+            neighborhood_options.append( elem.value)
+
+
+
+        return self.border_clicked.get(), self.neighborhood_clicked.get(), self.neighborhood_radius.get()
        
 
 
