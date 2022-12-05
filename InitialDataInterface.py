@@ -7,10 +7,9 @@ from automata.Borders import Borders
 
 
 class InitialDataInterface(tk.Frame):
-    def __init__(self, border):
+    def __init__(self):
 
 
-        border +=3
         self.root = tk.Tk()
         super().__init__(self.root)
 
@@ -134,8 +133,6 @@ class InitialDataInterface(tk.Frame):
         dictionary['radius'] =  int(self.neighborhood_radius.get())
         dictionary['initial_data_file_path'] = self.initial_data_file_path
         dictionary['store_trace_back'] = self.store_trace_back.get()
-
-
         
         return dictionary
        

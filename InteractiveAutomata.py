@@ -1,6 +1,6 @@
 import csv
 import math as math
-import json
+import sys
 import typing
 import os
 import glob
@@ -242,22 +242,27 @@ class InteractiveAutomata(Automata):
 
 
     def open_initial_interface(self):
-        zzz = 0
-        result = InitialDataInterface(zzz)
-        print('after zzz:', zzz)
+        result = InitialDataInterface()
         result.mainloop()
-        print('after mainloop zzz:', zzz)
 
         dictionary = result.get_data()
-        border =        dictionary['border']
-        neighborhood =  dictionary['neighborhood']
-        radius =        dictionary['radius']
 
 
-
+        # 'border', 'neighborhood', 'radius', 'initial_data_file_path', 'store_trace_back'
+ 
         print('dictionary:\n\n', dictionary)
 
-#        print(border, neighborhood, radius)
+
+        # sys.path.append('/Users/paul/Desktop/PRUEBA')
+
+
+        # Aqui hacer import de todo y colocar las funciones en variables
+        # NO SE PODRAN LLAMAR FUERA DE ESTA FUNCION DIRECTAMENTE
+        
+        sys.path.append(dictionary['initial_data_file_path'])
+        from GATITOS import gato
+
+        gato()
 
 
 
