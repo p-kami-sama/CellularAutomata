@@ -58,6 +58,7 @@ class InteractiveAutomata(Automata):
         self.data = {}
         self.statistics = {} # id:int, statistics
         self.initial_state_route = None
+        self.initial_data_file_path = None
 
         if isinstance(initial_state, str):
             # Hacerlo en la funcion adecuada 
@@ -247,9 +248,16 @@ class InteractiveAutomata(Automata):
         result.mainloop()
         print('after mainloop zzz:', zzz)
 
-        border, neighborhood, radius = result.get_data()
+        dictionary = result.get_data()
+        border =        dictionary['border']
+        neighborhood =  dictionary['neighborhood']
+        radius =        dictionary['radius']
 
-        print(border, neighborhood, radius)
+
+
+        print('dictionary:\n\n', dictionary)
+
+#        print(border, neighborhood, radius)
 
 
 

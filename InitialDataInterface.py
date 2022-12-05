@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import numpy as numpy
-
+from os import getcwd
 
 import InteractiveAutomata as interactiveAutomata
 
@@ -14,7 +14,7 @@ from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
 #########
 
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 
 
 
@@ -55,10 +55,12 @@ class InitialDataInterface(tk.Frame):
 
 
         # NEIGHBORHODS
-        neighborhood_options = []
-        for elem in Neighborhoods:
-            neighborhood_options.append( elem.value)
-    
+        # neighborhood_options = []
+        # for elem in Neighborhoods:
+        #     neighborhood_options.append( elem.value)
+
+        neighborhood_options = ['von_Neumann', 'Moore']
+
         self.neighborhood_clicked = tk.StringVar()
         self.neighborhood_clicked.set( neighborhood_options[0] )
         
@@ -78,16 +80,56 @@ class InitialDataInterface(tk.Frame):
         spin_temp.place(relx=0.77, rely=0.3, width=70)
 
 
+        # Store_trace_back
+        self.store_trace_back = tk.BooleanVar(value=True)
+        label_store_trace_back = tk.Label( self.root , text = 'Radius:')
+        label_store_trace_back.place(relx=0.1, rely=0.5)
+
+        self.radiobutton_store_trace_back_yes = tk.Radiobutton(self.root, text="Yes", variable=self.store_trace_back, value=True)
+        self.radiobutton_store_trace_back_yes.place(relx=0.3, rely=0.5)
+        self.radiobutton_store_trace_back_no = tk.Radiobutton(self.root, text="No", variable=self.store_trace_back, value=False)
+        self.radiobutton_store_trace_back_no.place(relx=0.45, rely=0.5)
+
+
+        # Ruta
+        self.initial_data_file_path = ''
+        button_set_path = tk.Button( self.root , text = "Set path" , command = self.ask_file_route )
+        button_set_path.place(relx=0.1, rely=0.6)
+        label_set_path_static = tk.Label( self.root , text = 'path to the folder with the initial state:')
+        label_set_path_static.place(relx=0.4, rely=0.6)
+
+        self.label_initial_data_file_path = tk.Label( self.root , text='# Define path to initial data file')#, background=_Color('red'))
+        self.label_initial_data_file_path.place(relx=0.4, rely=0.7)
+
+        
+
         # # Create button, it will change label text
-        button = tk.Button( self.root , text = "click Me" , command = self.show )
-        button.place(relx=0.4, rely=0.9, width=140)
+        button = tk.Button( self.root , text = "Start" , command = self.show )
+        button.place(relx=0.32, rely=0.9, width=140)
 
 # ACABAR
 
 
 
         
+    def ask_file_route(self, event=None):
+            # /Users/paul/Desktop/CellularAutomata/initialData
+        self.initial_data_file_path = filedialog.askdirectory()
+        print('path to folder:', self.initial_data_file_path)
+        if (self.initial_data_file_path == '') or (self.initial_data_file_path is None):
+            self.label_initial_data_file_path['text'] = '# Define path to initial data file'
 
+        else:
+            self.label_initial_data_file_path['text'] = self.initial_data_file_path
+
+
+    # def radiobutton_command(self):
+    #     if self.store_trace_back:
+    #         self.radiobutton_store_trace_back.deselect()
+    #         print('DESELECCIONADO')
+    #     self.store_trace_back = not self.store_trace_back
+
+    #     print(self.store_trace_back)
 
 
 
@@ -112,14 +154,28 @@ class InitialDataInterface(tk.Frame):
 
 #        ACABAR  CONSEGUIR EL ENUM APROPIADO a partir del nombre
 
-        # USAR ESTO
-        neighborhood_options = []
+        dictionary = {}
+
+        for elem in Borders:
+            if elem.value == self.border_clicked.get():
+                dictionary['border'] = elem
+                break
+
         for elem in Neighborhoods:
-            neighborhood_options.append( elem.value)
+            if elem.value == self.neighborhood_clicked.get():
+                dictionary['neighborhood'] = elem
+                break
+
+        dictionary['radius'] =  self.neighborhood_radius.get()
 
 
+        # Falta esto y 
+        dictionary['initial_data_file_path'] = self.initial_data_file_path
+        dictionary['store_trace_back'] = self.store_trace_back.get()
 
-        return self.border_clicked.get(), self.neighborhood_clicked.get(), self.neighborhood_radius.get()
+
+        
+        return dictionary   # hacer que esto se lea apropiadamente
        
 
 
