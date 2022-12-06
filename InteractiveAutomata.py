@@ -58,17 +58,23 @@ class InteractiveAutomata(Automata):
         # saber si el directorio self.initial_data_file_path existe
 
 
-        if os.path.exists(self.initial_data_file_path):
-            from initialData.States import States
-            from initialData.states_color_dict import states_color_dict
-            from initialData.variables_dict import variables_dict
-            self.States = States
-            self.states_color_dict = states_color_dict
-            self.variables_dict = variables_dict
-        else:
-            self.States = None
-            self.states_color_dict = None
-            self.variables_dict = None
+        # if os.path.exists(self.initial_data_file_path):
+        #     from initialData.States import States
+        #     from initialData.states_color_dict import states_color_dict
+        #     from initialData.variables_dict import variables_dict
+        #     self.States = States
+        #     self.states_color_dict = states_color_dict
+        #     self.variables_dict = variables_dict
+        # else:
+        #     self.States = None
+        #     self.states_color_dict = None
+        #     self.variables_dict = None
+
+
+        self.States = None
+        self.states_color_dict = None
+        self.variables_dict = None
+
 
 
         # BORRAR ???
@@ -172,12 +178,15 @@ class InteractiveAutomata(Automata):
 
         # import de todos los archivos necesarios
         sys.path.append(dictionary['initial_data_file_path'])
-       
-        from States import States
         from states_color_dict import states_color_dict
+        from States import States
+        from transition_rule import transition_rule
         from variables_dict import variables_dict
-        self.States = States
+
+
         self.states_color_dict = states_color_dict
+        self.States = States
+        self.set_transition_rule(transition_rule)
         self.variables_dict = variables_dict
 
         if system() == 'Windows':
@@ -189,11 +198,34 @@ class InteractiveAutomata(Automata):
         if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
             from initial_state import initial_state
             self.set_initial_state(initial_state)
+            print('EXISTE initial_state.py')
 
         else:   # cargar cosas de csv e imagen
-            pass
+            print('.tif y csv')
                 # SEPARAR set_initial_state_from_image_and_csv EN 2 COSAS
 
+            # abs_path = os.path.dirname( os.path.abspath(__file__) )
+            # if system() == 'Windows':
+            #     path_separator ='\\'
+            # elif system() == 'Darwin' or system() == 'Linux':
+            #     path_separator ='/'
+
+            # self.initial_data_file_path
+            # folder_path = abs_path + path_separator + 'initialData'
+
+            # obtiene ruta absoluta del directorio donde esta
+            csv_files = glob.glob(self.initial_data_file_path + "/*.csv")               # obtiene todos los csv,
+            tif_initial_image = glob.glob(self.initial_data_file_path + "/*.tif")[0]    # obtiene primera imagen .tif
+            
+            print(csv_files, tif_initial_image)
+        
+            self.__set_initial_state_image_csv( tif_initial_image, csv_files)
+
+        xxx = self.get_matrix_state()
+
+        for xx in xxx:
+            print(xx)
+        print('+++++++++++')
 
 
 
@@ -206,15 +238,19 @@ class InteractiveAutomata(Automata):
             path_separator ='/'
 
         folder_path = abs_path + path_separator + 'initialData'
-        csv_files = glob.glob(folder_path + "/*.csv")
-        tif_initial_image = glob.glob(folder_path + "/*.tif")[0]
+        csv_files = glob.glob(folder_path + "/*.csv")               # obtiene todos los csv,
+        tif_initial_image = glob.glob(folder_path + "/*.tif")[0]    # obtiene primera imagen .tif
+        
+        self.__set_initial_state_image_csv(tif_initial_image, csv_files)
+        
+
+
+    def __set_initial_state_image_csv(self, tif_initial_image, csv_files):
         self.initial_state_route = tif_initial_image
 
-
-
-        img = Image.open( tif_initial_image ) # Can be many different formats.
+        img = Image.open( tif_initial_image )
         pix = img.load()
-        x, y = img.size  # Get the width and hight of the image for iterating over
+        x, y = img.size
         self.width = x
         self.height = y
         matrix = []
@@ -309,8 +345,9 @@ class InteractiveAutomata(Automata):
             img.save(route_to_image)
 
             # Se crean los archivos csv
-
+# ARREGLAR      borrar folder_path ??
             folder_path = abs_path + path_separator + 'initialData'
+            folder_path = self.initial_data_file_path
             csv_files = glob.glob(folder_path + "/*.csv")
             tif_initial_image = glob.glob(folder_path + "/*.tif")[0]
             self.initial_state_route = tif_initial_image

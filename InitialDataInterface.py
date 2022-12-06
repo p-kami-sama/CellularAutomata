@@ -63,13 +63,13 @@ class InitialDataInterface(tk.Frame):
 
         # Store_trace_back
         self.store_trace_back = tk.BooleanVar(value=True)
-        label_store_trace_back = tk.Label( self.root , text = 'Radius:')
+        label_store_trace_back = tk.Label( self.root , text = 'Store trace back:')
         label_store_trace_back.place(relx=0.1, rely=0.5)
 
         self.radiobutton_store_trace_back_yes = tk.Radiobutton(self.root, text="Yes", variable=self.store_trace_back, value=True)
-        self.radiobutton_store_trace_back_yes.place(relx=0.3, rely=0.5)
+        self.radiobutton_store_trace_back_yes.place(relx=0.4, rely=0.5)
         self.radiobutton_store_trace_back_no = tk.Radiobutton(self.root, text="No", variable=self.store_trace_back, value=False)
-        self.radiobutton_store_trace_back_no.place(relx=0.45, rely=0.5)
+        self.radiobutton_store_trace_back_no.place(relx=0.55, rely=0.5)
 
 
         # Ruta
