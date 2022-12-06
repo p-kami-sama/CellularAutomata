@@ -33,3 +33,6 @@ sys.path.append('/Users/paul/Desktop/PRUEBA')
 from GATITOS import gato
 
 gato()
+
+import os 
+print( os.path.exists('./initialData/') )

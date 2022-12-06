@@ -21,9 +21,10 @@ class InitialDataInterface(tk.Frame):
 
  
         # BORDERS
-        border_options = []
-        for elem in Borders:
-            border_options.append( elem.value)
+        # border_options = []
+        # for elem in Borders:
+        #     border_options.append( elem.value)
+        border_options =['periodic', 'reflective', 'adiabatic']
     
         self.border_clicked = tk.StringVar()
         self.border_clicked.set( border_options[0] )

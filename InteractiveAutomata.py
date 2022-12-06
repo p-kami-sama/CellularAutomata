@@ -11,23 +11,13 @@ from PIL import Image, ImageTk
 
 import Cell as cell
 from Automata import Automata
-
-
-from initialData.States import States
-
-
-from initialData.states_color_dict import states_color_dict
-from initialData.variables_dict import variables_dict
-
-
+from Interface import Interface
+from InitialDataInterface import InitialDataInterface
 
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
 
 
-
-from Interface import Interface
-from InitialDataInterface import InitialDataInterface
 
 
 #from pandas import read_csv, concat
@@ -60,10 +50,31 @@ class InteractiveAutomata(Automata):
         self.initial_state_route = None
         self.initial_data_file_path = None
 
+        if system() == 'Windows':
+            self.initial_data_file_path = '.\\initialData'
+        elif system() == 'Darwin' or system() == 'Linux':
+            self.initial_data_file_path = './initialData/'
+
+        # saber si el directorio self.initial_data_file_path existe
+
+
+        if os.path.exists(self.initial_data_file_path):
+            from initialData.States import States
+            from initialData.states_color_dict import states_color_dict
+            from initialData.variables_dict import variables_dict
+            self.States = States
+            self.states_color_dict = states_color_dict
+            self.variables_dict = variables_dict
+        else:
+            self.States = None
+            self.states_color_dict = None
+            self.variables_dict = None
+
+
+        # BORRAR ???
         if isinstance(initial_state, str):
             # Hacerlo en la funcion adecuada 
             self.set_initial_state_from_image_and_csv()
-
         elif isinstance(initial_state, list):
             self.set_initial_state(mat=initial_state)
         elif initial_state is None:
@@ -95,13 +106,13 @@ class InteractiveAutomata(Automata):
                         vars = elem.copy()
                         del vars['state'] 
                         c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
-                        color = states_color_dict[elem['state']]
+                        color = self.states_color_dict[elem['state']]
                         lista_de_color_de_pixeles.append(color)
 
                 # elem es States
-                elif isinstance(elem, States):
+                elif isinstance(elem, self.States):
                     c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
-                    color = states_color_dict[elem]
+                    color = self.states_color_dict[elem]
                     lista_de_color_de_pixeles.append(color)
                 else:
                     message = 'The input to create the cell with coordinates (' +\
@@ -141,8 +152,49 @@ class InteractiveAutomata(Automata):
 
 
 
+    def open_interface(self):
+        app = Interface(img=self.initial_state_route, automata=self)
+        app.mainloop()
 
-# Pendiente de hacer
+
+    def open_initial_interface(self):
+        result = InitialDataInterface()
+        result.mainloop()
+        dictionary = result.get_data()
+
+        # 'border', 'neighborhood', 'radius', 'initial_data_file_path', 'store_trace_back'
+        print('dictionary:\n\n', dictionary)
+
+        self.set_border(dictionary['border'])
+        self.set_neighborhood(dictionary['neighborhood'], dictionary['radius'])
+        self.initial_data_file_path = dictionary['initial_data_file_path']
+        self.store_trace_back = dictionary['store_trace_back']
+
+        # import de todos los archivos necesarios
+        sys.path.append(dictionary['initial_data_file_path'])
+       
+        from States import States
+        from states_color_dict import states_color_dict
+        from variables_dict import variables_dict
+        self.States = States
+        self.states_color_dict = states_color_dict
+        self.variables_dict = variables_dict
+
+        if system() == 'Windows':
+            path_separator ='\\'
+        elif system() == 'Darwin' or system() == 'Linux':
+            path_separator ='/'
+
+        # extraer, initial_state
+        if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
+            from initial_state import initial_state
+            self.set_initial_state(initial_state)
+
+        else:   # cargar cosas de csv e imagen
+            pass
+                # SEPARAR set_initial_state_from_image_and_csv EN 2 COSAS
+
+
 
 
     def set_initial_state_from_image_and_csv(self):
@@ -174,17 +226,16 @@ class InteractiveAutomata(Automata):
                 row_list.append({'state': state})
             matrix.append(row_list)
 
-
         # leer archivos csv
         if len(csv_files) != 0:
             for route_to_file in csv_files:
                 file_name = os.path.basename(route_to_file).split('.')[0]
-                if not (file_name in variables_dict):
+                if not (file_name in self.variables_dict):
                     message = 'In "variables_dict.py" there is no type of ' + \
                         'variable assigned to file "' +route_to_file +'".'
                     raise ValueError(message)
 
-                var_type = variables_dict[file_name]
+                var_type = self.variables_dict[file_name]
                 with open(route_to_file, newline='') as f:
                     reader = csv.reader(f)
                     y = 0
@@ -202,9 +253,6 @@ class InteractiveAutomata(Automata):
                             matrix[y][x][file_name] = value
                             x += 1
                         y += 1
-
-
-
 
         # Pasa de diccionario a celulas
         malla = []
@@ -229,42 +277,6 @@ class InteractiveAutomata(Automata):
 
 
     
-    def open_interface(self):
-
-        # if system() == 'Windows':
-        #         route_to_image = '.\\results\\iteration_' + str(self.actual_iteration) + '.tif'
-        # elif system() == 'Darwin' or system() == 'Linux':
-        #         route_to_image = './results/iteration_' + str(self.actual_iteration) + '.tif'
-
-        # self.transition_rule
-        app = Interface(img=self.initial_state_route, automata=self)
-        app.mainloop()
-
-
-    def open_initial_interface(self):
-        result = InitialDataInterface()
-        result.mainloop()
-
-        dictionary = result.get_data()
-
-
-        # 'border', 'neighborhood', 'radius', 'initial_data_file_path', 'store_trace_back'
- 
-        print('dictionary:\n\n', dictionary)
-
-
-        # sys.path.append('/Users/paul/Desktop/PRUEBA')
-
-
-        # Aqui hacer import de todo y colocar las funciones en variables
-        # NO SE PODRAN LLAMAR FUERA DE ESTA FUNCION DIRECTAMENTE
-        
-        sys.path.append(dictionary['initial_data_file_path'])
-        from GATITOS import gato
-
-        gato()
-
-
 
     # hace la nueva iteración y crea la nueva foto
     # devuelve el path de la nueva imagen
@@ -289,13 +301,12 @@ class InteractiveAutomata(Automata):
             for fila in self.iterations[self.actual_iteration]:
                 for elem in fila: # elem es un objeto de tipo Cell
                     state = elem.get_state()
-                    color = states_color_dict[state]
+                    color = self.states_color_dict[state]
                     lista_de_color_de_pixeles.append(color)
 
             img = Image.new('RGB', (self.width, self.height))            
             img.putdata(lista_de_color_de_pixeles)
             img.save(route_to_image)
-
 
             # Se crean los archivos csv
 
@@ -304,12 +315,11 @@ class InteractiveAutomata(Automata):
             tif_initial_image = glob.glob(folder_path + "/*.tif")[0]
             self.initial_state_route = tif_initial_image
 
-            for var_name, var_type in variables_dict.items():
+            for var_name, var_type in self.variables_dict.items():
 
                 # se hace un csv por cada variable
                 route_to_csv = abs_path + path_separator + 'results'+ path_separator + \
                     'iteration_' + str(self.actual_iteration)+'_'+var_name + '.csv'
-
 
                 
                 with open(route_to_csv, 'w', encoding='UTF8', newline='') as f:
@@ -339,12 +349,8 @@ class InteractiveAutomata(Automata):
                         # write a row to the csv file
                     writer.writerows(data_list)
 
-
-
             return route_to_image
 
-
-     
 
 
     def back_image_iteration(self):
@@ -374,7 +380,7 @@ class InteractiveAutomata(Automata):
             for fila in self.iterations[self.actual_iteration]:
                 for elem in fila: # elem es un objeto de tipo Cell
                     state = elem.get_state()
-                    color = states_color_dict[state]
+                    color = self.states_color_dict[state]
                     lista_de_color_de_pixeles.append(color)
 
             img = Image.new('RGB', (self.width, self.height))            
@@ -383,7 +389,7 @@ class InteractiveAutomata(Automata):
 
             return route_to_image
 
-
+# HACER
     def run_image_iterations(self, num_iterations:int, print_data:bool=False):
         pass
     # ajecutar x iteraciones (desde el inicio)
@@ -395,11 +401,11 @@ class InteractiveAutomata(Automata):
         j = -1
         value = (int(red), int(green), int(blue))
 
-        if not (value in list(states_color_dict.values()) ):
+        if not (value in list(self.states_color_dict.values()) ):
             message = 'At the ('  + str(i) + ', ' + str(j) + ' position, the (' + \
                 str(red) + ', ' + str(green) + ', ' + str(blue) + ') ' + \
                 'color, is not related to any state in states_color_dict.'
             raise ValueError(message)
 
-        state = list(states_color_dict.keys())[list(states_color_dict.values()).index(value)] 
+        state = list(self.states_color_dict.keys())[list(self.states_color_dict.values()).index(value)] 
         return state
