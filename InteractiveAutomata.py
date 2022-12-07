@@ -6,7 +6,7 @@ import os
 import glob
 
 from platform import system
-from PIL import Image, ImageTk
+from PIL import Image
 
 
 import Cell as cell

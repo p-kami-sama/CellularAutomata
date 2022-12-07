@@ -19,6 +19,9 @@ from automata.Borders import Borders
 
 print('Se inicia el automata')
 
+import Cell as cell
+c = cell.Cell(0, 0, 0, 0, 0, 0)
+c.get_state()
 
 
 

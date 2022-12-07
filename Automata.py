@@ -1,11 +1,10 @@
-import math as math
 import json
 import typing
-
+from platform import system
 import Cell as cell
 import automata.Statistic as statistic
 
-from initialData.States import States
+# from initialData.States import States
 
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
@@ -13,7 +12,7 @@ from automata.Borders import Borders
 
 class Automata:
 
-    def __init__(self, width:int, height:int, store_trace_back:bool=False ):
+    def __init__(self, width:int, height:int, store_trace_back:bool=False, initial_data_file_path=None ):
 
         self.width = width      # ancho
         self.height = height    # altura
@@ -33,6 +32,18 @@ class Automata:
         self.statistics = {} # id:int, statistics
 
 
+        if initial_data_file_path is None:
+            if system() == 'Windows':
+                self.initial_data_file_path = '.\\initialData'
+            elif system() == 'Darwin' or system() == 'Linux':
+                self.initial_data_file_path = './initialData/'
+        else:
+            self.initial_data_file_path = initial_data_file_path
+
+        from States import States
+        self.valid_states = []
+        for s in States:
+            self.valid_states.append(s)
 
 
 
@@ -41,11 +52,12 @@ class Automata:
         self.width = len( mat[0])
         malla = []
         y = 0
+
         for fila in mat:
             mallaAux = []
             x = 0
             for elem in fila:
-
+                
                 if isinstance(elem, dict):
 #                    if 'variables' in elem:
                     if not 'state' in elem:
@@ -55,10 +67,10 @@ class Automata:
                     else:
                         vars = elem.copy()
                         del vars['state'] 
-                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
+                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars,)
 
-                elif isinstance(elem, States):
-                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
+                elif elem in self.valid_states:
+                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, valid_states=self.valid_states, variables={})
                 else:
                     message = 'The input to create the cell with coordinates (' +\
                         str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
@@ -121,7 +133,6 @@ class Automata:
     # cambia el tipo de frontera, y devuelve el tipo anterior
     # border:         border: periodic , fixed , reflective , adiabatic
     def set_border(self, new_border_type:Borders, fixed_cell:cell=None) -> Borders:
-#    def set_border(self, new_border_type:Borders, fixed_cell:typing.Union[str, typing.Type[cell.Cell] ]=None) -> typing.Union[Borders, None]:
 
         if not isinstance(new_border_type, Borders):
             message = '"' +str(new_border_type) + '" is not an accepted type of border. ' + \
@@ -140,8 +151,8 @@ class Automata:
         self.border = new_border_type
 
         if new_border_type == Borders.FIXED:
-            if isinstance(fixed_cell, States):
-                self.fixed_cell = cell.Cell(self, -1, -1, fixed_cell)
+            if fixed_cell in self.valid_states:
+                self.fixed_cell = cell.Cell(self, -1, -1, fixed_cell, valid_states=self.valid_states)
             elif isinstance(fixed_cell, cell.Cell):
                 self.fixed_cell = fixed_cell
            
@@ -250,15 +261,15 @@ class Automata:
                 for elem in fila:
                     result_transition_rule = self.transition_rule(elem)
 
-                    if isinstance(result_transition_rule, States):
+                    if result_transition_rule in self.valid_states:
                         new_state = result_transition_rule
-                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=elem.variables.copy())
+                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, valid_states=self.valid_states, variables=elem.variables.copy())
 
                     elif type(result_transition_rule) is dict: # se reescriben las variables adecuadamente
                         if  'state' in result_transition_rule.keys():
                             new_state = result_transition_rule['state']
                             del result_transition_rule['state']
-                            c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=result_transition_rule)
+                            c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, valid_states=self.valid_states, variables=result_transition_rule)
                         else:
                             message = 'If the result of transition_rule is a dictionary, it must have a key called '\
                                     '"state", with the state that the cell will have after applying the transition rule.'
@@ -280,7 +291,7 @@ class Automata:
             if self.store_trace_back:
                 dict_iteration = {}
                 states_counter_dict = {}
-                for s in States:
+                for s in self.valid_states:
                     states_counter_dict[s.name] = 0
 
                 #AQUI SE PUEDEN AÑADIR ESTADISTICOS GLOBALES
@@ -394,14 +405,14 @@ class Automata:
         else:
             if desp > 0: # positivo
                 despAux = desp-(size_1 - ini)
-                if math.trunc( despAux / size_1 ) % 2 == 0:    # par
+                if int( despAux / size_1 ) % 2 == 0:    # par
                     return size_1 - (despAux % size_1)
                 else: # impar
                     return despAux % size_1
 
             else: # negativo
                 despAux = -desp - ini
-                if math.trunc( despAux / size_1 ) % 2 == 0:    # par
+                if int( despAux / size_1 ) % 2 == 0:    # par
                     return despAux % size_1
                 else: # impar
                     return size_1 - (despAux % size_1 )
