@@ -6,16 +6,16 @@ import numpy as numpy
 import InteractiveAutomata as interactiveAutomata
 
 
-from initialData.variables_dict import variables_dict
 
 
 class Interface(tk.Frame):
-    def __init__(self, img=None, automata:interactiveAutomata=None):
+    def __init__(self, img=None, automata:interactiveAutomata=None, variables_dict:dict={}):
 
         self.window = tk.Tk()
         super().__init__(self.window)
 
         self.automata = automata
+        self.variables_dict = variables_dict
        
         self.matriz_affin = numpy.eye(3)       # matriz de transformación afín inicial
         self.automata_initialized = False
@@ -204,7 +204,7 @@ class Interface(tk.Frame):
         c = self.automata.get_cell( x_image, y_image )
 
         contador = 0
-        for var_name in variables_dict:
+        for var_name in self.variables_dict:
             value = c.get_variable(var_name)
             entrada = var_name + ': ' + str(value)
             var_list.insert(contador, entrada)

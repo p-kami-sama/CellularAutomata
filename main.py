@@ -8,7 +8,8 @@ import InteractiveAutomata as interactiveAutomata
 
 # from initialData.transition_rule import transition_rule_GameOfLife
 # from initialData.States import States
-from celula.statistics_functions import *
+
+# from celula.statistics_functions import *
 
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
@@ -17,11 +18,8 @@ from automata.Borders import Borders
 
 
 
-print('Se inicia el automata')
 
-import Cell as cell
-c = cell.Cell(0, 0, 0, 0, 0, 0)
-c.get_state()
+
 
 
 
@@ -40,17 +38,8 @@ ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_stat
 
 ia.open_initial_interface()
 
-print('--------')
-print(ia.get_cell(1, 1, 0))
-print(ia.neighborhood)
-print(ia.border)
-print(ia.transition_rule)   # aqui, falla
-print(ia.transition_rule(ia.get_cell(1, 1)))
-print(ia.neighborhood_list)
-print('--------')
-
 ia.open_interface()
-# ia.open_interface()
-# ia.store_data_in_json()
+
+ia.store_data_in_json()
 
 

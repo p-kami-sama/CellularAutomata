@@ -1,10 +1,6 @@
 from enum import Enum
 
 class States(str, Enum):
-    # Quemado = 'Quemado'
-    # Combustible = 'Combustible'
-    # Ardiendo = 'Ardiendo'
-    # Ignifugo = 'Ignifugo'
 
     Vivo = 'Vivo'
     Muerto = 'Muerto'

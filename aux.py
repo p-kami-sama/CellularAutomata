@@ -62,7 +62,7 @@ print(  issubclass(type(elem), str) and issubclass(type(elem), Enum)  )
 # Cell      -> States.py    / SOLO Para controles de error  OK
 # InitialDataInterface    ->  ----              
 # InteractiveAutomata ->  ----
-# Interface   ->  from variables_dict.py
+# Interface   ->  from variables_dict.py    OK?
 
 # CANVIAR TODA CREACION DE OBJETO Cell
 
