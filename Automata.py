@@ -122,9 +122,9 @@ class Automata:
                 raise ValueError(message)
 
             if new_neighborhood_type == Neighborhoods.VON_NEUMANN: # como un rombo
-                self.neighborhood_list = self.von_Neumann_neighborhood(radius_or_list_of_desp)
+                self.neighborhood_list = self.__von_Neumann_neighborhood(radius_or_list_of_desp)
             elif new_neighborhood_type == Neighborhoods.MOORE:   # cuadrado
-                self.neighborhood_list = self.moore_neighborhood(radius_or_list_of_desp)
+                self.neighborhood_list = self.__moore_neighborhood(radius_or_list_of_desp)
 
         self.neighborhood = new_neighborhood_type
         return old_neighborhood_type
@@ -220,8 +220,8 @@ class Automata:
                 return self.get_cell(obj_x, obj_y)
 
         elif self.border == Borders.REFLECTIVE:
-            obj_x = self.reflexion_lineal(orig_x, desp_x, self.width)
-            obj_y = self.reflexion_lineal(orig_y, desp_y, self.height)
+            obj_x = self.__reflexion_lineal(orig_x, desp_x, self.width)
+            obj_y = self.__reflexion_lineal(orig_y, desp_y, self.height)
             return self.get_cell(obj_x, obj_y)
 
         elif self.border == Borders.ADIABATIC:    # usa la celula del borde como células vecinas
@@ -362,7 +362,7 @@ class Automata:
         return id
 
 
-# Devuelve True si se ha eliminado el estadistico correctamente y False cuando no hay un estadistico con el id dado
+    # Devuelve True si se ha eliminado el estadistico correctamente y False cuando no hay un estadistico con el id dado
     def delete_statistic(self, id:int) -> bool:
         if id in self.statistics.keys():
             del self.statistics[id]
@@ -377,7 +377,7 @@ class Automata:
 
 
 # Funciones auxiliares
-    def moore_neighborhood(self, radius:int)-> list:
+    def __moore_neighborhood(self, radius:int)-> list:
         l = []
         for x in range (-radius, radius+1):
             for y in range (-radius, radius+1):
@@ -386,7 +386,7 @@ class Automata:
         l.remove( (0, 0) )
         return l
 
-    def von_Neumann_neighborhood(self, radius:int):
+    def __von_Neumann_neighborhood(self, radius:int):
         l = []
         for x in range (-radius, radius+1):
             for y in range (-radius, radius+1):
@@ -397,7 +397,7 @@ class Automata:
         return l
 
 
-    def reflexion_lineal(self, ini:int, desp:int, size:int) -> int:
+    def __reflexion_lineal(self, ini:int, desp:int, size:int) -> int:
         size_1 = size - 1
         if 0 <= ini+desp and ini+desp < size:
             return ini+desp

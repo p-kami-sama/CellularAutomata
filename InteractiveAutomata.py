@@ -51,32 +51,72 @@ class InteractiveAutomata(Automata):
 
         # saber si el directorio self.initial_data_file_path existe
 
-
-        if initial_data_file_path is None:
+        
+        if initial_data_file_path is None:  # Se busca ./initialData/
             if system() == 'Windows':
                 self.initial_data_file_path = '.\\initialData'
             elif system() == 'Darwin' or system() == 'Linux':
                 self.initial_data_file_path = './initialData/'
-        else:
+      
+            print('------\n', 'RESULTADO -> ',  os.path.exists(self.initial_data_file_path), self.initial_data_file_path, '\n....')
+            if os.path.exists(self.initial_data_file_path):
+                from initialData.States import States
+                from initialData.states_color_dict import states_color_dict
+                from initialData.variables_dict import variables_dict
+
+                self.valid_states = []
+                for s in States:
+                    self.valid_states.append(s)
+
+                self.states_color_dict = states_color_dict
+                self.variables_dict = variables_dict
+            else:
+                self.States = None
+                self.states_color_dict = None
+                self.variables_dict = None
+
+        else:   # Se especifica una ruta inicial
             self.initial_data_file_path = initial_data_file_path
+            print('------\n', 'RESULTADO -> ',  os.path.exists(self.initial_data_file_path), self.initial_data_file_path, '\n....')
+            if os.path.exists(self.initial_data_file_path):
+                sys.path.append( self.initial_data_file_path )
+                from states_color_dict import states_color_dict
+                from States import States
+                from transition_rule import transition_rule
+                from variables_dict import variables_dict
+
+                self.states_color_dict = states_color_dict
+                self.valid_states = []
+                for s in States:
+                    self.valid_states.append(s)
+                self.set_transition_rule(transition_rule)
+                self.variables_dict = variables_dict
 
 
-            # REVISAR Y ACABAR
-        if os.path.exists(self.initial_data_file_path):
-            from initialData.States import States
-            from initialData.states_color_dict import states_color_dict
-            from initialData.variables_dict import variables_dict
+                if system() == 'Windows':
+                    path_separator ='\\'
+                elif system() == 'Darwin' or system() == 'Linux':
+                    path_separator ='/'
 
-            self.valid_states = []
-            for s in States:
-                self.valid_states.append(s)
+                # extraer, initial_state de archivo Python
+                if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
+                    from initial_state import initial_state
+                    self.set_initial_state(initial_state)
 
-            self.states_color_dict = states_color_dict
-            self.variables_dict = variables_dict
-        else:
-            self.States = None
-            self.states_color_dict = None
-            self.variables_dict = None
+                else:   # cargar estado inicial de csv e imagen
+                    csv_files = glob.glob(self.initial_data_file_path + "/*.csv")               # obtiene todos los csv,
+                    tif_initial_image = glob.glob(self.initial_data_file_path + "/*.tif")[0]    # obtiene primera imagen .tif
+                    self.__set_initial_state_image_csv( tif_initial_image, csv_files)
+
+
+
+
+
+
+            else:
+                self.States = None
+                self.states_color_dict = None
+                self.variables_dict = None
 
 
 
@@ -209,79 +249,6 @@ class InteractiveAutomata(Automata):
         
 
 
-    def __set_initial_state_image_csv(self, tif_initial_image, csv_files):
-        self.initial_state_route = tif_initial_image
-
-        img = Image.open( tif_initial_image )
-        pix = img.load()
-        x, y = img.size
-        self.width = x
-        self.height = y
-        matrix = []
-        for y in range(0, self.height):
-            row_list = []
-            for x in range(0, self.width):
-                if (len(pix[x, y]) == 3):
-                    r, g, b = pix[x, y]
-                    state = self.__get_state_from_color(r, g, b, x, y)
-
-                elif (len(pix[x, y]) == 4):
-                    r, g, b, a = pix[x, y]
-                    state = self.__get_state_from_color(r, g, b, x, y)
-
-                row_list.append({'state': state})
-            matrix.append(row_list)
-
-        # leer archivos csv
-        if len(csv_files) != 0:
-            for route_to_file in csv_files:
-                file_name = os.path.basename(route_to_file).split('.')[0]
-                if not (file_name in self.variables_dict):
-                    message = 'In "variables_dict.py" there is no type of ' + \
-                        'variable assigned to file "' +route_to_file +'".'
-                    raise ValueError(message)
-
-                var_type = self.variables_dict[file_name]
-                with open(route_to_file, newline='') as f:
-                    reader = csv.reader(f)
-                    y = 0
-                    for row in reader:
-                        x = 0
-                        for elem in row:
-                            if var_type == 'int':
-                                value = int(elem)
-                            elif var_type == 'float':
-                                value = float(elem)
-                            elif var_type == 'str':
-                                value = str(elem)
-                            elif var_type == 'bool':
-                                value = bool(elem)
-                            matrix[y][x][file_name] = value
-                            x += 1
-                        y += 1
-
-        # Pasa de diccionario a celulas
-        malla = []
-        y = 0
-        for fila in matrix:
-            mallaAux = []
-            x = 0
-            for elem in fila:
-                vars = elem.copy()
-                del vars['state'] 
-                c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars)
-                mallaAux.append(c)
-                x = x+1
-                
-            malla.append(mallaAux)
-            y = y+1
-
-        self.iterations = {}
-        self.iterations[0] = malla
-        self.actual_iteration = 0
-        self.last_iteration_calculated = 0
-
-    
 
     # hace la nueva iteración y crea la nueva foto
     # devuelve el path de la nueva imagen
@@ -380,10 +347,81 @@ class InteractiveAutomata(Automata):
 
 
 
-# revisar -> i, j mal (pasar como parámetro ???)
+    def __set_initial_state_image_csv(self, tif_initial_image, csv_files):
+        self.initial_state_route = tif_initial_image
+
+        img = Image.open( tif_initial_image )
+        pix = img.load()
+        x, y = img.size
+        self.width = x
+        self.height = y
+        matrix = []
+        for y in range(0, self.height):
+            row_list = []
+            for x in range(0, self.width):
+                if (len(pix[x, y]) == 3):
+                    r, g, b = pix[x, y]
+                    state = self.__get_state_from_color(r, g, b, x, y)
+
+                elif (len(pix[x, y]) == 4):
+                    r, g, b, a = pix[x, y]
+                    state = self.__get_state_from_color(r, g, b, x, y)
+
+                row_list.append({'state': state})
+            matrix.append(row_list)
+
+        # leer archivos csv
+        if len(csv_files) != 0:
+            for route_to_file in csv_files:
+                file_name = os.path.basename(route_to_file).split('.')[0]
+                if not (file_name in self.variables_dict):
+                    message = 'In "variables_dict.py" there is no type of ' + \
+                        'variable assigned to file "' +route_to_file +'".'
+                    raise ValueError(message)
+
+                var_type = self.variables_dict[file_name]
+                with open(route_to_file, newline='') as f:
+                    reader = csv.reader(f)
+                    y = 0
+                    for row in reader:
+                        x = 0
+                        for elem in row:
+                            if var_type == 'int':
+                                value = int(elem)
+                            elif var_type == 'float':
+                                value = float(elem)
+                            elif var_type == 'str':
+                                value = str(elem)
+                            elif var_type == 'bool':
+                                value = bool(elem)
+                            matrix[y][x][file_name] = value
+                            x += 1
+                        y += 1
+
+        # Pasa de diccionario a celulas
+        malla = []
+        y = 0
+        for fila in matrix:
+            mallaAux = []
+            x = 0
+            for elem in fila:
+                vars = elem.copy()
+                del vars['state'] 
+                c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars)
+                mallaAux.append(c)
+                x = x+1
+                
+            malla.append(mallaAux)
+            y = y+1
+
+        self.iterations = {}
+        self.iterations[0] = malla
+        self.actual_iteration = 0
+        self.last_iteration_calculated = 0
+
+    
+
     def __get_state_from_color(self, red:int, green:int, blue:int, xpos:int, ypos:int):
-        # i = -1
-        # j = -1
         value = (int(red), int(green), int(blue))
 
         if not (value in list(self.states_color_dict.values()) ):
