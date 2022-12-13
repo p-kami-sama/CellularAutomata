@@ -71,8 +71,8 @@ class InteractiveAutomata(Automata):
                 self.states_color_dict = states_color_dict
                 self.variables_dict = variables_dict
             else:
-                self.States = None
-                self.states_color_dict = None
+                self.valid_states = []
+                self.states_color_dict = {}
                 self.variables_dict = None
 
         else:   # Se especifica una ruta inicial
@@ -114,8 +114,8 @@ class InteractiveAutomata(Automata):
 
 
             else:
-                self.States = None
-                self.states_color_dict = None
+                self.valid_states = []
+                self.states_color_dict = {}
                 self.variables_dict = None
 
 
