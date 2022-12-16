@@ -379,12 +379,14 @@ class Automata:
             json.dump(self.data, file, indent=4)
 
 
-    def clear_results_file(self):        
-        if system() == 'Windows':
-            self.initial_data_file_path = '.\\initialData'
-            results_file = '.\\results'
-        elif system() == 'Darwin' or system() == 'Linux':
-            results_file = './results'
+    def clear_results_file(self, route_file_to_clear = None):
+        if route_file_to_clear is None:
+            if system() == 'Windows':
+                results_file = '.\\results'
+            elif system() == 'Darwin' or system() == 'Linux':
+                results_file = './results'
+        else:
+            results_file = route_file_to_clear
 
         for f in os.listdir(results_file):
             os.remove(os.path.join(results_file, f))
