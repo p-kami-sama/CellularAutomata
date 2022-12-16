@@ -1,6 +1,9 @@
 import Cell as cell
-from initialData.States import States
 
+from .States import States
+
+def GATO(s):
+    print('GATO', s)
 
 def statistic_1_function(c:cell):
     if c.state == States.Ardiendo:

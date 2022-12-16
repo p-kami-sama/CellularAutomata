@@ -10,6 +10,10 @@ import InteractiveAutomata as interactiveAutomata
 
 class Interface(tk.Frame):
     def __init__(self, img=None, automata:interactiveAutomata=None, variables_dict:dict={}):
+        if img is None:
+            message = 'The file with the initial data was not found. '+\
+                'checks that the initial path specified is correct.'
+            raise AttributeError(message)
 
         self.window = tk.Tk()
         super().__init__(self.window)
