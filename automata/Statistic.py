@@ -4,7 +4,7 @@ import typing
 
 
 class Statistic:
-    def __init__(self, automata:automata, check_function, message:str, variables_to_print:typing.List[str]):
+    def __init__(self, automata:automata, check_function, message:str='', variables_to_print:typing.List[str]=[]):
         self.message = message
         self.check_function = check_function
         self.automata = automata

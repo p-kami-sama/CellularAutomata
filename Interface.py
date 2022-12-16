@@ -6,16 +6,20 @@ import numpy as numpy
 import InteractiveAutomata as interactiveAutomata
 
 
-from InteractiveAutomataData.variables_dict import variables_dict
 
 
 class Interface(tk.Frame):
-    def __init__(self, img=None, automata:interactiveAutomata=None):
+    def __init__(self, img=None, automata:interactiveAutomata=None, variables_dict:dict={}):
+        if img is None:
+            message = 'The file with the initial data was not found. '+\
+                'checks that the initial path specified is correct.'
+            raise AttributeError(message)
 
         self.window = tk.Tk()
         super().__init__(self.window)
 
         self.automata = automata
+        self.variables_dict = variables_dict
        
         self.matriz_affin = numpy.eye(3)       # matriz de transformación afín inicial
         self.automata_initialized = False
@@ -25,7 +29,7 @@ class Interface(tk.Frame):
 
         # definicion de la ventana
         self.window.title('CellularAutomataInterface')
-        self.window.geometry('600x400')
+        self.window.geometry('1280x720')
 
         # Canvas
         self.canvas = tk.Canvas(self.window, background='black', relief = tk.RAISED)
@@ -54,16 +58,25 @@ class Interface(tk.Frame):
         self.button_automatic_play.pack( side = tk.LEFT , fill=tk.X)       
 
         self.button_start = tk.Button(bar_buttons, text='Start', fg='red', command=self.button_start_pressed ) 
-        self.button_start.pack( side = tk.TOP )
+        self.button_start.pack( side = tk.LEFT )
+
+        label_ms = tk.Label(bar_buttons, text='ms', anchor=tk.W, padx = 10)
+        label_ms.pack(side=tk.RIGHT)       
+        self.slidebar = tk.Scale(bar_buttons, from_=10, to=5000, resolution=10, tickinterval=0, orient=tk.HORIZONTAL, showvalue=True, digits=0, state=tk.NORMAL )
+        self.slidebar.set(1000)
+        self.slidebar.pack( side = tk.RIGHT , padx=10, pady=5)
+
+        
 
         bar_buttons.pack(side=tk.BOTTOM, fill=tk.X)
 
+
         # eventos de raton
-        self.window.bind('<Motion>', self.mouse_move)
-        self.window.bind('<Button-1>', self.mouse_click_left)
-        self.window.bind('<B1-Motion>', self.mouse_click_left_and_drag)
-        self.window.bind('<Double-Button-1>', self.show_cell_data)  # doble click de boton izquierdo
-        self.window.bind('<MouseWheel>', self.mouse_wheel_zoom)
+        self.canvas.bind('<Motion>', self.mouse_move)
+        self.canvas.bind('<Button-1>', self.mouse_click_left)
+        self.canvas.bind('<B1-Motion>', self.mouse_click_left_and_drag)
+        self.canvas.bind('<Double-Button-1>', self.show_cell_data)  # doble click de boton izquierdo
+        self.canvas.bind('<MouseWheel>', self.mouse_wheel_zoom)
 
         # Eventos de teclado
         self.window.bind('<Left>', self.back_pressed)
@@ -84,6 +97,7 @@ class Interface(tk.Frame):
             if not (new_image_path is None):
                 self.set_image(new_image_path)
 
+
     def next_pressed(self, event=None):
         if not self.auto_play or (event == True):
             new_image_path = self.automata.next_image_iteration()
@@ -92,6 +106,7 @@ class Interface(tk.Frame):
                 self.button_start.pack_forget() 
                 self.automata_initialized = True
 
+
     def button_start_pressed(self, event=None):
         self.automata_initialized = True
         self.reset_zoom()
@@ -99,8 +114,6 @@ class Interface(tk.Frame):
 
 
     def automatic_play(self, event=None):
-
-
         if not self.automata_initialized:
             self.button_start_pressed()
         if self.auto_play:
@@ -116,13 +129,13 @@ class Interface(tk.Frame):
             self.button_automatic_play['fg'] = 'red'
             self.button_back['state'] = 'disabled'
             self.button_next['state'] = 'disabled'
-            self.window.after(1000, self.automatic_next)
+            self.window.after(self.slidebar.get(), self.automatic_next)
 
 
     def automatic_next(self):
         if self.auto_play:
             self.next_pressed(True)
-            self.window.after(1000, self.automatic_next)
+            self.window.after(self.slidebar.get(), self.automatic_next)
 
 
     def space_or_return_key_pressed(self, event=None):
@@ -138,17 +151,18 @@ class Interface(tk.Frame):
         self.last_click_x = event.x
         self.last_click_y = event.y
 
+
     def mouse_click_left_and_drag(self, event=None):
         self.translate(event.x - self.last_click_x, event.y - self.last_click_y)
         self.draw_image() 
         self.last_click_x = event.x
         self.last_click_y = event.y
 
+
     def mouse_move(self, event=None):
+
         # Se obtiene las coordenadas del pixel de la imagen
         mat_inv = numpy.linalg.inv(self.matriz_affin)  # calcula la matriz inversa de la matriz affin
-        
-      
         x_image, y_image, _ = numpy.dot(mat_inv, (event.x, event.y, 1.0)) # producto escalar
 
         # Si el raton esta fuera de la imagen
@@ -160,9 +174,6 @@ class Interface(tk.Frame):
             self.label_mouse_cell_ubication['text'] = str(state) + ' ('+ str( int(x_image) )+', '+str(int( y_image ))+')'
 
 
-
-
-   
 
     def mouse_wheel_zoom(self, event=None):
         self.translate(-event.x, -event.y)
@@ -202,20 +213,14 @@ class Interface(tk.Frame):
         var_list.pack(expand=True, fill=tk.BOTH)
 
         c = self.automata.get_cell( x_image, y_image )
-
         contador = 0
-        for var_name in variables_dict:
+        for var_name in self.variables_dict:
             value = c.get_variable(var_name)
             entrada = var_name + ': ' + str(value)
             var_list.insert(contador, entrada)
             contador += 1
 
         var_list.place(x=0, y=0)
-
-    
-
-
-
 
 
     def set_image(self, filename):
@@ -235,6 +240,7 @@ class Interface(tk.Frame):
         matrix[1, 2] = float(offset_y)
         self.matriz_affin = numpy.dot(matrix, self.matriz_affin) # producto escalar
 
+
     def scale(self, scale:float):
         matrix = numpy.eye(3)
         matrix[0, 0] = scale
@@ -245,11 +251,8 @@ class Interface(tk.Frame):
     def set_zoom(self):
         image_width = self.iteration_image.width
         image_height = self.iteration_image.height
-
         canvas_width = self.canvas.winfo_width()
         canvas_height = self.canvas.winfo_height()
-        # if (image_width * image_height <= 0) or (canvas_width * canvas_height <= 0):
-        #     return
         self.matriz_affin = numpy.eye(3)
 
         scale = 1.0
@@ -266,7 +269,6 @@ class Interface(tk.Frame):
 
         self.scale(scale)
         self.translate(offsetx, offsety)
-
 
 
     def draw_image(self):

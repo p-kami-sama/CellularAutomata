@@ -1,41 +1,33 @@
-
-import sys
-import csv
-
-
 # IMPORTS
 import InteractiveAutomata as interactiveAutomata
-
-from celula.transition_rule import transition_rule_GameOfLife
-from celula.States import States
-from celula.statistics_functions import *
-
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
-from automata.initial_state import initial_state_GameOfLife
 
 
+# from examples.GameOfLifeData.statistics_functions import *
+def cosa():
+    pass
 
-print('Se inicia el automata')
+# obtiene lista de nombres de estadisticos
+import examples.GameOfLifeData.statistics_functions as sss
+functions_list = [name for name, val in sss.__dict__.items() if callable(val) and  isinstance(val, type(cosa))]
 
+print(functions_list)
 
+for func in functions_list:
+    print(func)
 
-
-ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_state=None)
-
-
-ia.set_border(Borders.FIXED, States.Muerto)
-ia.set_neighborhood(Neighborhoods.MOORE, 1)
-
-# ia.set_initial_state(initial_state_GameOfLife)
-ia.set_initial_state_from_image_and_csv()
-
-ia.set_transition_rule(transition_rule_GameOfLife)
-ia.add_statistic(statistic_function_count_10_iterations, '', ['tiempo_vivo', 'tiempo_muerto'])
+func = getattr(sss, 'States')
+print( type(func), isinstance(func, type(cosa)))
 
 
+ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_data_file_path='/Users/paul/Desktop/CellularAutomata/examples/GameOfLifeData')
+ia.set_border(Borders.PERIODIC)
+ia.set_neighborhood(Neighborhoods.MOORE)
 ia.open_interface()
 ia.store_data_in_json()
 
-
-
+# ia2 = interactiveAutomata.InteractiveAutomata()
+# ia2.open_initial_interface()
+# ia2.open_interface()
+# ia2.store_data_in_json()

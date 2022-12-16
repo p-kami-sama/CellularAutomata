@@ -1,13 +1,15 @@
 from typing import Any, List, Tuple
 import Automata as automata
 
-from celula.States import States 
+# from initialData.States import States 
 
-
+from enum import Enum
 
 class Cell:
-    def __init__(self, automata:automata, xpos:int, ypos:int, state:States, variables:dict={}):
-        if not isinstance(state, States):
+    def __init__(self, automata:automata, xpos:int, ypos:int, state:Any, valid_states:List[Any], variables:dict={}):
+        self.valid_states = valid_states
+        
+        if not (state in self.valid_states):
             message = 'A cell with state ' + str(state)+\
                 ' cannot be created because it is not included in the States enumeration.'
             raise ValueError(message)
@@ -34,13 +36,13 @@ class Cell:
         return pos
 
 
-    def get_state(self) -> States:
+    def get_state(self) -> Enum:
         return self.state
 
 
-    def set_state(self, new_state:States) -> Any:
-        if not isinstance(new_state, States):
-            message = 'The given state is not included in the enumeration of states.'
+    def set_state(self, new_state:Enum) -> Any:
+        if not (new_state in self.valid_states):
+            message = 'The given state is not included in the "valid_states" list.'
             raise ValueError(message)
         else:
             self.state = new_state
@@ -75,7 +77,7 @@ class Cell:
 
 
 #   obtener lista de estados de todos los vecinos
-    def get_list_of_states_of_all_neighbors(self) -> List[States]:
+    def get_list_of_states_of_all_neighbors(self) -> List[Enum]:
         lista = []
         for x, y in self.automata.neighborhood_list:
             elem = self.automata.get_neighbour_cell(self.xpos, self.ypos, x, y)
@@ -83,8 +85,8 @@ class Cell:
         return lista
 
 # state
-    def any_neighbor_has_state(self, state:States) -> bool:
-        if not isinstance(state, States):
+    def any_neighbor_has_state(self, state:Enum) -> bool:
+        if not (state in self.valid_states):
             message = 'The given state is not included in the enumeration of states'
             raise ValueError(message)
 
@@ -94,8 +96,8 @@ class Cell:
                 return True
         return False
 
-    def all_neighbours_has_state(self, state:States)-> bool:
-        if not isinstance(state, States):
+    def all_neighbours_has_state(self, state:Enum)-> bool:
+        if not (state in self.valid_states):
             message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
             
@@ -105,8 +107,8 @@ class Cell:
                 return False
         return True
 
-    def count_neighbors_with_state(self, state:States) -> int:
-        if not isinstance(state, States):
+    def count_neighbors_with_state(self, state:Enum) -> int:
+        if not (state in self.valid_states):
             message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
 
