@@ -21,7 +21,8 @@ func = getattr(sss, 'States')
 print( type(func), isinstance(func, type(cosa)))
 
 
-ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_data_file_path='/Users/paul/Desktop/CellularAutomata/examples/GameOfLifeData')
+ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_data_file_path='./examples/GameOfLifeData')
+
 ia.clear_results_file()
 ia.set_border(Borders.PERIODIC)
 ia.set_neighborhood(Neighborhoods.MOORE)
