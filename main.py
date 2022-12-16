@@ -22,10 +22,13 @@ print( type(func), isinstance(func, type(cosa)))
 
 
 ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_data_file_path='/Users/paul/Desktop/CellularAutomata/examples/GameOfLifeData')
+ia.clear_results_file()
 ia.set_border(Borders.PERIODIC)
 ia.set_neighborhood(Neighborhoods.MOORE)
 ia.open_interface()
 ia.store_data_in_json()
+
+
 
 # ia2 = interactiveAutomata.InteractiveAutomata()
 # ia2.open_initial_interface()

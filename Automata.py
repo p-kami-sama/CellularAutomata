@@ -1,6 +1,8 @@
 import json
 import typing
+import os
 from platform import system
+        
 import Cell as cell
 import automata.Statistic as statistic
 
@@ -178,6 +180,7 @@ class Automata:
         self.data = {}
         self.last_iteration_calculated = 0
         self.actual_iteration = 0
+        self.clear_results_file()
 
 
     def get_cell(self, x:int, y:int, iteration:int=None)-> cell:
@@ -374,6 +377,17 @@ class Automata:
     def store_data_in_json(self, route:str='results/data.json'):
         with open(route, 'w') as file:
             json.dump(self.data, file, indent=4)
+
+
+    def clear_results_file(self):        
+        if system() == 'Windows':
+            self.initial_data_file_path = '.\\initialData'
+            results_file = '.\\results'
+        elif system() == 'Darwin' or system() == 'Linux':
+            results_file = './results'
+
+        for f in os.listdir(results_file):
+            os.remove(os.path.join(results_file, f))
 
 
 # Funciones auxiliares
