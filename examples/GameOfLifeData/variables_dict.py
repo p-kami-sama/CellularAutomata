@@ -9,5 +9,6 @@
 
 variables_dict = {
     'tiempo_vivo': 'int',
-    'tiempo_muerto': 'int'
+    'tiempo_muerto': 'int',
+    'resurrecciones': 'int',
 }
