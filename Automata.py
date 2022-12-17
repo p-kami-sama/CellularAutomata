@@ -387,7 +387,7 @@ class Automata:
 
 
 
-    def add_statistic(self, check_function, message:str, variables_to_print:typing.List[str]) -> int:
+    def add_statistic(self, check_function, message:str='', variables_to_print:typing.List[str]=[]) -> int:
         # Buscar otra forma de asignar id
         id = 0
         for index in range(1, len(self.statistics)+2):
