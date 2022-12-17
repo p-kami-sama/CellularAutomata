@@ -1,30 +1,16 @@
 import Cell as cell
 
-from .States import States
-
-def GATO(s):
-    print('GATO', s)
-
-def statistic_1_function(c:cell):
-    if c.state == States.Ardiendo:
-        return True
-    else:
-        return False
+from States import States
 
 
-def statistic_2_function(c:cell):
-    if c.state == States.Ignifugo:
-        return True
-    else:
-        return False
 
-def statistic_function_revived_cell(c:cell):
-    if c.state == States.Vivo and \
-        (c.automata.get_cell(c.xpos, c.ypos, c.automata.actual_iteration -1).state == States.Muerto):
-        return True
-    else:
-        return False
+statistics_message = {
+    'statistic_function_count_30_iterations': 'Resurrecciones',
+}
 
-def statistic_function_count_10_iterations(c:cell):
-    return (c.automata.actual_iteration != 0) and \
-        ( (c.automata.actual_iteration % 10) == 0)
+statistics_variables = {
+    'statistic_function_count_30_iterations': ['resurrecciones'],
+}
+
+def statistic_function_count_30_iterations(c:cell):
+    return ( (c.automata.actual_iteration % 30) == 0)

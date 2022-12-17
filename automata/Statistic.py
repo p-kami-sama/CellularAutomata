@@ -1,5 +1,4 @@
 import Automata as automata
-import Cell as cell
 import typing
 
 
@@ -10,26 +9,20 @@ class Statistic:
         self.automata = automata
         self.variables_to_print = variables_to_print
 
-    def valid(self, c:cell):
-        return self.check_function(c)
+    def valid(self, cell):
+        return self.check_function(cell)
 
-    def get_json_entry(self, c:cell):
+    def get_json_entry(self, cell):
 
-        if self.variables_to_print == []:
-            data = {
-                    'state': c.get_state(),
-                    'message': self.message,
-                }
-        else:
+        data = { 'state': cell.get_state() }
+
+        if (self.message is not None) and (self.message != ''):
+            data['message'] = self.message
+
+        if (self.variables_to_print is not None) and (self.variables_to_print != []):
             vars_info = {}
-
             for var in self.variables_to_print:
-                vars_info[var] = c.get_variable(var)
-
-            data = {
-                'message': self.message,
-                'state': c.get_state(),
-                'variables': vars_info
-            }
+                vars_info[var] = cell.get_variable(var)
+                data['variables'] = vars_info
 
         return data

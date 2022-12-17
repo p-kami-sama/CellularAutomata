@@ -1,6 +1,10 @@
 import json
 import typing
+import os
+import sys
 from platform import system
+from types import FunctionType
+
 import Cell as cell
 import automata.Statistic as statistic
 
@@ -32,19 +36,51 @@ class Automata:
         self.statistics = {} # id:int, statistics
 
 
-        if initial_data_file_path is None:
+        if initial_data_file_path is None:  # Se busca ./initialData
             if system() == 'Windows':
                 self.initial_data_file_path = '.\\initialData'
             elif system() == 'Darwin' or system() == 'Linux':
-                self.initial_data_file_path = './initialData/'
-        else:
+                self.initial_data_file_path = './initialData'
+      
+            if os.path.exists(self.initial_data_file_path):
+                from initialData.States import States
+                self.valid_states = []
+                for s in States:
+                    self.valid_states.append(s)
+            else:
+                self.valid_states = []
+
+        else:   # Se especifica una ruta inicial
             self.initial_data_file_path = initial_data_file_path
+            if os.path.exists(self.initial_data_file_path):
+                sys.path.append( self.initial_data_file_path )
+                if system() == 'Windows':
+                    path_separator ='\\'
+                elif system() == 'Darwin' or system() == 'Linux':
+                    path_separator ='/'
 
-        from States import States
+                if os.path.exists(self.initial_data_file_path + path_separator + 'States.py'):
+                    from States import States                    
+                    self.valid_states = []
+                    self.set_valid_states(States)
+               
+                        
+                if os.path.exists(self.initial_data_file_path + path_separator + 'transition_rule.py'):
+                    from transition_rule import transition_rule
+                    self.set_transition_rule(transition_rule)
+
+                # extraer, initial_state de archivo Python
+                if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
+                    from initial_state import initial_state
+                    self.set_initial_state(initial_state)
+            else:
+                self.valid_states = []
+        
+
+    def set_valid_states(self, States):
         self.valid_states = []
-        for s in States:
-            self.valid_states.append(s)
-
+        for state in States:
+            self.valid_states.append(state)
 
 
     def set_initial_state(self, mat:list):
@@ -178,6 +214,7 @@ class Automata:
         self.data = {}
         self.last_iteration_calculated = 0
         self.actual_iteration = 0
+        self.clear_results_file()
 
 
     def get_cell(self, x:int, y:int, iteration:int=None)-> cell:
@@ -350,7 +387,7 @@ class Automata:
 
 
 
-    def add_statistic(self, check_function, message:str, variables_to_print:typing.List[str]) -> int:
+    def add_statistic(self, check_function, message:str='', variables_to_print:typing.List[str]=[]) -> int:
         # Buscar otra forma de asignar id
         id = 0
         for index in range(1, len(self.statistics)+2):
@@ -371,9 +408,54 @@ class Automata:
             return False
 
 
+    def add_all_statistics(self):
+        if system() == 'Windows':
+            
+            path_separator ='\\'
+        elif system() == 'Darwin' or system() == 'Linux':
+            path_separator ='/'
+
+        path = self.initial_data_file_path + path_separator + 'statistics_functions.py'
+
+        if os.path.exists(self.initial_data_file_path + path_separator + 'statistics_functions.py'):
+            sys.path.append( self.initial_data_file_path )
+
+            import statistics_functions as statistics
+
+            name_functions_list = [name for name, val in statistics.__dict__.items() if callable(val) and isinstance(val, FunctionType)]
+            statistics_message = getattr(statistics, 'statistics_message')
+            statistics_variables = getattr(statistics, 'statistics_variables')
+            
+            ids_list = []
+            for name in name_functions_list:
+                func = getattr(statistics, name)
+                msg = statistics_message[name]
+                vars_list = statistics_variables[name]
+                id = self.add_statistic(func, msg, vars_list)
+                ids_list.append(id)
+
+        return ids_list
+
+
+
+
+
     def store_data_in_json(self, route:str='results/data.json'):
         with open(route, 'w') as file:
             json.dump(self.data, file, indent=4)
+
+
+    def clear_results_file(self, route_file_to_clear = None):
+        if route_file_to_clear is None:
+            if system() == 'Windows':
+                results_file = '.\\results'
+            elif system() == 'Darwin' or system() == 'Linux':
+                results_file = './results'
+        else:
+            results_file = route_file_to_clear
+
+        for f in os.listdir(results_file):
+            os.remove(os.path.join(results_file, f))
 
 
 # Funciones auxiliares
