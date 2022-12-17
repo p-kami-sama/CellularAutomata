@@ -433,10 +433,11 @@ class Automata:
                 vars_list = statistics_variables[name]
                 id = self.add_statistic(func, msg, vars_list)
                 ids_list.append(id)
+            
+            return ids_list
 
-        return ids_list
-
-
+        else:
+            return None
 
 
 
@@ -454,8 +455,12 @@ class Automata:
         else:
             results_file = route_file_to_clear
 
-        for f in os.listdir(results_file):
-            os.remove(os.path.join(results_file, f))
+        if os.path.exists(results_file):
+            for f in os.listdir(results_file):
+                os.remove(os.path.join(results_file, f))
+        else:
+            os.mkdir(results_file)
+            print('creado')
 
 
 # Funciones auxiliares
