@@ -1,7 +1,6 @@
 import csv
 import math as math
 import sys
-import typing
 import os
 import glob
 
@@ -103,14 +102,13 @@ class InteractiveAutomata(Automata):
                     from initial_state import initial_state
                     self.set_initial_state(initial_state)
 
+                
+
+
                 else:   # cargar estado inicial de csv e imagen
                     csv_files = glob.glob(self.initial_data_file_path + "/*.csv")               # obtiene todos los csv,
                     tif_initial_image = glob.glob(self.initial_data_file_path + "/*.tif")[0]    # obtiene primera imagen .tif
                     self.__set_initial_state_image_csv( tif_initial_image, csv_files)
-
-
-
-
 
 
             else:

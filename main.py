@@ -3,31 +3,17 @@ import InteractiveAutomata as interactiveAutomata
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
 
-
-# from examples.GameOfLifeData.statistics_functions import *
-def cosa():
-    pass
-
-# obtiene lista de nombres de estadisticos
-import examples.GameOfLifeData.statistics_functions as sss
-functions_list = [name for name, val in sss.__dict__.items() if callable(val) and  isinstance(val, type(cosa))]
-
-print(functions_list)
-
-for func in functions_list:
-    print(func)
-
-func = getattr(sss, 'States')
-print( type(func), isinstance(func, type(cosa)))
+import Automata as automata
 
 
-ia = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_data_file_path='./examples/GameOfLifeData')
 
-ia.clear_results_file()
-ia.set_border(Borders.PERIODIC)
-ia.set_neighborhood(Neighborhoods.MOORE)
-ia.open_interface()
-ia.store_data_in_json()
+game_of_life = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_data_file_path='./examples/GameOfLifeData')
+game_of_life.clear_results_file()
+game_of_life.add_all_statistics()
+game_of_life.set_border(Borders.PERIODIC)
+game_of_life.set_neighborhood(Neighborhoods.MOORE)
+game_of_life.open_interface()
+game_of_life.store_data_in_json()
 
 
 
