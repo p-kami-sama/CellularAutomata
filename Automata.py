@@ -195,7 +195,7 @@ class Automata:
             else:
                 message = 'The second parameter "fixed_cell" must be an object of type Cell '+\
                     'or part of the States enumeration.'
-                raise ValueError(message)
+                raise TypeError(message)
 
         return old_border_type
 

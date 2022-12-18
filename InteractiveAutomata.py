@@ -26,8 +26,6 @@ from automata.Borders import Borders
 class InteractiveAutomata(Automata):
     
     def __init__(self, store_trace_back:bool=False, initial_data_file_path:str=None):
-        # valores propios: initial_state_route:str
-        # el resto son heredados de Automata
 
         self.height = 0
         self.width = 0
@@ -47,10 +45,8 @@ class InteractiveAutomata(Automata):
         self.statistics = {} # id:int, statistics
         self.initial_state_route = None
 
-
         # saber si el directorio self.initial_data_file_path existe
 
-        
         if initial_data_file_path is None:  # Se busca ./initialData/
             if system() == 'Windows':
                 self.initial_data_file_path = '.\\initialData'
@@ -82,36 +78,43 @@ class InteractiveAutomata(Automata):
                 from states_color_dict import states_color_dict
                 from States import States
                 from transition_rule import transition_rule
-                from variables_dict import variables_dict
 
                 self.states_color_dict = states_color_dict
                 self.valid_states = []
                 for s in States:
                     self.valid_states.append(s)
                 self.set_transition_rule(transition_rule)
-                self.variables_dict = variables_dict
-
 
                 if system() == 'Windows':
                     path_separator ='\\'
                 elif system() == 'Darwin' or system() == 'Linux':
                     path_separator ='/'
 
+                if os.path.exists(self.initial_data_file_path + path_separator + 'variables_dict.py'):
+                    from variables_dict import variables_dict
+                    self.variables_dict = variables_dict             
+                else:
+                    self.variables_dict = {}
+
                 # extraer, initial_state de archivo Python
                 if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
                     from initial_state import initial_state
                     self.set_initial_state(initial_state)
 
-                
-
-
                 else:   # cargar estado inicial de csv e imagen
-                    csv_files = glob.glob(self.initial_data_file_path + "/*.csv")               # obtiene todos los csv,
-                    tif_initial_image = glob.glob(self.initial_data_file_path + "/*.tif")[0]    # obtiene primera imagen .tif
+                    csv_files = glob.glob(self.initial_data_file_path + '/*.csv')               # obtiene todos los csv,
+                    # obtiene primera imagen .tif o .tiff como estado inicial.
+                    tif  = glob.glob(self.initial_data_file_path + '/*.tif')
+                    tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
+                    if len(tif + tiff) == 0:
+                        message = 'There is no ".tif" or ".tiff" file to use as the initial state of the cellular automaton.'
+                        raise IndexError(message)
+                    else:
+                        tif_initial_image = (tif + tiff)[0]
                     self.__set_initial_state_image_csv( tif_initial_image, csv_files)
 
 
-            else:
+            else:   # No existe el estado inicial dado
                 self.valid_states = []
                 self.states_color_dict = {}
                 self.variables_dict = None
@@ -227,7 +230,16 @@ class InteractiveAutomata(Automata):
 
         else:   # cargar estado inicial de csv e imagen
             csv_files = glob.glob(self.initial_data_file_path + "/*.csv")               # obtiene todos los csv,
-            tif_initial_image = glob.glob(self.initial_data_file_path + "/*.tif")[0]    # obtiene primera imagen .tif
+
+            tif  = glob.glob(self.initial_data_file_path + '/*.tif')
+            tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
+            if len(tif + tiff) == 0:
+                message = 'There is no ".tif" or ".tiff" file to use as the initial state of the cellular automaton.'
+                raise IndexError(message)
+            else:
+                tif_initial_image = (tif + tiff)[0]
+            
+            
             self.__set_initial_state_image_csv( tif_initial_image, csv_files)
 
 
@@ -242,7 +254,15 @@ class InteractiveAutomata(Automata):
 
         folder_path = abs_path + path_separator + 'initialData'
         csv_files = glob.glob(folder_path + "/*.csv")               # obtiene todos los csv,
-        tif_initial_image = glob.glob(folder_path + "/*.tif")[0]    # obtiene primera imagen .tif
+
+        tif  = glob.glob(self.initial_data_file_path + '/*.tif')
+        tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
+        if len(tif + tiff) == 0:
+            message = 'There is no ".tif" or ".tiff" file to use as the initial state of the cellular automaton.'
+            raise IndexError(message)
+        else:
+            tif_initial_image = (tif + tiff)[0]
+
         self.__set_initial_state_image_csv(tif_initial_image, csv_files)
         
 
@@ -276,9 +296,6 @@ class InteractiveAutomata(Automata):
             img.save(route_to_image)
 
             # Se crean los archivos csv
-            tif_initial_image = glob.glob(self.initial_data_file_path + "/*.tif")[0]
-            self.initial_state_route = tif_initial_image
-
             for var_name, var_type in self.variables_dict.items():
                 # se hace un csv por cada variable
                 route_to_csv = abs_path + path_separator + 'results'+ path_separator + \
