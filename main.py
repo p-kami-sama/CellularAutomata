@@ -17,6 +17,7 @@ import Automata as automata
 # game_of_life.store_data_in_json()
 
 
+
 #####   Brian'n Brain
 
 # brians_brain = interactiveAutomata.InteractiveAutomata(False, './examples/BriansBrain')
@@ -25,7 +26,15 @@ import Automata as automata
 # brians_brain.set_neighborhood(Neighborhoods.MOORE, 1)
 # brians_brain.open_interface()
 
-# ia2 = interactiveAutomata.InteractiveAutomata()
-# ia2.open_initial_interface()
-# ia2.open_interface()
-# ia2.store_data_in_json()
+
+
+##### Langton's ant
+
+langtons_ant = interactiveAutomata.InteractiveAutomata(False, './examples/LangtonsAnt')
+langtons_ant.clear_results_file()
+langtons_ant.add_all_statistics()
+langtons_ant.set_border(Borders.PERIODIC)
+langtons_ant.set_neighborhood(Neighborhoods.VON_NEUMANN)
+langtons_ant.open_interface()
+
+

@@ -296,6 +296,7 @@ class InteractiveAutomata(Automata):
             img.save(route_to_image)
 
             # Se crean los archivos csv
+
             for var_name, var_type in self.variables_dict.items():
                 # se hace un csv por cada variable
                 route_to_csv = abs_path + path_separator + 'results'+ path_separator + \
