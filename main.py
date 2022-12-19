@@ -6,13 +6,7 @@ from automata.Borders import Borders
 
 
 
-#Cada bloque de codigo crea un automata celular a partir de cada uno de los archivos de ejemplo 
-
-
-
-
-
-
+# Cada bloque de codigo crea un automata celular a partir de cada uno de los archivos de ejemplo
 
 
 
