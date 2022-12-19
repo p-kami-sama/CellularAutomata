@@ -130,7 +130,7 @@ class Cell:
         return list_of_values
 
 
-    def get_values_of_variable_from_neighbors_that_satisfy(self, variable_name:str, func):
+    def get_values_of_variable_from_neighbors_that_satisfy(self, variable_name:str, func) -> List[Any]:
         list_of_values = []
         for x, y in self.automata.neighborhood_list:
             celula = self.automata.get_neighbour_cell(self.xpos, self.ypos, x, y)
