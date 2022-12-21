@@ -161,7 +161,6 @@ class InteractiveAutomata(Automata):
 
         self.iterations = {}
         self.iterations[0] = malla
-        self.initial_state = malla
         self.actual_iteration = 0
         self.last_iteration_calculated = 0
         self.data = {}
