@@ -10,7 +10,6 @@ from automata.Borders import Borders
 
 
 
-
 #####   Game of Life
 
 game_of_life = interactiveAutomata.InteractiveAutomata(store_trace_back=True, initial_data_file_path='./examples/GameOfLifeData')

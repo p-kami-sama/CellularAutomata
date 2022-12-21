@@ -53,7 +53,6 @@ class InteractiveAutomata(Automata):
             elif system() == 'Darwin' or system() == 'Linux':
                 self.initial_data_file_path = './initialData/'
       
-            print('------\n', 'RESULTADO -> ',  os.path.exists(self.initial_data_file_path), self.initial_data_file_path, '\n....')
             if os.path.exists(self.initial_data_file_path):
                 from initialData.States import States
                 from initialData.states_color_dict import states_color_dict
@@ -72,7 +71,6 @@ class InteractiveAutomata(Automata):
 
         else:   # Se especifica una ruta inicial
             self.initial_data_file_path = initial_data_file_path
-            print('------\n', 'RESULTADO -> ',  os.path.exists(self.initial_data_file_path), self.initial_data_file_path, '\n....')
             if os.path.exists(self.initial_data_file_path):
                 sys.path.append( self.initial_data_file_path )
                 from states_color_dict import states_color_dict
