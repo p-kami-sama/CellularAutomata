@@ -212,7 +212,11 @@ class Interface(tk.Frame):
         var_list.pack(expand=True, fill=tk.BOTH)
 
         c = self.automata.get_cell( x_image, y_image )
-        contador = 0
+        entrada = 'state: ' + str( c.get_state() )
+        var_list.insert(0, entrada)
+        var_list.insert(1, '')
+
+        contador = 2
         for var_name in self.variables_dict:
             value = c.get_variable(var_name)
             entrada = var_name + ': ' + str(value)
