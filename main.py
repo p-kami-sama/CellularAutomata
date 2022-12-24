@@ -39,12 +39,11 @@ from automata.Borders import Borders
 
 #####   Brian'n Brain
 
-# brians_brain = interactiveAutomata.InteractiveAutomata(False, './examples/BriansBrain')
+# brians_brain = interactiveAutomata.InteractiveAutomata(False)
 # brians_brain.clear_results_file()
 # brians_brain.set_border(Borders.PERIODIC)
 # brians_brain.set_neighborhood(Neighborhoods.MOORE, 1)
 # brians_brain.open_interface()
-
 
 
 #####   Langton's ant

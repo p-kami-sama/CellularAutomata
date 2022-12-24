@@ -44,78 +44,85 @@ class InteractiveAutomata(Automata):
         self.data = {}
         self.statistics = {} # id:int, statistics
         self.initial_state_route = None
-
+        # new
+        self.initial_data_file_path = None  # new
+        self.valid_states = []
+        self.states_color_dict = {}
+        self.variables_dict = {}
         # saber si el directorio self.initial_data_file_path existe
 
-        if initial_data_file_path is None:  # Se busca ./initialData/
-            if system() == 'Windows':
-                self.initial_data_file_path = '.\\initialData'
-            elif system() == 'Darwin' or system() == 'Linux':
-                self.initial_data_file_path = './initialData/'
+        self.__set_data_from_file(initial_data_file_path)
+        # COSA RUTA
+
+        # if initial_data_file_path is None:  # Se busca ./initialData/
+        #     if system() == 'Windows':
+        #         self.initial_data_file_path = '.\\initialData'
+        #     elif system() == 'Darwin' or system() == 'Linux':
+        #         self.initial_data_file_path = './initialData/'
       
-            if os.path.exists(self.initial_data_file_path):
-                from initialData.States import States
-                from initialData.states_color_dict import states_color_dict
-                from initialData.variables_dict import variables_dict
+        #     if os.path.exists(self.initial_data_file_path):
+        #         from initialData.States import States
+        #         from initialData.states_color_dict import states_color_dict
+        #         from initialData.variables_dict import variables_dict
 
-                self.valid_states = []
-                for s in States:
-                    self.valid_states.append(s)
+        #         self.valid_states = []
+        #         for s in States:
+        #             self.valid_states.append(s)
 
-                self.states_color_dict = states_color_dict
-                self.variables_dict = variables_dict
-            else:
-                self.valid_states = []
-                self.states_color_dict = {}
-                self.variables_dict = None
+        #         self.states_color_dict = states_color_dict
+        #         self.variables_dict = variables_dict
+        #     else:
+        #         self.valid_states = []
+        #         self.states_color_dict = {}
+        #         self.variables_dict = None
 
-        else:   # Se especifica una ruta inicial
-            self.initial_data_file_path = initial_data_file_path
-            if os.path.exists(self.initial_data_file_path):
-                sys.path.append( self.initial_data_file_path )
-                from states_color_dict import states_color_dict
-                from States import States
-                from transition_rule import transition_rule
+        # else:   # Se especifica una ruta inicial
+        #     self.initial_data_file_path = initial_data_file_path
+        #     if os.path.exists(self.initial_data_file_path):
+        #         sys.path.append( self.initial_data_file_path )
+        #         from states_color_dict import states_color_dict
+        #         from States import States
+        #         from transition_rule import transition_rule
 
-                self.states_color_dict = states_color_dict
-                self.valid_states = []
-                for s in States:
-                    self.valid_states.append(s)
-                self.set_transition_rule(transition_rule)
+        #         self.states_color_dict = states_color_dict
+        #         self.valid_states = []
+        #         for s in States:
+        #             self.valid_states.append(s)
+        #         self.set_transition_rule(transition_rule)
 
-                if system() == 'Windows':
-                    path_separator ='\\'
-                elif system() == 'Darwin' or system() == 'Linux':
-                    path_separator ='/'
+        #         if system() == 'Windows':
+        #             path_separator ='\\'
+        #         elif system() == 'Darwin' or system() == 'Linux':
+        #             path_separator ='/'
 
-                if os.path.exists(self.initial_data_file_path + path_separator + 'variables_dict.py'):
-                    from variables_dict import variables_dict
-                    self.variables_dict = variables_dict             
-                else:
-                    self.variables_dict = {}
+        #         if os.path.exists(self.initial_data_file_path + path_separator + 'variables_dict.py'):
+        #             from variables_dict import variables_dict
+        #             self.variables_dict = variables_dict             
+        #         else:
+        #             self.variables_dict = {}
 
-                # extraer, initial_state de archivo Python
-                if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
-                    from initial_state import initial_state
-                    self.set_initial_state(initial_state)
+        #         # extraer, initial_state de archivo Python
+        #         if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
+        #             from initial_state import initial_state
+        #             self.set_initial_state(initial_state)
 
-                else:   # cargar estado inicial de csv e imagen
-                    csv_files = glob.glob(self.initial_data_file_path + '/*.csv')               # obtiene todos los csv,
-                    # obtiene primera imagen .tif o .tiff como estado inicial.
-                    tif  = glob.glob(self.initial_data_file_path + '/*.tif')
-                    tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
-                    if len(tif + tiff) == 0:
-                        message = 'There is no ".tif" or ".tiff" file to use as the initial state of the cellular automaton.'
-                        raise IndexError(message)
-                    else:
-                        tif_initial_image = (tif + tiff)[0]
-                    self.__set_initial_state_image_csv( tif_initial_image, csv_files)
+        #         else:   # cargar estado inicial de csv e imagen
+        #             csv_files = glob.glob(self.initial_data_file_path + '/*.csv')               # obtiene todos los csv,
+        #             # obtiene primera imagen .tif o .tiff como estado inicial.
+        #             tif  = glob.glob(self.initial_data_file_path + '/*.tif')
+        #             tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
+        #             if len(tif + tiff) == 0:
+        #                 message = 'There is no ".tif" or ".tiff" file to use as the initial state of the cellular automaton.'
+        #                 raise IndexError(message)
+        #             else:
+        #                 tif_initial_image = (tif + tiff)[0]
+        #             self.__set_initial_state_image_csv( tif_initial_image, csv_files)
 
 
-            else:   # No existe el estado inicial dado
-                self.valid_states = []
-                self.states_color_dict = {}
-                self.variables_dict = None
+        #     else:   # No existe el estado inicial dado
+        #         self.valid_states = []
+        #         self.states_color_dict = {}
+        #         self.variables_dict = None
 
 
 
@@ -201,43 +208,55 @@ class InteractiveAutomata(Automata):
         self.initial_data_file_path = dictionary['initial_data_file_path']
         self.store_trace_back = dictionary['store_trace_back']
 
+        
+        # COSA RUTA
+        self.__set_data_from_file( initial_data_file_path=dictionary['initial_data_file_path'] )
+        dictionary['initial_data_file_path']    # USAR ESTO EN FUNCION
+
+
         # import de todos los archivos necesarios
-        sys.path.append(dictionary['initial_data_file_path'])
-        from states_color_dict import states_color_dict
-        from States import States
-        from transition_rule import transition_rule
-        from variables_dict import variables_dict
+        # sys.path.append(dictionary['initial_data_file_path'])
+        # from states_color_dict import states_color_dict
+        # from States import States
+        # from transition_rule import transition_rule
 
-        self.states_color_dict = states_color_dict
-        self.valid_states = []
-        for s in States:
-            self.valid_states.append(s)
-        self.set_transition_rule(transition_rule)
-        self.variables_dict = variables_dict
 
-        if system() == 'Windows':
-            path_separator ='\\'
-        elif system() == 'Darwin' or system() == 'Linux':
-            path_separator ='/'
+        # if os.path.exists(self.initial_data_file_path + path_separator + 'variables_dict.py'):
+        #     from variables_dict import variables_dict
+        #     self.variables_dict = variables_dict             
+        # else:
+        #     self.variables_dict = {}
 
-        # extraer, initial_state de archivo Python
-        if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
-            from initial_state import initial_state
-            self.set_initial_state(initial_state)
+        # self.states_color_dict = states_color_dict
+        # self.valid_states = []
+        # for s in States:
+        #     self.valid_states.append(s)
+        # self.set_transition_rule(transition_rule)
+        # self.variables_dict = variables_dict
 
-        else:   # cargar estado inicial de csv e imagen
-            csv_files = glob.glob(self.initial_data_file_path + "/*.csv")               # obtiene todos los csv,
+        # if system() == 'Windows':
+        #     path_separator ='\\'
+        # elif system() == 'Darwin' or system() == 'Linux':
+        #     path_separator ='/'
 
-            tif  = glob.glob(self.initial_data_file_path + '/*.tif')
-            tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
-            if len(tif + tiff) == 0:
-                message = 'There is no ".tif" or ".tiff" file to use as the initial state of the cellular automaton.'
-                raise IndexError(message)
-            else:
-                tif_initial_image = (tif + tiff)[0]
+        # # extraer, initial_state de archivo Python
+        # if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
+        #     from initial_state import initial_state
+        #     self.set_initial_state(initial_state)
+
+        # else:   # cargar estado inicial de csv e imagen
+        #     csv_files = glob.glob(self.initial_data_file_path + "/*.csv")               # obtiene todos los csv,
+
+        #     tif  = glob.glob(self.initial_data_file_path + '/*.tif')
+        #     tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
+        #     if len(tif + tiff) == 0:
+        #         message = 'There is no ".tif" or ".tiff" file to use as the initial state of the cellular automaton.'
+        #         raise IndexError(message)
+        #     else:
+        #         tif_initial_image = (tif + tiff)[0]
             
             
-            self.__set_initial_state_image_csv( tif_initial_image, csv_files)
+        #     self.__set_initial_state_image_csv( tif_initial_image, csv_files)
 
 
 
@@ -445,3 +464,170 @@ class InteractiveAutomata(Automata):
 
         state = list(self.states_color_dict.keys())[list(self.states_color_dict.values()).index(value)] 
         return state
+
+
+
+    def __set_data_from_file(self, initial_data_file_path:str):
+        if system() == 'Windows':
+            path_separator ='\\'
+        elif system() == 'Darwin' or system() == 'Linux':
+            path_separator ='/'
+        
+        if initial_data_file_path is None:  # Se busca ./initialData/
+            if system() == 'Windows':
+                self.initial_data_file_path = '.\\initialData'
+            elif system() == 'Darwin' or system() == 'Linux':
+                self.initial_data_file_path = './initialData'
+
+      
+            if os.path.exists(self.initial_data_file_path): # comprueba que existe carpeta "initialData"
+
+                if os.path.exists(self.initial_data_file_path + path_separator + 'States.py'):   
+                    from initialData.States import States
+                    self.valid_states = []
+                    for s in States:
+                        self.valid_states.append(s)
+                else:
+                    message = '"States.py" file not found in initialData folder.'
+                    raise ModuleNotFoundError(message)
+                
+                if os.path.exists(self.initial_data_file_path + path_separator + 'states_color_dict.py'):   
+                    from initialData.states_color_dict import states_color_dict
+                    self.states_color_dict = states_color_dict
+                else:
+                    message = '"states_color_dict.py" file not found in initialData folder.'
+                    raise ModuleNotFoundError(message)
+                
+                if os.path.exists(self.initial_data_file_path + path_separator + 'variables_dict.py'):   
+                    from initialData.variables_dict import variables_dict
+                    self.variables_dict = variables_dict
+                else:
+                    self.variables_dict = {}
+
+                if os.path.exists(self.initial_data_file_path + path_separator + 'transition_rule.py'):   
+                    from initialData.transition_rule import transition_rule
+                    self.set_transition_rule(transition_rule)
+                else:
+                    self.transition_rule = None
+
+                # extraer, initial_state de archivo Python
+                if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
+                    from initialData.initial_state import initial_state
+                    self.set_initial_state(initial_state)
+                else:   # cargar estado inicial de csv e imagen
+                    csv_files = glob.glob(self.initial_data_file_path + '/*.csv')               # obtiene todos los csv,
+                    # obtiene primera imagen .tif o .tiff como estado inicial.
+                    tif  = glob.glob(self.initial_data_file_path + '/*.tif')
+                    tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
+                    if len(tif + tiff) == 0:
+                        message = 'There is no "initial_state.py", ".tif" or ".tiff" file to use as the initial state in the initialData folder.'
+                        raise IndexError(message)
+                    else:
+                        tif_initial_image = (tif + tiff)[0]
+                    self.__set_initial_state_image_csv( tif_initial_image, csv_files)
+
+# SACAR DE IF DE /INITIALDATA ???
+
+            else:   # en caso de que no exista ./initialData
+                self.valid_states = []
+                self.states_color_dict = {}
+                self.variables_dict = None
+
+        else:   # El usuario especifica una ruta inicial diferente a 
+            self.initial_data_file_path = initial_data_file_path
+            if os.path.exists(self.initial_data_file_path):
+                sys.path.append( self.initial_data_file_path)
+                if os.path.exists(self.initial_data_file_path + path_separator + 'States.py'):   
+                    from States import States
+                    self.valid_states = []
+                    for s in States:
+                        self.valid_states.append(s)
+                else:
+                    message = '"States.py" file not found in the spicified folder.'
+                    raise ModuleNotFoundError(message)
+                
+                if os.path.exists(self.initial_data_file_path + path_separator + 'states_color_dict.py'):   
+                    from states_color_dict import states_color_dict
+                    self.states_color_dict = states_color_dict
+                else:
+                    message = '"states_color_dict.py" file not found in the spicified folder.'
+                    raise ModuleNotFoundError(message)
+                
+                if os.path.exists(self.initial_data_file_path + path_separator + 'variables_dict.py'):   
+                    from variables_dict import variables_dict
+                    self.variables_dict = variables_dict
+                else:
+                    self.variables_dict = {}
+
+                if os.path.exists(self.initial_data_file_path + path_separator + 'transition_rule.py'):   
+                    from transition_rule import transition_rule
+                    self.set_transition_rule(transition_rule)
+                else:
+                    self.transition_rule = None
+
+                # extraer, initial_state de archivo Python
+                if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
+                    from initial_state import initial_state
+                    self.set_initial_state(initial_state)
+                else:   # cargar estado inicial de csv e imagen
+                    csv_files = glob.glob(self.initial_data_file_path + '/*.csv')               # obtiene todos los csv,
+                    # obtiene primera imagen .tif o .tiff como estado inicial.
+                    tif  = glob.glob(self.initial_data_file_path + '/*.tif')
+                    tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
+                    if len(tif + tiff) == 0:
+                        message = 'There is no "initial_state.py", ".tif" or ".tiff" file to use as the initial state in the spicified folder.'
+                        raise IndexError(message)
+                    else:
+                        tif_initial_image = (tif + tiff)[0]
+                    self.__set_initial_state_image_csv( tif_initial_image, csv_files)
+
+            else:   # No existe el estado inicial dado
+                self.valid_states = []
+                self.states_color_dict = {}
+                self.variables_dict = None
+
+
+
+
+############################
+        # sys.path.append(dictionary['initial_data_file_path'])
+        # from states_color_dict import states_color_dict
+        # from States import States
+        # from transition_rule import transition_rule
+
+
+        # if os.path.exists(self.initial_data_file_path + path_separator + 'variables_dict.py'):
+        #     from variables_dict import variables_dict
+        #     self.variables_dict = variables_dict             
+        # else:
+        #     self.variables_dict = {}
+
+        # self.states_color_dict = states_color_dict
+        # self.valid_states = []
+        # for s in States:
+        #     self.valid_states.append(s)
+        # self.set_transition_rule(transition_rule)
+        # self.variables_dict = variables_dict
+
+
+
+
+
+        # # extraer, initial_state de archivo Python
+        # if os.path.exists(self.initial_data_file_path + path_separator + 'initial_state.py'):
+        #     from initial_state import initial_state
+        #     self.set_initial_state(initial_state)
+
+        # else:   # cargar estado inicial de csv e imagen
+        #     csv_files = glob.glob(self.initial_data_file_path + "/*.csv")               # obtiene todos los csv,
+
+        #     tif  = glob.glob(self.initial_data_file_path + '/*.tif')
+        #     tiff = glob.glob(self.initial_data_file_path + '/*.tiff')
+        #     if len(tif + tiff) == 0:
+        #         message = 'There is no ".tif" or ".tiff" file to use as the initial state of the cellular automaton.'
+        #         raise IndexError(message)
+        #     else:
+        #         tif_initial_image = (tif + tiff)[0]
+            
+            
+        #     self.__set_initial_state_image_csv( tif_initial_image, csv_files)
