@@ -2,30 +2,6 @@ import Cell as cell
 from States import States as s
 
 
-def funcion(c:cell):
-    return c.get_state() == s.Hormiga
-
-def get_nueva_orientacion(orientacion_hormiga:str,  colorBlanco:bool):
-    if colorBlanco: # Giro Horario
-        if orientacion_hormiga == 'N':
-            return 'E'
-        elif orientacion_hormiga == 'E':
-            return 'S'
-        elif orientacion_hormiga == 'S':
-            return 'O'
-        else: # orientacion_hormiga == 'O'
-            return 'N'
-    else:
-        if orientacion_hormiga == 'N':
-            return 'O'
-        elif orientacion_hormiga == 'E':
-            return 'N'
-        elif orientacion_hormiga == 'S':
-            return 'E'
-        else: # orientacion_hormiga == 'O'
-            return 'S'
-
-
 
 def transition_rule(c:cell):
     if c.get_state() == s.Hormiga:

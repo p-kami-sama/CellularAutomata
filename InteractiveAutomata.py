@@ -1,5 +1,4 @@
 import csv
-import math as math
 import sys
 import os
 import glob

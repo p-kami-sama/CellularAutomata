@@ -54,3 +54,11 @@ from automata.Borders import Borders
 # langtons_ant.set_border(Borders.PERIODIC)
 # langtons_ant.set_neighborhood(Neighborhoods.VON_NEUMANN)
 # langtons_ant.open_interface()
+
+
+#####   Load automata from file
+# automata_from_file = interactiveAutomata.InteractiveAutomata()
+# automata_from_file.clear_results_file()
+# automata_from_file.open_initial_interface()
+# automata_from_file.open_interface()
+# automata_from_file.store_data_in_json()
