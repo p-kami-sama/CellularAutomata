@@ -1,5 +1,3 @@
-
-# from initialData.States import States
 from States import States
 
 states_color_dict = {
