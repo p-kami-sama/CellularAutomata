@@ -1,5 +1,5 @@
 
-def statistic_function_count_30_iterations(cell):
+def statistic_function_count_30_iterations(cell) -> bool:
     return ( ((cell.automata.actual_iteration % 30) == 0) and 
         (cell.get_variable('resurrecciones') != 0) )
 
