@@ -100,8 +100,18 @@ class InteractiveAutomata(Automata):
         img = Image.new('RGB', (self.width, self.height))
 
         if system() == 'Windows':
+            
+            try:
+                os.stat('.\\results')
+            except:
+                os.mkdir('.\\results')
+            
             self.initial_state_route = '.\\results\\initial_state.tif'
         elif system() == 'Darwin' or system() == 'Linux':
+            try:
+                os.stat('./results')
+            except:
+                os.mkdir('./results')
             self.initial_state_route = './results/initial_state.tif'
        
         # por filas de arriba a abajo.
