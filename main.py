@@ -6,7 +6,6 @@ from automata.Borders import Borders
 
 
 
-
 #####  Day and Night
 
 # day_and_night = InteractiveAutomata(False, './examples/DayAndNight')
