@@ -8,7 +8,6 @@ from types import FunctionType
 import Cell as cell
 import automata.Statistic as statistic
 
-# from initialData.States import States
 
 from automata.Neighborhoods import Neighborhoods
 from automata.Borders import Borders
@@ -332,7 +331,6 @@ class Automata:
 
                 #AQUI SE PUEDEN AÑADIR ESTADISTICOS GLOBALES
                 for fila in self.iterations[self.actual_iteration]:
-                    x = 0
                     for elem in fila:
                         states_counter_dict[elem.state.name] +=1
                         dict_elem = {}
@@ -352,7 +350,7 @@ class Automata:
 
     def run_iterations(self, num_iterations:int, print_data:bool=False):
         self.reset_automata()
-        for iteration in range(0, num_iterations):
+        for _ in range(0, num_iterations):
             self.next()
 
         if print_data:
@@ -388,14 +386,14 @@ class Automata:
 
     def add_statistic(self, check_function, message:str='', variables_to_print:typing.List[str]=[]) -> int:
         # Buscar otra forma de asignar id
-        id = 0
+        statistic_id = 0
         for index in range(1, len(self.statistics)+2):
-            if not index in self.statistics.keys():
-                id = index
+            if index not in self.statistics.keys():
+                statistic_id = index
                 break
 
-        self.statistics[id]=statistic.Statistic(self, check_function, message, variables_to_print)
-        return id
+        self.statistics[statistic_id]=statistic.Statistic(self, check_function, message, variables_to_print)
+        return statistic_id
 
 
     # Devuelve True si se ha eliminado el estadistico correctamente y False cuando no hay un estadistico con el id dado
@@ -414,7 +412,7 @@ class Automata:
         elif system() == 'Darwin' or system() == 'Linux':
             path_separator ='/'
 
-        path = self.initial_data_file_path + path_separator + 'statistics_functions.py'
+#        path = self.initial_data_file_path + path_separator + 'statistics_functions.py'
 
         if os.path.exists(self.initial_data_file_path + path_separator + 'statistics_functions.py'):
             sys.path.append( self.initial_data_file_path )
@@ -430,8 +428,8 @@ class Automata:
                 func = getattr(statistics, name)
                 msg = statistics_message[name]
                 vars_list = statistics_variables[name]
-                id = self.add_statistic(func, msg, vars_list)
-                ids_list.append(id)
+                statistic_id = self.add_statistic(func, msg, vars_list)
+                ids_list.append(statistic_id)
             
             return ids_list
 
