@@ -1,6 +1,8 @@
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image, ImageTk
 import numpy as numpy
+import sys
 
 
 
@@ -58,6 +60,20 @@ class Interface(tk.Frame):
 
         self.button_start = tk.Button(bar_buttons, text='Start', fg='red', command=self.button_start_pressed ) 
         self.button_start.pack( side = tk.LEFT )
+
+
+
+        # NEIGHBORHOD RADIUS (De 1 a infinito)
+
+        self.iteration_var = tk.StringVar()
+        label_neighborhood_radius = tk.Label( bar_buttons , text = 'Radius:')
+        spin_temp = tk.Spinbox(bar_buttons, from_=1, to= int( sys.maxsize )-1 , textvariable=self.iteration_var)
+        button_go_to_iteration = tk.Button(bar_buttons, text='go', fg='purple', command=self.button_go_to_iteration_pressed ) 
+
+        label_neighborhood_radius.pack( side = tk.LEFT )
+        spin_temp.pack( side = tk.LEFT )
+        button_go_to_iteration.pack( side = tk.LEFT)
+
 
         label_ms = tk.Label(bar_buttons, text='ms', anchor=tk.W, padx = 10)
         label_ms.pack(side=tk.RIGHT)       
@@ -142,6 +158,26 @@ class Interface(tk.Frame):
             self.next_pressed()
         else:
             self.button_start_pressed()
+
+    def button_go_to_iteration_pressed(self):
+        
+        if (not self.iteration_var.get().isdigit() ) or (int(self.iteration_var.get()) < 1) :
+            messagebox.showerror('Error', 'Radius must be an integer greater than 0.')
+        else:
+
+            # AVANZAR
+            if self.automata.actual_iteration < int(self.iteration_var.get()):
+                while (self.automata.actual_iteration < int(self.iteration_var.get()) ):
+                    self.next_pressed()
+            # RETROCEDER
+            elif self.automata.actual_iteration  > int(self.iteration_var.get()) :
+                while (self.automata.actual_iteration > int(self.iteration_var.get()) ):
+                    self.back_pressed()
+
+#           else self.automata.actual_iteration  == int(self.iteration_var.get()):
+            # nada
+
+        
 
 
 # eventos del raton
