@@ -5,6 +5,17 @@ from automata.Borders import Borders
 
 
 
+
+
+#####  Day and Night
+
+# day_and_night = InteractiveAutomata(False, './examples/DayAndNight')
+# day_and_night.set_border(Borders.PERIODIC)
+# day_and_night.set_neighborhood(Neighborhoods.MOORE)
+# day_and_night.open_interface()
+
+
+
 #####   Conway's Game of life
 
 # game_of_life = InteractiveAutomata(store_trace_back=True, initial_data_file_path='./examples/GameOfLifeData')
@@ -50,15 +61,6 @@ from automata.Borders import Borders
 # langtons_ant.set_border(Borders.PERIODIC)
 # langtons_ant.set_neighborhood(Neighborhoods.VON_NEUMANN)
 # langtons_ant.open_interface()
-
-
-
-#####  Day and Night
-
-# day_and_night = InteractiveAutomata(False, './examples/DayAndNight')
-# day_and_night.set_border(Borders.PERIODIC)
-# day_and_night.set_neighborhood(Neighborhoods.MOORE)
-# day_and_night.open_interface()
 
 
 
