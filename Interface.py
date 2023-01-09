@@ -71,7 +71,7 @@ class Interface(tk.Frame):
         self.iteration_var = tk.StringVar()
         label_iteration_to_go = tk.Label( bar_buttons , text = 'Iteration:')
         spin_temp = tk.Spinbox(bar_buttons, from_=1, to= int( sys.maxsize )-1 , textvariable=self.iteration_var)
-        button_go_to_iteration = tk.Button(bar_buttons, text='go', fg='purple', command=self.button_go_to_iteration_pressed ) 
+        button_go_to_iteration = tk.Button(bar_buttons, text='Go', fg='purple', command=self.button_go_to_iteration_pressed ) 
 
         label_iteration_to_go.pack( side = tk.LEFT )
         spin_temp.pack( side = tk.LEFT )
@@ -98,7 +98,6 @@ class Interface(tk.Frame):
 
         # Eventos de teclado
         self.window.bind('<Left>', self.back_pressed)
-        self.window.bind('<BackSpace>', self.back_pressed) # Borrar
         self.window.bind('<Right>', self.next_pressed)
         self.window.bind('<space>', self.space_or_return_key_pressed)
         self.window.bind('<Return>', self.space_or_return_key_pressed) # Enter
