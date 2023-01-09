@@ -66,11 +66,11 @@ class Interface(tk.Frame):
         # NEIGHBORHOD RADIUS (De 1 a infinito)
 
         self.iteration_var = tk.StringVar()
-        label_neighborhood_radius = tk.Label( bar_buttons , text = 'Radius:')
+        label_iteration_to_go = tk.Label( bar_buttons , text = 'Iteration:')
         spin_temp = tk.Spinbox(bar_buttons, from_=1, to= int( sys.maxsize )-1 , textvariable=self.iteration_var)
         button_go_to_iteration = tk.Button(bar_buttons, text='go', fg='purple', command=self.button_go_to_iteration_pressed ) 
 
-        label_neighborhood_radius.pack( side = tk.LEFT )
+        label_iteration_to_go.pack( side = tk.LEFT )
         spin_temp.pack( side = tk.LEFT )
         button_go_to_iteration.pack( side = tk.LEFT)
 

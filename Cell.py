@@ -6,14 +6,14 @@ import Automata as automata
 from enum import Enum
 
 class Cell:
-    def __init__(self, automata:automata, xpos:int, ypos:int, state:Any, valid_states:List[Any], variables:dict={}):
-        self.valid_states = valid_states
-        
-        if not (state in self.valid_states):
+    def __init__(self, automata:automata, xpos:int, ypos:int, state:Any, variables:dict={}):
+        # self.automata.valid_states = valid_states
+        self.automata = automata
+
+        if not (state in self.automata.valid_states):
             message = 'A cell with state ' + str(state)+\
                 ' cannot be created because it is not included in the States enumeration.'
             raise ValueError(message)
-        self.automata = automata
         self.xpos = xpos
         self.ypos = ypos
         self.state = state
@@ -41,7 +41,7 @@ class Cell:
 
 
     def set_state(self, new_state:Enum) -> Any:
-        if not (new_state in self.valid_states):
+        if not (new_state in self.automata.valid_states):
             message = 'The given state is not included in the "valid_states" list.'
             raise ValueError(message)
         else:
@@ -86,7 +86,7 @@ class Cell:
 
 # state
     def any_neighbor_has_state(self, state:Enum) -> bool:
-        if not (state in self.valid_states):
+        if not (state in self.automata.valid_states):
             message = 'The given state is not included in the enumeration of states'
             raise ValueError(message)
 
@@ -97,7 +97,7 @@ class Cell:
         return False
 
     def all_neighbours_has_state(self, state:Enum)-> bool:
-        if not (state in self.valid_states):
+        if not (state in self.automata.valid_states):
             message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
             
@@ -108,7 +108,7 @@ class Cell:
         return True
 
     def count_neighbors_with_state(self, state:Enum) -> int:
-        if not (state in self.valid_states):
+        if not (state in self.automata.valid_states):
             message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
 

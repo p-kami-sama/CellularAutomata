@@ -36,12 +36,15 @@ class InteractiveAutomata(Automata):
         self.store_trace_back = store_trace_back
         self.data = {}
         self.statistics = {} # id:int, statistics
-        self.initial_state_route = None
-        # new
-        self.initial_data_file_path = None  # new
+
+        self.initial_data_file_path = None
         self.valid_states = []
+
+        # new
         self.states_color_dict = {}
         self.variables_dict = {}
+        self.initial_state_route = None
+
         # saber si el directorio self.initial_data_file_path existe
 
         self.__set_data_from_file(initial_data_file_path)
@@ -67,13 +70,13 @@ class InteractiveAutomata(Automata):
                     else:
                         vars = elem.copy()
                         del vars['state'] 
-                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars)
+                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
                         color = self.states_color_dict[elem['state']]
                         lista_de_color_de_pixeles.append(color)
 
                 # elem es States
                 elif elem in self.valid_states:
-                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, valid_states=self.valid_states, variables={})
+                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
                     color = self.states_color_dict[elem]
                     lista_de_color_de_pixeles.append(color)
                 else:
@@ -320,7 +323,7 @@ class InteractiveAutomata(Automata):
             for elem in fila:
                 vars = elem.copy()
                 del vars['state'] 
-                c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars)
+                c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars)
                 mallaAux.append(c)
                 x = x+1
                 

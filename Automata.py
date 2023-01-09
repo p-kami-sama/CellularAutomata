@@ -102,10 +102,10 @@ class Automata:
                     else:
                         vars = elem.copy()
                         del vars['state'] 
-                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars,)
+                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=vars,)
 
                 elif elem in self.valid_states:
-                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, valid_states=self.valid_states, variables={})
+                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
                 else:
                     message = 'The input to create the cell with coordinates (' +\
                         str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
@@ -186,7 +186,7 @@ class Automata:
 
         if new_border_type == Borders.FIXED:
             if fixed_cell in self.valid_states:
-                self.fixed_cell = cell.Cell(self, -1, -1, fixed_cell, valid_states=self.valid_states)
+                self.fixed_cell = cell.Cell(self, -1, -1, fixed_cell)
             elif isinstance(fixed_cell, cell.Cell):
                 self.fixed_cell = fixed_cell
            
@@ -298,13 +298,13 @@ class Automata:
 
                     if result_transition_rule in self.valid_states:
                         new_state = result_transition_rule
-                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, valid_states=self.valid_states, variables=elem.variables.copy())
+                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=elem.variables.copy())
 
                     elif type(result_transition_rule) is dict: # se reescriben las variables adecuadamente
                         if  'state' in result_transition_rule.keys():
                             new_state = result_transition_rule['state']
                             del result_transition_rule['state']
-                            c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, valid_states=self.valid_states, variables=result_transition_rule)
+                            c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=result_transition_rule)
                         else:
                             message = 'If the result of transition_rule is a dictionary, it must have a key called '\
                                     '"state", with the state that the cell will have after applying the transition rule.'
