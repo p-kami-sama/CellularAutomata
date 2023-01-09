@@ -1,22 +1,22 @@
-from typing import Any, List, Tuple
 import Automata as automata
 
-# from initialData.States import States 
-
+from typing import Any, List, Tuple
 from enum import Enum
 
 class Cell:
-    def __init__(self, automata:automata, xpos:int, ypos:int, state:Any, variables:dict={}):
-        # self.automata.valid_states = valid_states
+    def __init__(self, automata:automata, xpos:int, ypos:int, state:Any, variables:dict=None):
+        if variables is None:
+            variables = dict()
+            
         self.automata = automata
-
-        if not (state in self.automata.valid_states):
+        if state not in self.automata.valid_states:
             message = 'A cell with state ' + str(state)+\
                 ' cannot be created because it is not included in the States enumeration.'
             raise ValueError(message)
+
+        self.state = state
         self.xpos = xpos
         self.ypos = ypos
-        self.state = state
         self.variables = variables
 
     # imprime la celula
@@ -26,9 +26,7 @@ class Cell:
         return s
     
     def __repr__(self):
-        s = 'xpos: '+str(self.xpos)+', ypos: '+str(self.ypos)+ \
-            ', state: '+str(self.state) +', variables: '+str(self.variables)
-        return s
+        return self.__str__()
 
 
     def get_pos(self) -> Tuple[int, int]:
@@ -41,7 +39,7 @@ class Cell:
 
 
     def set_state(self, new_state:Enum) -> Any:
-        if not (new_state in self.automata.valid_states):
+        if new_state not in self . automata . valid_states:
             message = 'The given state is not included in the "valid_states" list.'
             raise ValueError(message)
         else:
@@ -86,7 +84,7 @@ class Cell:
 
 # state
     def any_neighbor_has_state(self, state:Enum) -> bool:
-        if not (state in self.automata.valid_states):
+        if state not in self.automata.valid_states:
             message = 'The given state is not included in the enumeration of states'
             raise ValueError(message)
 
@@ -97,7 +95,7 @@ class Cell:
         return False
 
     def all_neighbours_has_state(self, state:Enum)-> bool:
-        if not (state in self.automata.valid_states):
+        if state not in self.automata.valid_states:
             message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
             
@@ -108,7 +106,7 @@ class Cell:
         return True
 
     def count_neighbors_with_state(self, state:Enum) -> int:
-        if not (state in self.automata.valid_states):
+        if state not in self.automata.valid_states:
             message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
 

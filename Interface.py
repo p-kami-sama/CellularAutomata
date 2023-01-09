@@ -10,7 +10,10 @@ import sys
 
 
 class Interface(tk.Frame):
-    def __init__(self, img=None, automata=None, variables_dict:dict={}):
+    def __init__(self, img=None, automata=None, variables_dict:dict=None):
+        if variables_dict is None:
+            variables_dict = dict()
+
         if img is None:
             message = 'The file with the initial data was not found. '+\
                 'checks that the initial path specified is correct.'
@@ -109,7 +112,7 @@ class Interface(tk.Frame):
         if not self.auto_play:
 
             new_image_path = self.automata.back_image_iteration()
-            if not (new_image_path is None):
+            if new_image_path is not None:
                 self.set_image(new_image_path)
 
 
@@ -294,7 +297,7 @@ class Interface(tk.Frame):
         canvas_height = self.canvas.winfo_height()
         self.matriz_affin = numpy.eye(3)
 
-        scale = 1.0
+
         offsetx = 0.0
         offsety = 0.0
 

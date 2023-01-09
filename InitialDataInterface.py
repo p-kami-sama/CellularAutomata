@@ -21,9 +21,6 @@ class InitialDataInterface(tk.Frame):
 
  
         # BORDERS
-        # border_options = []
-        # for elem in Borders:
-        #     border_options.append( elem.value)
         border_options =['periodic', 'reflective', 'adiabatic']
     
         self.border_clicked = tk.StringVar()
@@ -36,10 +33,6 @@ class InitialDataInterface(tk.Frame):
 
 
         # NEIGHBORHODS
-        # neighborhood_options = []
-        # for elem in Neighborhoods:
-        #     neighborhood_options.append( elem.value)
-
         neighborhood_options = ['von_Neumann', 'Moore']
 
         self.neighborhood_clicked = tk.StringVar()
