@@ -17,7 +17,7 @@ class InitialDataInterface(tk.Frame):
         # definicion de la ventana
         self.root.title('CellularAutomataInterface')
         self.root.geometry('400x400')
-        self.root.resizable(width=False, height=False)
+        self.root.resizable(width=True, height=False)
 
  
         # BORDERS
