@@ -1,22 +1,22 @@
-from typing import Any, List, Tuple
 import Automata as automata
 
-# from initialData.States import States 
-
+from typing import Any, List, Tuple
 from enum import Enum
 
 class Cell:
-    def __init__(self, automata:automata, xpos:int, ypos:int, state:Any, valid_states:List[Any], variables:dict={}):
-        self.valid_states = valid_states
-        
-        if not (state in self.valid_states):
+    def __init__(self, automata:automata, xpos:int, ypos:int, state:Any, variables:dict=None):
+        if variables is None:
+            variables = dict()
+            
+        self.automata = automata
+        if state not in self.automata.valid_states:
             message = 'A cell with state ' + str(state)+\
                 ' cannot be created because it is not included in the States enumeration.'
             raise ValueError(message)
-        self.automata = automata
+
+        self.state = state
         self.xpos = xpos
         self.ypos = ypos
-        self.state = state
         self.variables = variables
 
     # imprime la celula
@@ -26,9 +26,7 @@ class Cell:
         return s
     
     def __repr__(self):
-        s = 'xpos: '+str(self.xpos)+', ypos: '+str(self.ypos)+ \
-            ', state: '+str(self.state) +', variables: '+str(self.variables)
-        return s
+        return self.__str__()
 
 
     def get_pos(self) -> Tuple[int, int]:
@@ -41,7 +39,7 @@ class Cell:
 
 
     def set_state(self, new_state:Enum) -> Any:
-        if not (new_state in self.valid_states):
+        if new_state not in self . automata . valid_states:
             message = 'The given state is not included in the "valid_states" list.'
             raise ValueError(message)
         else:
@@ -86,7 +84,7 @@ class Cell:
 
 # state
     def any_neighbor_has_state(self, state:Enum) -> bool:
-        if not (state in self.valid_states):
+        if state not in self.automata.valid_states:
             message = 'The given state is not included in the enumeration of states'
             raise ValueError(message)
 
@@ -97,7 +95,7 @@ class Cell:
         return False
 
     def all_neighbours_has_state(self, state:Enum)-> bool:
-        if not (state in self.valid_states):
+        if state not in self.automata.valid_states:
             message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
             
@@ -108,7 +106,7 @@ class Cell:
         return True
 
     def count_neighbors_with_state(self, state:Enum) -> int:
-        if not (state in self.valid_states):
+        if state not in self.automata.valid_states:
             message = 'The given state is not included in the enumeration of states.'
             raise ValueError(message)
 
@@ -130,42 +128,42 @@ class Cell:
         return list_of_values
 
 
-    def get_values_of_variable_from_neighbors_that_satisfy(self, variable_name:str, func) -> List[Any]:
+    def get_values_of_variable_from_neighbors_that_satisfy(self, variable_name:str, function) -> List[Any]:
         list_of_values = []
         for x, y in self.automata.neighborhood_list:
             celula = self.automata.get_neighbour_cell(self.xpos, self.ypos, x, y)
-            if func(celula):
+            if function(celula):
                 list_of_values.append( celula.get_variable(variable_name) )
         return list_of_values
 
 # condition
-    def all_neighbours_satisfy(self, func)-> bool:
+    def all_neighbours_satisfy(self, function)-> bool:
         for x, y in self.automata.neighborhood_list:
             elem = self.automata.get_neighbour_cell(self.xpos, self.ypos, x, y)
-            if not func(elem):
+            if not function(elem):
                 return False
         return True
 
-    def any_neighbor_satisfy(self, func) -> bool:
+    def any_neighbor_satisfy(self, function) -> bool:
         for x, y in self.automata.neighborhood_list:
             elem = self.automata.get_neighbour_cell(self.xpos, self.ypos, x, y)
-            if func(elem):
+            if function(elem):
                 return True
         return False
 
-    def count_neighbors_satisfy(self, func) -> int:
+    def count_neighbors_satisfy(self, function) -> int:
         contador = 0
         for x, y in self.automata.neighborhood_list:
             elem = self.automata.get_neighbour_cell(self.xpos, self.ypos, x, y)
-            if func(elem):
+            if function(elem):
                 contador += 1
         return contador
 
-    def get__neighbors_that_satisfy(self, func) -> list:
+    def get__neighbors_that_satisfy(self, function) -> list:
         list_of_neighbors = []
         for x, y in self.automata.neighborhood_list:
             celula = self.automata.get_neighbour_cell(self.xpos, self.ypos, x, y)
-            if func(celula):
+            if function(celula):
                 list_of_neighbors.append( celula )
         return list_of_neighbors
 

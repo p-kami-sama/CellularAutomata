@@ -42,9 +42,9 @@ from automata.Borders import Borders
 
 
 
-#####   Brian'n Brain
+#####   Brian's Brain
 
-# brians_brain = InteractiveAutomata(False)
+# brians_brain = InteractiveAutomata(False, './examples/BriansBrain')
 # brians_brain.clear_results_file()
 # brians_brain.set_border(Borders.PERIODIC)
 # brians_brain.set_neighborhood(Neighborhoods.MOORE, 1)

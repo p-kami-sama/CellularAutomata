@@ -36,12 +36,15 @@ class InteractiveAutomata(Automata):
         self.store_trace_back = store_trace_back
         self.data = {}
         self.statistics = {} # id:int, statistics
-        self.initial_state_route = None
-        # new
-        self.initial_data_file_path = None  # new
+
+        self.initial_data_file_path = None
         self.valid_states = []
+
+        # new
         self.states_color_dict = {}
         self.variables_dict = {}
+        self.initial_state_route = None
+
         # saber si el directorio self.initial_data_file_path existe
 
         self.__set_data_from_file(initial_data_file_path)
@@ -55,25 +58,25 @@ class InteractiveAutomata(Automata):
         malla = []
         y = 0
         for fila in mat:
-            mallaAux = []
+            malla_aux = []
             x = 0
             for elem in fila:
                 # elem es un diccionario
                 if isinstance(elem, dict):
-                    if not 'state' in elem:
+                    if 'state' not in elem:
                         message = 'if the initial information of a cell is a dictionary, it must have a key called '\
                                 '"state", with the state that the cell will have before applying the transition rule.'
                         raise ValueError(message)
                     else:
-                        vars = elem.copy()
-                        del vars['state'] 
-                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars)
+                        variables = elem.copy()
+                        del variables['state'] 
+                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=variables)
                         color = self.states_color_dict[elem['state']]
                         lista_de_color_de_pixeles.append(color)
 
                 # elem es States
                 elif elem in self.valid_states:
-                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, valid_states=self.valid_states, variables={})
+                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
                     color = self.states_color_dict[elem]
                     lista_de_color_de_pixeles.append(color)
                 else:
@@ -82,10 +85,10 @@ class InteractiveAutomata(Automata):
                         '"States" enumeration or a dictionary.'
                     raise ValueError(message)
                     
-                mallaAux.append(c)
+                malla_aux.append(c)
                 x = x+1
                 
-            malla.append(mallaAux)
+            malla.append(malla_aux)
             y = y+1
 
         self.iterations = {}
@@ -287,7 +290,7 @@ class InteractiveAutomata(Automata):
         if len(csv_files) != 0:
             for route_to_file in csv_files:
                 file_name = os.path.basename(route_to_file).split('.')[0]
-                if not (file_name in self.variables_dict):
+                if file_name not in self.variables_dict:
                     message = 'In "variables_dict.py" there is no type of ' + \
                         'variable assigned to file "' +route_to_file +'".'
                     raise ValueError(message)
@@ -315,16 +318,16 @@ class InteractiveAutomata(Automata):
         malla = []
         y = 0
         for fila in matrix:
-            mallaAux = []
+            malla_aux = []
             x = 0
             for elem in fila:
-                vars = elem.copy()
-                del vars['state'] 
-                c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars)
-                mallaAux.append(c)
+                variables = elem.copy()
+                del variables['state'] 
+                c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=variables)
+                malla_aux.append(c)
                 x = x+1
                 
-            malla.append(mallaAux)
+            malla.append(malla_aux)
             y = y+1
 
         self.iterations = {}
@@ -337,7 +340,7 @@ class InteractiveAutomata(Automata):
     def __get_state_from_color(self, red:int, green:int, blue:int, xpos:int, ypos:int):
         value = (int(red), int(green), int(blue))
 
-        if not (value in list(self.states_color_dict.values()) ):
+        if value not in list(self.states_color_dict.values()):
             message = 'At the ('  + str(xpos) + ', ' + str(ypos) + ' position, the (' + \
                 str(red) + ', ' + str(green) + ', ' + str(blue) + ') ' + \
                 'color, is not related to any state in states_color_dict.'

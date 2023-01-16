@@ -10,7 +10,10 @@ import sys
 
 
 class Interface(tk.Frame):
-    def __init__(self, img=None, automata=None, variables_dict:dict={}):
+    def __init__(self, img=None, automata=None, variables_dict:dict=None):
+        if variables_dict is None:
+            variables_dict = dict()
+
         if img is None:
             message = 'The file with the initial data was not found. '+\
                 'checks that the initial path specified is correct.'
@@ -66,11 +69,11 @@ class Interface(tk.Frame):
         # NEIGHBORHOD RADIUS (De 1 a infinito)
 
         self.iteration_var = tk.StringVar()
-        label_neighborhood_radius = tk.Label( bar_buttons , text = 'Radius:')
+        label_iteration_to_go = tk.Label( bar_buttons , text = 'Iteration:')
         spin_temp = tk.Spinbox(bar_buttons, from_=1, to= int( sys.maxsize )-1 , textvariable=self.iteration_var)
-        button_go_to_iteration = tk.Button(bar_buttons, text='go', fg='purple', command=self.button_go_to_iteration_pressed ) 
+        button_go_to_iteration = tk.Button(bar_buttons, text='Go', fg='purple', command=self.button_go_to_iteration_pressed ) 
 
-        label_neighborhood_radius.pack( side = tk.LEFT )
+        label_iteration_to_go.pack( side = tk.LEFT )
         spin_temp.pack( side = tk.LEFT )
         button_go_to_iteration.pack( side = tk.LEFT)
 
@@ -95,7 +98,6 @@ class Interface(tk.Frame):
 
         # Eventos de teclado
         self.window.bind('<Left>', self.back_pressed)
-        self.window.bind('<BackSpace>', self.back_pressed) # Borrar
         self.window.bind('<Right>', self.next_pressed)
         self.window.bind('<space>', self.space_or_return_key_pressed)
         self.window.bind('<Return>', self.space_or_return_key_pressed) # Enter
@@ -109,7 +111,7 @@ class Interface(tk.Frame):
         if not self.auto_play:
 
             new_image_path = self.automata.back_image_iteration()
-            if not (new_image_path is None):
+            if new_image_path is not None:
                 self.set_image(new_image_path)
 
 
@@ -294,7 +296,7 @@ class Interface(tk.Frame):
         canvas_height = self.canvas.winfo_height()
         self.matriz_affin = numpy.eye(3)
 
-        scale = 1.0
+
         offsetx = 0.0
         offsety = 0.0
 

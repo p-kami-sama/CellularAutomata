@@ -76,9 +76,9 @@ class Automata:
                 self.valid_states = []
         
 
-    def set_valid_states(self, States):
+    def set_valid_states(self, states):
         self.valid_states = []
-        for state in States:
+        for state in states:
             self.valid_states.append(state)
 
 
@@ -89,33 +89,33 @@ class Automata:
         y = 0
 
         for fila in mat:
-            mallaAux = []
+            malla_aux = []
             x = 0
             for elem in fila:
                 
                 if isinstance(elem, dict):
 #                    if 'variables' in elem:
-                    if not 'state' in elem:
+                    if 'state' not in elem:
                         message = 'If the initial information of a cell is a dictionary, it must have a key called '\
                                 '"state", with the state that the cell will have before applying the transition rule.'
                         raise ValueError(message)
                     else:
-                        vars = elem.copy()
-                        del vars['state'] 
-                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], valid_states=self.valid_states, variables=vars,)
+                        variables = elem.copy()
+                        del variables['state'] 
+                        c = cell.Cell(self, xpos=x, ypos=y, state=elem['state'], variables=variables,)
 
                 elif elem in self.valid_states:
-                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, valid_states=self.valid_states, variables={})
+                    c = cell.Cell(self, xpos=x, ypos=y, state=elem, variables={})
                 else:
                     message = 'The input to create the cell with coordinates (' +\
                         str(x) + ', ' + str(y) + ') is not correct. The imput must be a "state" included in '+\
                         '"States" enumeration or a dictionary.'
                     raise ValueError(message)
                     
-                mallaAux.append(c)
+                malla_aux.append(c)
                 x = x+1
                 
-            malla.append(mallaAux)
+            malla.append(malla_aux)
             y = y+1
 
         self.iterations = {}
@@ -186,7 +186,7 @@ class Automata:
 
         if new_border_type == Borders.FIXED:
             if fixed_cell in self.valid_states:
-                self.fixed_cell = cell.Cell(self, -1, -1, fixed_cell, valid_states=self.valid_states)
+                self.fixed_cell = cell.Cell(self, -1, -1, fixed_cell)
             elif isinstance(fixed_cell, cell.Cell):
                 self.fixed_cell = fixed_cell
            
@@ -298,13 +298,13 @@ class Automata:
 
                     if result_transition_rule in self.valid_states:
                         new_state = result_transition_rule
-                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, valid_states=self.valid_states, variables=elem.variables.copy())
+                        c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=elem.variables.copy())
 
                     elif type(result_transition_rule) is dict: # se reescriben las variables adecuadamente
                         if  'state' in result_transition_rule.keys():
                             new_state = result_transition_rule['state']
                             del result_transition_rule['state']
-                            c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, valid_states=self.valid_states, variables=result_transition_rule)
+                            c = cell.Cell(self, xpos=elem.xpos, ypos=elem.ypos, state=new_state, variables=result_transition_rule)
                         else:
                             message = 'If the result of transition_rule is a dictionary, it must have a key called '\
                                     '"state", with the state that the cell will have after applying the transition rule.'
@@ -412,8 +412,6 @@ class Automata:
         elif system() == 'Darwin' or system() == 'Linux':
             path_separator ='/'
 
-#        path = self.initial_data_file_path + path_separator + 'statistics_functions.py'
-
         if os.path.exists(self.initial_data_file_path + path_separator + 'statistics_functions.py'):
             sys.path.append( self.initial_data_file_path )
 
@@ -488,15 +486,15 @@ class Automata:
 
         else:
             if desp > 0: # positivo
-                despAux = desp-(size_1 - ini)
-                if int( despAux / size_1 ) % 2 == 0:    # par
-                    return size_1 - (despAux % size_1)
+                displacement_aux = desp-(size_1 - ini)
+                if int( displacement_aux / size_1 ) % 2 == 0:    # par
+                    return size_1 - (displacement_aux % size_1)
                 else: # impar
-                    return despAux % size_1
+                    return displacement_aux % size_1
 
             else: # negativo
-                despAux = -desp - ini
-                if int( despAux / size_1 ) % 2 == 0:    # par
-                    return despAux % size_1
+                displacement_aux = -desp - ini
+                if int( displacement_aux / size_1 ) % 2 == 0:    # par
+                    return displacement_aux % size_1
                 else: # impar
-                    return size_1 - (despAux % size_1 )
+                    return size_1 - (displacement_aux % size_1 )
