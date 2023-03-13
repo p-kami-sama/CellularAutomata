@@ -6,7 +6,7 @@ descomente una de las secciones del archivo main.py y ejecute ese archivo con el
     python3 main.py
 
 
-Se recomienda utilizar el gesstor de paquetes Conda de Python.
+Se recomienda utilizar el gestor de paquetes Conda de Python.
 
 ## modulos python necesarios:
 
